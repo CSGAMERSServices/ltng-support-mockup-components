@@ -1,0 +1,11 @@
+<template>
+    <div class={storyBookClasses}>
+        <h1 if:true={title} class='slds-text-heading_large'>{title}</h1>
+        
+        <slot name='description'></slot>
+        
+        <div class='sandbox' style={sandboxStyles}>
+            <slot></slot>
+        </div>
+    </div>
+</template>
