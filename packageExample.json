@@ -1,0 +1,55 @@
+{
+  "name": "ltng-support-mockup-components",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Wait, what is this?",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "lwc": "sfdx force:lightning:lwc:start",
+    "lint": "npm run lint:lwc && npm run lint:aura",
+    "lint:lwc": "eslint force-app/main/default/lwc",
+    "lint:lwc:watch": "node node_modules/watch/cli.js 'npm run lint:lwc && echo \"- lint successful -\"' force-app/main/default/lwc",
+    "lint:aura": "sfdx force:lightning:lint force-app/main/default/aura --exit",
+    "lint:aura:watch": "node node_modules/watch/cli.js 'npm run lint:aura' force-app/main/default/aura",
+    "test": "npm run test:lwc",
+    "test:apex": "sfdx force:apex:test:run -w 10",
+    "test:apex:synchronous": "npm run test:apex -- -y",
+    "test:lwc": "sfdx-lwc-jest",
+    "test:lwc:watch": "sfdx-lwc-jest --watch",
+    "test:lwc:debug": "sfdx-lwc-jest --debug",
+    "test:lwc:coverage": "sfdx-lwc-jest --coverage",
+    "log": "sfdx force:apex:log:tail | less -O ./.tmp/apexLog.log +F",
+    "verify": "npm run lint && npm run test",
+    "verify:msg": "echo -e '\\n\\n\\n--- Running Verification Steps ---\\n\\n\\n'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run verify:msg && npm run verify",
+      "pre-push": "npm run verify:msg && npm run verify"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SalesforceCloudServices/ltng-support-mockup-components.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/SalesforceCloudServices/ltng-support-mockup-components/issues"
+  },
+  "homepage": "https://github.com/SalesforceCloudServices/ltng-support-mockup-components#readme",
+  "devDependencies": {
+    "@lwc/eslint-plugin-lwc": "^0.8.0",
+    "@salesforce/eslint-config-lwc": "^0.4.0",
+    "@salesforce/sfdx-lwc-jest": "^0.6.2",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "watch": "^1.0.2"
+  }
+}                                                                                                        "eslint": "^6.8.0",
