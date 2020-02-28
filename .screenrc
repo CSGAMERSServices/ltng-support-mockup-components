@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# sets a screen session for the current project
+
+# sets the current window's name
+screen -X title "mockupComponents"
+
+# uncomment below to make the tabs only run those commands
+# but note that restarting will lose that tab
+
+screen -t default
+screen -t log 
+screen -t lint # npm run lint:lwc:watch
+screen -t test # npm run test:lwc:watch
+screen -t lwc # npm run lwc
+
+screen -X select 0
+
