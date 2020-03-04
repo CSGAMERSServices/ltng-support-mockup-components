@@ -11,7 +11,13 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
    * The API name of the resource to show
    * @type {String}
    */
-  @api resourceName;
+  @api resourceNameManualEntry;
+
+  /**
+   * The API name of the resource to show (selected by picklist)
+   * @type {String}
+   */
+  @api resourceNameFromPicklist;
 
   /**
    * The screen reader tooltip for the image
@@ -63,6 +69,16 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
     }
   }
   */
+
+  /**
+   * The ResourceName to use
+   * @return {String}
+   */
+  @api
+  get resourceName() {
+    let result = (this.resourceNameFromPicklist) ? this.resourceNameFromPicklist : this.resourceNameManualEntry;
+    return result;
+  }
 
   /**
    * Calculated Address

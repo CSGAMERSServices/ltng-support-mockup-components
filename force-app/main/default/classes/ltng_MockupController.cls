@@ -1,7 +1,7 @@
 /**
  * Controller for the Mockup components.
  **/
-public class ltng_MockupController {
+global class ltng_MockupController extends VisualEditor.DynamicPicklist {
     
     /** default resource URL **/
 	public static final String DEFAULT_RESOURCE_URL = '/resource/ltng_ExamplePlaceholderImage';
@@ -30,7 +30,35 @@ public class ltng_MockupController {
 		//}
 
 		return resultURL;
-	}
+    }
+    
+    //-- dynamic picklist fields
+    global override VisualEditor.DataRow getDefaultValue() {
+        VisualEditor.DataRow row = new VisualEditor.DataRow('-- Use Manual Entry --','');
+        return row;
+    }
+
+    global override VisualEditor.DynamicPickListRows getValues() {
+        VisualEditor.DataRow row;
+        VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
+
+        row = new VisualEditor.DataRow('-- Use Manual Entry --','');
+        myValues.addRow(row);
+        
+        try {
+            for (StaticResource resource : [
+                SELECT Name
+                FROM StaticResource
+            ]){
+                row = new VisualEditor.DataRow(resource.Name, resource.Name);
+                myValues.addRow(row);
+            }
+        } catch(Exception err) {
+
+        }
+
+        return myValues;
+    }
 
 	//-- Helper Functions
 

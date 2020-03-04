@@ -11,19 +11,22 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
-            <property name="resourceName" type="String" 
-                description="(Developer/API) Name of Static Resource to show" default="ltng_ExamplePlaceholderImage"
+            <property name="resourceNameFromPicklist" type="String" label="Resource Name"
+                description="(Developer/API) Name of Static Resource to show" datasource="apex://ltng_MockupController"
             />
-            <property name="targetAddress" type="String"
-                description="Where should users go when clicking the hero"
+            <property name="resourceNameManualEntry" type="String" label="Resource Name (Manual)"
+                description="(Developer/API) Name of Static Resource to show (if not available in the Resource Name picklist)" default="ltng_ExamplePlaceholderImage"
             />
-            <property name="description" type="String"
+            <property name="description" type="String" label="Description"
                 description="Alt text shown for the image"
             />
-            <property name="imgWidth" type="String"
+            <property name="targetAddress" type="String" label="OnClick Address"
+                description="Where should users go when clicking the hero"
+            />
+            <property name="imgWidth" type="String" label="Image Width"
                 description="Width of the hero (px or %)" default="100%"
             />
-            <property name="imgHeight" type="String"
+            <property name="imgHeight" type="String" label="Image Height"
                 description="Height of the hero image (px or % or auto)" default="auto"
             />
         </targetConfig>
