@@ -75,7 +75,6 @@ export default class Story_sceneSelector extends LightningElement {
   }
  
   connectedCallback(){
-    console.log('callback');
     //-- use a numeric string based index
     //-- because the combobox doesn't work well outside of strings...
     //-- we will use the index to then get the actual value
