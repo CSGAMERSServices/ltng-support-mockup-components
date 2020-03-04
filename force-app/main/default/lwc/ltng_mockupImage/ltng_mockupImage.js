@@ -109,8 +109,6 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
    * @param {CustomEvent} evt - 
    */
   handleClick() {
-    console.log('user clicked the image');
-
     if (!this.targetAddress) return;
 
     // @see https://developer.salesforce.com/docs/component-library/documentation/en/48.0/lwc/lwc.use_navigate_basic

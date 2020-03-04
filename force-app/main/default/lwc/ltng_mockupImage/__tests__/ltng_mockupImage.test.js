@@ -43,7 +43,8 @@ jest.mock(
 );
 
 const elementDefaults = {
-  resourceName: 'ltng_ExamplePlaceholderImage',
+  resourceNameFromPicklist: '',
+  resourceNameManualEntry: 'ltng_ExamplePlaceholderImage',
   description: 'Example Description',
   targetAddress: 'about:blank',
   imgWidth: 100,
@@ -96,7 +97,9 @@ describe('c-ltng_mockupImage', () => {
     
     expect(ts.element).not.toBe(null);
     expect(ts.element.description).toBe(elementDefaults.description);
-    expect(ts.element.resourceName).toBe(elementDefaults.resourceName);
+    expect(ts.element.resourceNameFromPicklist).toBe(elementDefaults.resourceNameFromPicklist);
+    expect(ts.element.resourceNameManualEntry).toBe(elementDefaults.resourceNameManualEntry);
+    expect(ts.element.resourceName).toBe(elementDefaults.resourceNameManualEntry);
     expect(ts.element.targetAddress).toBe(elementDefaults.targetAddress);
     expect(ts.element.height).toBe(elementDefaults.height);
     expect(ts.element.width).toBe(elementDefaults.width);
@@ -128,7 +131,7 @@ describe('c-ltng_mockupImage', () => {
     const ts = new TestSettings()
       .setupDefaults()
       .customSetup((customTS) => {
-        customTS.element.resourceName = expectedAssetURL;
+        customTS.element.resourceNameManualEntry = expectedAssetURL;
       })
       .attachElement();
 
@@ -154,6 +157,54 @@ describe('c-ltng_mockupImage', () => {
     const navigateDetail = navigateHandler.mock.calls[0][0].detail;
     expect(navigateDetail.attributes.url).toBe(elementDefaults.targetAddress);
 
+    done();
+  });
+
+  it('uses the picklist resource name if provided', (done) => {
+    const picklistName = 'ltng_somePicklistName';
+    const manualEntryName = '';
+
+    const ts = new TestSettings()
+      .setupDefaults()
+      .customSetup((customTS) => {
+        customTS.element.resourceNameFromPicklist = picklistName;
+        customTS.element.resourceNameManualEntry = manualEntryName;
+      })
+      .attachElement();
+
+    expect(ts.element.resourceName).toBe(picklistName);
+    done();
+  });
+
+  it('uses the picklist resource name even if manual entry is provided', (done) => {
+    const picklistName = 'ltng_somePicklistName';
+    const manualEntryName = 'ltng_somethingElse';
+
+    const ts = new TestSettings()
+      .setupDefaults()
+      .customSetup((customTS) => {
+        customTS.element.resourceNameFromPicklist = picklistName;
+        customTS.element.resourceNameManualEntry = manualEntryName;
+      })
+      .attachElement();
+
+    expect(ts.element.resourceName).toBe(picklistName);
+    done();
+  });
+
+  it('uses the manual entry resource name only if the picklist name is blank', (done) => {
+    const picklistName = '';
+    const manualEntryName = 'ltng_manualEntryName';
+
+    const ts = new TestSettings()
+      .setupDefaults()
+      .customSetup((customTS) => {
+        customTS.element.resourceNameFromPicklist = picklistName;
+        customTS.element.resourceNameManualEntry = manualEntryName;
+      })
+      .attachElement();
+
+    expect(ts.element.resourceName).toBe(manualEntryName);
     done();
   });
 
