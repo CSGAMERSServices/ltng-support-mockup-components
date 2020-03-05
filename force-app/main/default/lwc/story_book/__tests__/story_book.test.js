@@ -156,4 +156,58 @@ describe('story_book', () => {
     expect(scene.label).toBe(expectedLabel);
     expect(scene.value.message).toBe(message);
   });
+
+  it('changes the width to wide when selecting in the menu', (done) => {
+    const element = createElement('c-story_book', {
+      is: story_book
+    });
+    document.body.appendChild(element);
+
+    const buttonMenu = element.shadowRoot.querySelector('lightning-button-menu');
+    expect(buttonMenu.alternativeText).toBe('Size Menu');
+
+    buttonMenu.dispatchEvent(new CustomEvent('select', {detail:{value:'wide'}}));
+
+    return Promise.resolve().then(() => {
+      const storybookClasses=element.shadowRoot.querySelector('.storybook').getAttribute('class');
+      expect(storybookClasses).toContain('width-large');
+      done();
+    });
+  });
+
+  it('changes the width to medium when selecting in the menu', (done) => {
+    const element = createElement('c-story_book', {
+      is: story_book
+    });
+    document.body.appendChild(element);
+
+    const buttonMenu = element.shadowRoot.querySelector('lightning-button-menu');
+    expect(buttonMenu.alternativeText).toBe('Size Menu');
+
+    buttonMenu.dispatchEvent(new CustomEvent('select', {detail:{value:'medium'}}));
+
+    return Promise.resolve().then(() => {
+      const storybookClasses=element.shadowRoot.querySelector('.storybook').getAttribute('class');
+      expect(storybookClasses).toContain('width-medium');
+      done();
+    });
+  });
+
+  it('changes the width to narrow when selecting in the menu', (done) => {
+    const element = createElement('c-story_book', {
+      is: story_book
+    });
+    document.body.appendChild(element);
+
+    const buttonMenu = element.shadowRoot.querySelector('lightning-button-menu');
+    expect(buttonMenu.alternativeText).toBe('Size Menu');
+
+    buttonMenu.dispatchEvent(new CustomEvent('select', {detail:{value:'narrow'}}));
+
+    return Promise.resolve().then(() => {
+      const storybookClasses=element.shadowRoot.querySelector('.storybook').getAttribute('class');
+      expect(storybookClasses).toContain('width-small');
+      done();
+    });
+  });
 });

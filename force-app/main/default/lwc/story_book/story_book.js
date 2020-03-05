@@ -68,6 +68,17 @@ export default class Story_book extends LightningElement {
   /** 
    * The actual test is passed to the unnamed <slot />
    */
+
+  //-- handlers
+  /**
+   * Handles if the user selects a size from the menu
+   * @param {CustomEvent}
+   */
+  handleSizeSelected(evt) {
+    debugger;
+    this.width = evt.detail.value;    
+    console.log(`size selected:${this.width}`)
+  }
 }
 
 /**

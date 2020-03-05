@@ -25,7 +25,6 @@ export default class Story_exampleComplex extends LightningElement {
     new Scene('Wide Resource', {
       resourceNameFromPicklist: '',
       resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
-      description: 'Example Image',
       imgWidth: '',
       imgHeight: '',
       targetAddress: 'https://www.google.com',
@@ -34,7 +33,6 @@ export default class Story_exampleComplex extends LightningElement {
     new Scene('Medium Resource', {
       resourceNameFromPicklist: '',
       resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
-      description: 'Example Image',
       imgWidth: '',
       imgHeight: '',
       targetAddress: 'https://www.google.com',
@@ -43,7 +41,6 @@ export default class Story_exampleComplex extends LightningElement {
     new Scene('Narrow Resource', {
       resourceNameFromPicklist: '',
       resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
-      description: 'Example Image',
       imgWidth: '',
       imgHeight: '',
       targetAddress: 'https://www.google.com',

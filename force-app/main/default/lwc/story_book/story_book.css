@@ -12,6 +12,12 @@
 
 .storybook {
     margin-bottom: 10px;
+    position: relative;
+}
+lightning-button-menu {
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 .width-small {
