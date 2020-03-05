@@ -22,12 +22,59 @@ export default class Story_exampleComplex extends LightningElement {
    * @type {Scene[]}
    */
   @api allScenes = [
-    new Scene('Sample Resource', {
-      resourceName: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+    new Scene('Wide Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
       description: 'Example Image',
       imgWidth: '',
       imgHeight: '',
-      targetAddress: 'https://www.google.com'
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'wide'
+    }),
+    new Scene('Medium Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+      description: 'Example Image',
+      imgWidth: '',
+      imgHeight: '',
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'medium'
+    }),
+    new Scene('Narrow Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+      description: 'Example Image',
+      imgWidth: '',
+      imgHeight: '',
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'narrow'
+    }),
+    new Scene('Narrow Square Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+      description: '400px/400px Narrow',
+      imgWidth: '400px',
+      imgHeight: '400px',
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'narrow'
+    }),
+    new Scene('Medium Square Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+      description: '400px/400px Narrow',
+      imgWidth: '400px',
+      imgHeight: '400px',
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'medium'
+    }),
+    new Scene('Wide Square Resource', {
+      resourceNameFromPicklist: '',
+      resourceNameManualEntry: ltng_ExamplePlaceholderImage, // 'ltng_ExamplePlaceholderImage',
+      description: '400px/400px Narrow',
+      imgWidth: '400px',
+      imgHeight: '400px',
+      targetAddress: 'https://www.google.com',
+      sceneWidth: 'wide'
     })
   ];
 }

@@ -6,7 +6,7 @@
         @see https://www.lightningdesignsystem.com/utilities/sizing/
     -->
     <template for:each={allScenes} for:item="scene">
-       <c-story_book key={scene.label} width='large' title={scene.label}>
+       <c-story_book key={scene.label} width='{scene.value.sceneWidth}' title={scene.label}>
 
             <!--
                 Finally we show our component.
@@ -14,7 +14,8 @@
             -->
 
             <c-ltng_mockup-image
-                resource-name={scene.value.resourceName}
+                resource-name-from-picklist={scene.value.resourceNameFromPicklist}
+                resource-name-manual-entry={scene.value.resourceNameManualEntry}
                 description={scene.value.description}
                 target-address={scene.value.targetAddress}
                 img-width={scene.value.imgWidth}
