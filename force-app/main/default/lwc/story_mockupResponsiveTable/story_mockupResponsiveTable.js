@@ -19,20 +19,27 @@ export default class Story_exampleComplex extends LightningElement {
    */
   @api allScenes = [
     new Scene('Large Width Scene', {
-      description: 'Default Table',
       width: 'large',
       tablecsv: `"FirstName", LastName, "Age" , Color
 Eve, Jackson, 94, Red
 Rob, Mite, 24, Blue
-Bob, Parr 42, Red`
+Bob, Parr, 42, Red`
+    }),
+    new Scene('Narrow Width Scene', {
+      width: 'narrow',
+      tablecsv: `"FirstName", LastName, "Age" , Color
+Eve, Jackson, 94, Red
+Rob, Mite, 24, Blue
+Bob, Parr, 42, Red`
+    }),
+    new Scene('narrow Width Scene', {
+      description: 'Default Table',
+      width: 'narrow',
+      tablecsv: `"FirstName", LastName, "Age" , Color`
     })
   ];
 
   connectedCallback() {
     this.currentScene = this.allScenes[0];
-  }
-
-  handleSceneChanged(sceneEvent) {
-    this.currentScene = sceneEvent.detail;
   }
 }

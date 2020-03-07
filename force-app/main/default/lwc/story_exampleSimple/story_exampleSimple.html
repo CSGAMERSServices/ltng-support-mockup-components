@@ -5,12 +5,21 @@
         note the large width is based on the Lightning Design System width
         @see https://www.lightningdesignsystem.com/utilities/sizing/
     -->
-    <c-story_book width='large' title='Very Simple story'>
+    <c-story_book width='large' title='Here is how you create an account'
+        description='Some additional description here...'
+    >
 
-        <!--
-            Finally we show our component.
-            This will be placed inside the 'sandbox' of the story
-        -->
+        <p>I am simply writing html / using components</p>
+
+        <c-story_sample-component
+            message='first component'
+        ></c-story_sample-component>
+        
+        <h1>Something else</h1>
+
+        <c-story_sample-component
+            message='this is a completely different component'
+        ></c-story_sample-component>
 
         <c-story_sample-component
             message={currentScene.value.messageToShow}

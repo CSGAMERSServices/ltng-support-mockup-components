@@ -6,7 +6,7 @@
         @see https://www.lightningdesignsystem.com/utilities/sizing/
     -->
     <template for:each={allScenes} for:item="scene">
-       <c-story_book key={scene.label} width='large' title={scene.label}>
+       <c-story_book key={scene.label} width='{scene.value.width}' title={scene.label}>
 
             <!--
                 Finally we show our component.
