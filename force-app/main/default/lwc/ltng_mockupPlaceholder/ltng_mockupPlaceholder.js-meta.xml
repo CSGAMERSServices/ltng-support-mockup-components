@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Mockup Placeholder</masterLabel>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage,">
+            <property name="title" label="Title" type="String"
+                description="Title of the spacer"
+                default="Placeholder"
+            />
+            <property name="subTitle" label="Sub Title" type="String"
+                description="Sub-Title (smaller description beneath title)"
+            />
+            <property name="cmpHeight" label="Height" type="String"
+                description="CSS Height of spacer"
+                default="200px"
+            />
+            <property name="cmpWidth" label="Width" type="String"
+                description="CSS Width of the spacer"
+                default="auto"
+            />
+            <property name="showSizeDisplay" label="Display Size" type="Boolean"
+                description="Whether to show the size used in the placeholder"
+                default="false"
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

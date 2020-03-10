@@ -43,6 +43,7 @@
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>resourceNameFromPicklist</name>
+                <value>-- Use Manual Entry --</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>resourceNameManualEntry</name>
@@ -83,6 +84,44 @@
                 <value>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;&amp;lt;List of Accounts&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Name&lt;/li&gt;&lt;li&gt;Organization Id&lt;/li&gt;&lt;li&gt;Address?&lt;/li&gt;&lt;/ul&gt;</value>
             </componentInstanceProperties>
             <componentName>flexipage:richText</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>iconCategory</name>
+                <value>custom</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>iconName</name>
+                <value>custom3</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>mainTitle</name>
+                <value>Placeholders</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>subTitle</name>
+                <value>(Or explicitly set size if desired)</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupHeader</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>cmpHeight</name>
+                <value>200px</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>cmpWidth</name>
+                <value>auto</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>subTitle</name>
+                <value>(Allows for explicit sizing)</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>title</name>
+                <value>Placeholder</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupPlaceholder</componentName>
         </componentInstances>
         <name>region2</name>
         <type>Region</type>
@@ -128,7 +167,7 @@
         <name>region3</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Mockup Test Page</masterLabel>
+    <masterLabel>Mockup Example</masterLabel>
     <template>
         <name>flexipage:appHomeTemplateHeaderTwoColumnsLeftSidebar</name>
     </template>
