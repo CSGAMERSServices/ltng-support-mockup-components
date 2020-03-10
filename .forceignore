@@ -25,6 +25,7 @@ package.xml
 *appSwitch*
 
 *story_*
+**/story_*
 
 *.d.ts
 

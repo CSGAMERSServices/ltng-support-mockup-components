@@ -1,0 +1,14 @@
+.mockup-placeholder {
+    position: relative;
+}
+span.size-display {
+    font-size: smaller;
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    color: #9a9a9a;
+}
+
+.spacer-title, .spacer-sub_title {
+    margin: 0 10px;
+}

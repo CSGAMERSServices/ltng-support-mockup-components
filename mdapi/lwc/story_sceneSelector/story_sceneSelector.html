@@ -1,0 +1,18 @@
+<template>
+    <div
+        if:true={_comboboxOptions}
+        class="scene-selector"
+    >
+        <!--
+            use a modified list so we can pass in objects
+            as the lightning-combobox only supports
+            strings and numbers as values
+        -->
+        <lightning-combobox
+            label="Scenes"
+            value={_comboboxOption}
+            options={_comboboxOptions}
+            onchange={handleSceneChange}
+        ></lightning-combobox>
+    </div>
+</template>

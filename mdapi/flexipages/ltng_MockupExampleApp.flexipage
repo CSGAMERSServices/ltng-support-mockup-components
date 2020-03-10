@@ -81,7 +81,7 @@
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>subTitle</name>
-                <value>(name, Organization Id, Address? lots and lots of additional information with more things on other lines)</value>
+                <value>(name, Organization Id, Address?)</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>title</name>

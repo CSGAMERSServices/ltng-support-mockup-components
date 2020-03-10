@@ -1,0 +1,16 @@
+<template>
+    <div class='slds-box slds-theme_default' data-label={label}>
+        <div class='slds-text-heading_small'>
+            Hi! I'm Sample Component
+        </div>
+        <div if:true={message}>
+            <B>Message</B>&nbsp;
+            <lightning-formatted-rich-text
+                value={message}
+            ></lightning-formatted-rich-text>
+        </div>
+        <div if:false={message} class='error'>
+            - No message sent -
+        </div>
+    </div>
+</template>

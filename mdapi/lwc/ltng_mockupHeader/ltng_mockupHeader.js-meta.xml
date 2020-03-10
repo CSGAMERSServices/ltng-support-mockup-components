@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <description>A Lightning Design System Header</description>
+    <masterLabel>Mockup Header</masterLabel>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
+            <property name="mainTitle" type="String" label="Main Title" default="Main Title" />
+            <property name="subTitle" type="String" label="Sub Title" default="Sub Title"
+                description="Smaller title"
+            />
+            <property name="iconCategory" type="String" label="Icon Category" default="standard" datasource="action,custom,doctype,standard,utility"
+                description='Category from https://www.lightningdesignsystem.com/icons'
+            />
+            <property name="iconName" type="String" label="Icon Name" default="partners"
+                description='Name of icon from https://www.lightningdesignsystem.com/icons'
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

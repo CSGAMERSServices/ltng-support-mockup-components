@@ -1,0 +1,32 @@
+<template>
+    <!--
+        From the storybook side, we just bind to the current scene.
+        
+        note the large width is based on the Lightning Design System width
+        @see https://www.lightningdesignsystem.com/utilities/sizing/
+    -->
+    <template for:each={allScenes} for:item="scene">
+        <c-story_book key={scene.label} width='large' title={scene.label}>
+            <!--
+                Finally we show our component.
+                This will be placed inside the 'sandbox' of the story
+            -->
+
+            <c-ltng_mockup-header
+                main-title={scene.value.mainTitle}
+                sub-title={scene.value.subTitle}
+                icon-category={scene.value.iconCategory}
+                icon-name={scene.value.iconName}
+            ></c-ltng_mockup-header>
+
+            <!--
+                We can optionally include a description slot
+                and it will be shown within the story.
+            -->
+            
+            <div slot="description">
+                {scene.value.description}
+            </div>
+        </c-story_book>
+    </template>
+</template>

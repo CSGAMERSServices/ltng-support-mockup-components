@@ -1,0 +1,11 @@
+<template>
+    <template if:true={resourceAddress}>
+        <div data-id='mockup-image-container' style='text-align: center;'>
+            <a onclick={handleClick}>
+                <img class='mockup-image' src={resourceAddress} alt={description}
+                    style={calculatedStyle}
+                />
+            </a>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,13 @@
+<template>
+    <div style={componentStyles} class="mockup-placeholder slds-card slds-grid slds-theme_default slds-grid_align-center slds-grid_vertical-align-center">
+        <div class="slds-col">
+            <div class='spacer-title slds-text-heading_medium'>
+                {title}
+            </div>
+            <div if:true={subTitle} class='spacer-sub_title'>
+                {subTitle}
+            </div>
+            <span class='size-display' if:true={showSizeDisplay}>{componentStyles}</span>
+        </div>
+    </div>
+</template>

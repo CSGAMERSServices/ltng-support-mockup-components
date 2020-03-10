@@ -1,0 +1,25 @@
+<template>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-max-medium-table--stacked-horizontal">
+        <thead>
+        <tr class="slds-text-heading--label">
+            <th scope="col" class="nobordertop" title={header}
+                for:each={tableData.headers} for:item="header" key={header} 
+            >
+                <div>{header}</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr
+                for:each={tableData.data} for:item="dataRow" key={dataRow.uniqueKey} 
+            >
+                <td 
+                    data-label={dataCell.label} title={dataCell.label}
+                    for:each={dataRow} for:item="dataCell" key={dataCell.value} 
+                ><div>
+                    {dataCell.value}
+                </div></td>
+            </tr>
+        </tbody>
+    </table>
+</template>

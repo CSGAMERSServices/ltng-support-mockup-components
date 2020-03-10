@@ -1,0 +1,38 @@
+<template>
+    <!--
+        From the storybook side, we just bind to the current scene.
+        
+        note the large width is based on the Lightning Design System width
+        @see https://www.lightningdesignsystem.com/utilities/sizing/
+    -->
+    <c-story_book width='large' title='Here is how you create an account'
+        description='Some additional description here...'
+    >
+
+        <p>I am simply writing html / using components</p>
+
+        <c-story_sample-component
+            message='first component'
+        ></c-story_sample-component>
+        
+        <h1>Something else</h1>
+
+        <c-story_sample-component
+            message='this is a completely different component'
+        ></c-story_sample-component>
+
+        <c-story_sample-component
+            message={currentScene.value.messageToShow}
+        ></c-story_sample-component>
+
+
+        <!--
+            We can optionally include a description slot
+            and it will be shown within the story.
+        -->
+        
+        <div slot="description">
+            Very simple storybook story. This description will be on top.
+        </div>
+    </c-story_book>
+</template>
