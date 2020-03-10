@@ -4,6 +4,12 @@ import { NavigationMixin } from 'lightning/navigation';
 // import apexGetResource from '@salesforce/apex/ltng_MockupController.getResource';
 
 /**
+ * Sentinel meaning no choice was made for reource selection
+ * @type {String}
+ */
+const RESOURCE_NAME_NOT_CHOSEN = '-- Use Manual Entry --';
+
+/**
  * Simple component to let us put up a placeholder image.
  */
 export default class Ltng_mockupImage extends NavigationMixin(LightningElement) {
@@ -76,8 +82,12 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
    */
   @api
   get resourceName() {
-    let result = (this.resourceNameFromPicklist) ? this.resourceNameFromPicklist : this.resourceNameManualEntry;
-    return result;
+    if (!this.resourceNameFromPicklist
+      || this.resourceNameFromPicklist === RESOURCE_NAME_NOT_CHOSEN
+    ){
+      return this.resourceNameManualEntry;
+    }
+    return this.resourceNameFromPicklist;
   }
 
   /**

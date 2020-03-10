@@ -7,7 +7,10 @@ global class ltng_MockupController extends VisualEditor.DynamicPicklist {
 	public static final String DEFAULT_RESOURCE_URL = '/resource/ltng_ExamplePlaceholderImage';
 
 	/** format of a static resource url **/
-	public static final String STATIC_RESOURCE_URL_FORMAT = '/resource/{0}/{1}';
+    public static final String STATIC_RESOURCE_URL_FORMAT = '/resource/{0}/{1}';
+    
+    /** Label for the NO CHOICE MADE on resource selection */
+    public static final String RESOURCE_NAME_NOT_CHOSEN = '-- Use Manual Entry --';
 
 	/** format to split the custom permissions **/
 	// public static final String DELIMITER_PATTERN = ',';
@@ -34,15 +37,20 @@ global class ltng_MockupController extends VisualEditor.DynamicPicklist {
     
     //-- dynamic picklist fields
     global override VisualEditor.DataRow getDefaultValue() {
-        VisualEditor.DataRow row = new VisualEditor.DataRow('-- Use Manual Entry --','');
+        VisualEditor.DataRow row = new VisualEditor.DataRow(
+            RESOURCE_NAME_NOT_CHOSEN,
+            RESOURCE_NAME_NOT_CHOSEN
+        );
         return row;
     }
 
     global override VisualEditor.DynamicPickListRows getValues() {
-        VisualEditor.DataRow row;
+        VisualEditor.DataRow row = new VisualEditor.DataRow(
+            RESOURCE_NAME_NOT_CHOSEN,
+            RESOURCE_NAME_NOT_CHOSEN
+        );
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
 
-        row = new VisualEditor.DataRow('-- Use Manual Entry --','');
         myValues.addRow(row);
         
         try {
