@@ -2,7 +2,7 @@
 
 /** JEST Test for ltng_mockupCsvParser/__tests__/ltng_mockupCsvParser **/
 
-import ltng_mockupCsvParser, {splitRows, nextCsvCell, nextCsvStringCell, parseCsvLine, parseCsv, parseCsvToLabelValue, LabelValue, ResponsiveTableData} from 'c/ltng_mockupCsvParser';
+import ltng_mockupCsvParser, {splitRows, nextCsvCell, nextCsvStringCell, parseCsvLine, parseCsvToLabelValue, LabelValue, ResponsiveTableData, parseCSV} from 'c/ltng_mockupCsvParser';
 import { isArray } from 'util'; // eslint-disable-line no-unused-vars
 
 const tableTestInfo = {
@@ -64,6 +64,16 @@ describe('c-ltng_mockupCsvParser', () => {
     it('splits correctly even if there is only one line', () => {
       expect(splitRows('single line')).toStrictEqual(['single line']);
     });
+    it('splits rows even if the newlines are escaped', () => {
+      const str = 'Row, Header A, Header B\n1, 1:A, 1:B\n2, 2:A, 2:B';
+      const result = splitRows(str);
+      const expected = ['Row, Header A, Header B',
+        '1, 1:A, 1:B',
+        '2, 2:A, 2:B'
+      ];
+
+      expect(result).toStrictEqual(expected);
+    })
   });
 
   describe('tokenizes when there are no quotes', () => {
@@ -213,6 +223,7 @@ describe('c-ltng_mockupCsvParser', () => {
       expected = ['', 'two','three'];
   
       expect(csvParse).toStrictEqual(expected);
+      
     });
 
     it('when there are no quotes', () => {
@@ -321,7 +332,6 @@ describe('c-ltng_mockupCsvParser', () => {
       csv = tableTestInfo.csv;
       csvParse = parseCsvToLabelValue(csv);
       const expected = tableTestInfo.expectedData;
-      debugger;
 
       expect(csvParse).toBeTruthy();
       expect(csvParse.headers).toStrictEqual(expected.headers);
@@ -329,6 +339,14 @@ describe('c-ltng_mockupCsvParser', () => {
       expect(csvParse.data).not.toBeNull();
       expect(csvParse.data.length).toStrictEqual(expected.data.length);
       expect(JSON.stringify(csvParse.data)).toStrictEqual(JSON.stringify(expected.data));
+    });
+
+    it('can use escaped newlines for tables', () => {
+      let csv = 'Row, Header A, Header B\n1, 1:A, 1:B\n2, 2:A, 2:B';
+      let csvParse = parseCSV(csv);
+      let expected = [['Row', 'Header A', 'Header B'], ['1', '1:A', '1:B'], ['2', '2:A', '2:B']];
+
+      expect(csvParse).toStrictEqual(expected);
     });
   });
 });

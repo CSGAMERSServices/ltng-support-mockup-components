@@ -3,8 +3,6 @@
 /** JEST Test for ltng_mockupResponsiveTable/__tests__/ltng_mockupResponsiveTable **/
 import { createElement } from 'lwc';
 import ltng_mockupResponsiveTable from 'c/ltng_mockupResponsiveTable';
-import {splitRows, nextCsvCell, nextCsvStringCell, parseCsvLine, parseCSV} from 'c/ltng_mockupResponsiveTable';
-import { isArray } from 'util';
 
 const tableTestInfo = {
   csv: `"FirstName", LastName, "Age" , Color
@@ -77,5 +75,42 @@ describe('c-ltng_mockupResponsiveTable', () => {
     expect(ts.element).not.toBe(null);
     
     expect(ts.element.tablecsv).toBe(defaultProperties.tablecsv);
+  });
+
+  it('has the appropriate headers', (done) => {
+    const ts = new TestSettings()
+      .applyDefaultProperties()
+      .attachElement();
+    
+    const thead = ts.element.shadowRoot.querySelector('thead');
+    const thElements = thead.querySelectorAll('th');
+    expect(thElements).not.toBeNull();
+    expect(thElements.length).toBe(tableTestInfo.expectedTable[0].length);
+
+    //-- @TODO: additional tests
+
+    done();
+  });
+
+  it('has the appropriate data', (done) => {
+    let trTDs;
+
+    const ts = new TestSettings()
+      .applyDefaultProperties()
+      .attachElement();
+    
+    const headers = tableTestInfo.expectedTable[0];
+    const rows = tableTestInfo.expectedTable.slice(1);
+
+    const trElements = ts.element.shadowRoot.querySelectorAll('tbody tr');
+
+    expect(trElements.length).toBe(rows.length);
+
+    [...trElements].forEach(trElement => {
+      trTDs = trElement.querySelectorAll('td');
+      expect(trTDs.length).toBe(headers.length);
+    });
+
+    done();
   });
 });

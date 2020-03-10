@@ -27,3 +27,5 @@ package.xml
 *story_*
 
 *.d.ts
+
+**/*test.flexipage-meta.xml

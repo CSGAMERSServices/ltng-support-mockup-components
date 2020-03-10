@@ -3,7 +3,6 @@
 /** JEST Test for story_mockupResponsiveTable/__tests__/story_mockupResponsiveTable **/
 import { createElement } from 'lwc';
 import story_mockupResponsiveTable from 'c/story_mockupResponsiveTable';
-import { isArray } from 'util';
 
 const defaultProperties = {};
 

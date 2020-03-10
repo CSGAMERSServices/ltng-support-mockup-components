@@ -55,9 +55,11 @@ class ResponsiveTableData {
  * @returns {String[]}
  * @testvisible
  */
-const splitRows = (splitStr) => {
-  return (splitStr.split(/[\n\r]+/)).map(trimStr => trimStr.trim());
-}
+const splitRows = (splitStr) =>
+  splitStr.replace(/\\n/g, '\n')
+    .replace(/\\r/g, '\r')
+    .split(/[\n\r]+/)
+    .map(trimStr => trimStr.trim());
 
 /**
  * Parses the next element from a csv line with the assumption we are not looking for quotes
