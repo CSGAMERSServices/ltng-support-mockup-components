@@ -4,25 +4,6 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
-                <name>iconCategory</name>
-                <value>standard</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>iconName</name>
-                <value>partners</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>mainTitle</name>
-                <value>Example Header</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>subTitle</name>
-                <value>Completely configured through App Builder</value>
-            </componentInstanceProperties>
-            <componentName>ltng_mockupHeader</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentInstanceProperties>
                 <name>decorate</name>
                 <value>true</value>
             </componentInstanceProperties>
@@ -31,25 +12,6 @@
                 <value>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Whiteboard Lightning Within Your Org&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Let&#39;s try placing the components you have out of the box.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Or put Placeholders for components you want to build.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Lightning can let you explore in ways you couldn&#39;t with classic.&lt;/b&gt;&lt;/p&gt;</value>
             </componentInstanceProperties>
             <componentName>flexipage:richText</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentInstanceProperties>
-                <name>imgHeight</name>
-                <value>auto</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>imgWidth</name>
-                <value>100%</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>resourceNameFromPicklist</name>
-                <value>-- Use Manual Entry --</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>resourceNameManualEntry</name>
-                <value>ltng_ExamplePlaceholderImage</value>
-            </componentInstanceProperties>
-            <componentName>ltng_mockupImage</componentName>
         </componentInstances>
         <name>region1</name>
         <type>Region</type>
@@ -107,19 +69,23 @@
         <componentInstances>
             <componentInstanceProperties>
                 <name>cmpHeight</name>
-                <value>200px</value>
+                <value>250px</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>cmpWidth</name>
                 <value>auto</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
+                <name>showSizeDisplay</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
                 <name>subTitle</name>
-                <value>(Allows for explicit sizing)</value>
+                <value>(name, Organization Id, Address?)</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>title</name>
-                <value>Placeholder</value>
+                <value>List of Accounts</value>
             </componentInstanceProperties>
             <componentName>ltng_mockupPlaceholder</componentName>
         </componentInstances>
@@ -127,6 +93,44 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>iconCategory</name>
+                <value>standard</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>iconName</name>
+                <value>partners</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>mainTitle</name>
+                <value>Images</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>subTitle</name>
+                <value>(Put wireframes or mock-ups to tell the story of what would be here)</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupHeader</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>imgHeight</name>
+                <value>auto</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>imgWidth</name>
+                <value>100%</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>resourceNameFromPicklist</name>
+                <value>-- Use Manual Entry --</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>resourceNameManualEntry</name>
+                <value>ltng_ExamplePlaceholderImage</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupImage</componentName>
+        </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
                 <name>iconCategory</name>
@@ -149,7 +153,7 @@
         <componentInstances>
             <componentInstanceProperties>
                 <name>tablecsv</name>
-                <value>Row, Header A, Header B\n1, 1:A, 1:B\n2, 2:A, 2:B</value>
+                <value>First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n&quot;John &quot;&quot;Da Man&quot;&quot;&quot;,Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,&quot;7452 Terrace &quot;&quot;At the Plaza&quot;&quot; road&quot;,SomeTown,SD, 91234\n ,Blankman,,SomeTown, SD, 00298\n &quot;Joan &#39;the bone&#39; Anne&quot;,Jet,&quot;9th, at Terrace plc&quot;,Desert City,CO,00123</value>
             </componentInstanceProperties>
             <componentName>ltng_mockupResponsiveTable</componentName>
         </componentInstances>
@@ -167,7 +171,7 @@
         <name>region3</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Mockup Example</masterLabel>
+    <masterLabel>Mockup Example App Page</masterLabel>
     <template>
         <name>flexipage:appHomeTemplateHeaderTwoColumnsLeftSidebar</name>
     </template>
