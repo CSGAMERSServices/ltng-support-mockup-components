@@ -105,13 +105,14 @@ function nextCsvStringCell(str) {
 
   if (!str) return null;
 
-  remaining = str.trim();
+  remaining = str.trim()
+    .replace(/(?<!\\)""/g, '\\"');
 
   if (remaining.charAt(0) !== '"') return null;
 
   remaining = remaining.substring(1);
 
-  quoteEnd = remaining.search(/(?<!\\)["']/);
+  quoteEnd = remaining.search(/(?<!\\)["]/);
 
   if (quoteEnd < 0) return null;
 

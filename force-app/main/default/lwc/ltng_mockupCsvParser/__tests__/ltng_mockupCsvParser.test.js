@@ -145,6 +145,30 @@ describe('c-ltng_mockupCsvParser', () => {
       expect(csvParse).toStrictEqual(expected);
     });
 
+    it('handles when there are double quotes to escape strings', () => {
+      var csvLine = null;
+      var csvParse = null;
+      var expected = null;
+
+      csvLine = '  "Joan ""the bone"" Jet"  ';
+      csvParse = nextCsvStringCell(csvLine);
+      expected = ['Joan "the bone" Jet', null];
+
+      expect(csvParse).toStrictEqual(expected);
+
+      csvLine = '  "Joan ""the bone"" Jet" , Value  ';
+      csvParse = nextCsvStringCell(csvLine);
+      expected = ['Joan "the bone" Jet', 'Value'];
+
+      expect(csvParse).toStrictEqual(expected);
+
+      csvLine = '  "Joan ""the bone"" Jet" ,   ';
+      csvParse = nextCsvStringCell(csvLine);
+      expected = ['Joan "the bone" Jet', null];
+
+      expect(csvParse).toStrictEqual(expected);
+    });
+
     it('and the quotes are messed up', () => {
       var csvLine = null;
       var csvParse = null;
@@ -348,5 +372,24 @@ describe('c-ltng_mockupCsvParser', () => {
 
       expect(csvParse).toStrictEqual(expected);
     });
+
+    it('can use quotes inside of values', () => {
+
+      // let csv = `First, Last, Address, Town, State, Zip\n "Joan 'the bone' Anne",Jet,"9th, at Terrace plc",Desert City,CO,00123`;
+      let csv = `First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n"John ""Da Man""",Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,"7452 Terrace ""At the Plaza"" road",SomeTown,SD, 91234\n ,Blankman,,SomeTown, SD, 00298\n "Joan 'the bone' Anne",Jet,"9th, at Terrace plc",Desert City,CO,00123`;
+      let csvParse = parseCSV(csv);
+      let expected = [["First", "Last", "Address", "Town", "State", "Zip"],
+        ["John", "Doe", "120 jefferson st.", "Riverside", "NJ", "08075"],
+        ["Jack", "McGinnis", "220 hobo Av.", "Phila", "PA", "09119"],
+        ["John \"Da Man\"", "Repici", "120 Jefferson St.", "Riverside", "NJ", "08075"],
+        ["Stephen", "Tyler", "7452 Terrace \"At the Plaza\" road", "SomeTown", "SD", "91234"],
+        ["", "Blankman", "", "SomeTown", "SD", "00298"],
+        ["Joan 'the bone' Anne", "Jet", "9th, at Terrace plc", "Desert City", "CO", "00123"]
+      ];
+
+      expect(csvParse).toBeTruthy();
+      expect(csvParse.length).toBe(7);
+      expect(csvParse).toStrictEqual(expected);
+    })
   });
 });
