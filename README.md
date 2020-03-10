@@ -85,11 +85,6 @@ and separate each line by pressing return.8
 (by pressing the return key or pasting where the lines are separated already)
 then please include `\n` (or `\r`) between lines.
 
-
-# TLDR How
-
-* Bullet_points_of_how_this_was_done
-
 ---
 
 # Install
