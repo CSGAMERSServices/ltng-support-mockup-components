@@ -4,8 +4,8 @@
             "path": "force-app",
             "default": true,
             "package": "ltng-support-mockup-components",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionName": "ver 1.1",
+            "versionNumber": "1.1.0.NEXT"
         }
     ],
     "namespace": "",
@@ -15,6 +15,7 @@
         "ltng-support-mockup-components": "0Ho3s000000KyoGCAS",
         "ltng-support-mockup-components@0.1.0-1": "04t3s000003OodhAAC",
         "ltng-support-mockup-components@0.1.0-2": "04t3s000003OodmAAC",
-        "ltng-support-mockup-components@0.1.0-3": "04t3s000003OodrAAC"
+        "ltng-support-mockup-components@0.1.0-3": "04t3s000003OodrAAC",
+        "ltng-support-mockup-components@1.0.0-1": "04t3s000003OodwAAC"
     }
 }
