@@ -18,14 +18,32 @@ export default class Story_exampleComplex extends LightningElement {
    * @type {Scene[]}
    */
   @api allScenes = [
-    new Scene('Large Width Scene', {
-      description: 'Example_description',
+    new Scene('Empty Placeholder', {
+      width: 'large'
+    }),
+    new Scene('Only Title', {
       width: 'large',
-      message: 'Example_text'
+      title: 'Title'
+    }),
+    new Scene('Only SubTitle', {
+      width: 'large',
+      subTitle: 'Some SubTitle'
+    }),
+    new Scene('Explicit Width', {
+      width: 'large',
+      title: 'Title',
+      cmpWidth: '400px'
+    }),
+    new Scene('Explicit Height', {
+      width: 'large',
+      title: 'Title',
+      cmpHeight: '200px'
+    }),
+    new Scene('Explicit Size', {
+      width: 'large',
+      title: 'Title',
+      cmpWidth: '200px',
+      cmpHeight: '200px'
     })
   ];
-
-  handleSceneChanged(sceneEvent) {
-    this.currentScene = sceneEvent.detail;
-  }
 }
