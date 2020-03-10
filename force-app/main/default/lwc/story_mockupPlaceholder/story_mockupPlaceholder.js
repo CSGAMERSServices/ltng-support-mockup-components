@@ -29,6 +29,11 @@ export default class Story_exampleComplex extends LightningElement {
       width: 'large',
       subTitle: 'Some SubTitle'
     }),
+    new Scene('Long SubTitle', {
+      width: 'narrow',
+      title: 'Some Title',
+      subTitle: 'Very very very very very very very very very very very very very very very very very very long subtitle'
+    }),
     new Scene('Explicit Width', {
       width: 'large',
       title: 'Title',

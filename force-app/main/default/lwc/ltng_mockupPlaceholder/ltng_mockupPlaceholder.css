@@ -8,3 +8,7 @@ span.size-display {
     right: 2px;
     color: #9a9a9a;
 }
+
+.spacer-title, .spacer-sub_title {
+    margin: 0 10px;
+}
