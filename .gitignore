@@ -43,6 +43,7 @@ createTemplateProject.sh
 
 # coverage
 coverage/
+junit
 
 # keys / ci
 # keys/*

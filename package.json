@@ -15,7 +15,7 @@
     "test": "npm run test:lwc",
     "test:apex": "sfdx force:apex:test:run -w 10",
     "test:apex:synchronous": "sfdx force:apex:test:run -w 10 -y",
-    "test:apex:coverage": "sfdx force:apex:test:run -w 10 -c -r human",
+    "test:apex:coverage": "sfdx force:apex:test:run -w 10 -d junit -c -r human --codecoverage",
     "test:lwc": "sfdx-lwc-jest",
     "test:lwc:watch": "sfdx-lwc-jest --watch",
     "test:lwc:debug": "sfdx-lwc-jest --debug",

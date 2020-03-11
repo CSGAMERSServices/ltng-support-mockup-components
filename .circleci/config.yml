@@ -1,0 +1,230 @@
+# rename and move to .circleci/config.yml
+
+# captured from:
+# https://github.com/forcedotcom/sfdx-circleci
+# compare to:
+# https://github.com/SalesforceCloudServices/demoDxCircleCI
+# circle ci 2.0
+# https://circleci.com/docs/2.0/
+# cron every day at 2am
+# https://crontab.guru/every-day-at-2am
+
+version: 2
+
+general:
+# Uncomment the following to specify only a specific branch
+    branches:
+      only:
+        - master
+#       - dev # specific branch
+#       - /dev-.*/ # or regexes
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+#  nightly:
+#    triggers:
+#      - schedule:
+#          cron: "0 4 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
+#      - build
+
+jobs:
+  build:
+    # runs-on: ubuntu-latest
+    working_directory: ~/mern-starter # directory where steps will run
+    docker: # run the steps with Docker
+      - image: circleci/node:10.16.3 # ...with this image as the primary container; this is where all `steps` will run
+#    strategy:
+#      matrix:
+#        node-version: [8.x, 10.x, 12.x]
+#    machine: true
+#    working_directory: ~/ci_app
+    environment:
+      # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
+      # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
+      - DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+      # CONSUMER_KEY = (specified in circleci environment variables)
+      # USER_NAME = (specified in circleci environment variables - OR from new scratch org user)
+      # SERVER_KEY_HEX = (specified in circleci environment variables, hex of key)
+      # SFDXURL = (a sfdxurl via sfdx force:org:display -u yourOrg --json --verbose from your local machine)
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: npm install
+          command: |
+            npm install
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: cleanup old folders
+          command: |
+            rm -rdf sfdx
+            rm -rdf .tmp
+      - run:
+          name: Download CLI
+          command: |
+            mkdir sfdx
+            wget -qO- $DX_CLI_URL | tar xJ -C sfdx --strip-components 1
+      - run:
+          name: Install CLI
+          command: |
+            ./sfdx/install
+            sfdx
+            mkdir .tmp
+### If Authenticating
+#      - run:
+#          name: Authenticate via sfdxurl
+###        You can get the sfdxurl via sfdx force:org:display -u yourOrg --json --verbose from your local machine.
+###        @see https://github.com/dreamhouseapp/dreamhouse-sfdx/blob/master/.circleci/config.yml
+###        @see https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_auth.htm#cli_reference_sfdxurl_store
+#          command: |
+#            echo "${SFDXURL}" > .tmp/sfdxurl
+#            sfdx force:auth:sfdxurl:store -s -a mockComponents -f .tmp/sfdxurl
+### OR
+#      - run:
+#          name: Authenticate with JWT
+#          command: |
+#            echo 'make hub key'
+###          hub keys made with the following
+###          echo $HUB_SERVER_KEY_HEX | xxd -r -ps >> keys/hub.key
+#            openssl enc -nosalt -aes-256-cbc -d -in keys/server.key.enc -out keys/server.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
+#            openssl rsa -in keys/hub.key -check -noout
+#            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/server.key --username $HUB_SFDC_USER --setdefaultdevhubusername -a hub
+### If deploying
+#      - run:
+#          name: Make Deploy Key
+#          command: |
+#            echo 'make deploy key'
+###          hub keys made with the following
+###          echo $DEPLOY_SERVER_KEY_HEX | xxd -r -ps >> keys/deploy.key
+#            openssl enc -nosalt -aes-256-cbc -d -in keys/deploy.key.enc -out keys/deploy.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
+#            openssl rsa -in keys/deploy.key -check -noout
+#            sfdx force:auth:jwt:grant --clientid $DEPLOY_CONSUMER_KEY --jwtkeyfile keys/deploy.key --username $DEPLOY_SFDC_USER -a deploy
+#      - run:
+#          name: Lint Aura
+#          command: |
+#            npm run lint:aura
+#            npm run lint:lwc
+      - run:
+          name: Lint LWC
+          command: |
+            npm run lint:lwc
+#      - run:
+#          name: Run Apex Tests
+#          command: |
+#            mkdir -p ~/junit
+#            sfdx force:apex:test:run -c -d ~/junit -r junit --wait 5 -r human
+###            note: -l RunLocalTests?
+#      - store_test_results:
+#          path: ~/junit
+      - run:
+          name: Test LWC
+          command: |
+            npm run test:lwc:coverage --coverage
+          env:
+            CI: true
+      - store_artifacts:
+          path: ./coverage
+#      - run:
+#          name: Test Backup
+#          command: sfdx force:source:retrieve -m LightningComponentBundle
+#      - run:
+#          name: Backup 1
+#          command: . ci/refreshOrg.sh 1
+##	  note that `. ci/refreshOrg.sh` will retrieve all
+#      - run:
+#          name: Commit changes
+#          command: |
+#            git config --global user.email "--YOUR_EMAIL--"
+#            git config --global user.name "JOHN_JANE DOE"
+#            git add -A
+#            git diff-index --quiet HEAD || git commit -m "Automated import of project"
+#            git push origin master
+#      - run:
+#          name: clean deploy
+#          command: |
+#            . cleanDeploy.sh
+#      - run:
+#          name: deploy
+#          command: |
+#            . cleanupDeploy.sh
+#            sfdx force:source:deploy -p force-app
+#      - run:
+#          name: reset force-app
+#          command: |
+#            rm -rf force-app
+#            git checkout force-app
+#      - run:
+#          name: Chatter post
+#          command: |
+#            . ci/refreshChatterPost.sh
+#      - run:
+#          name: Delete Useless Scratch Org
+#          command: |
+#            sfdx force:org:delete -u circle_build_$CIRCLE_BUILD_NUM -p
+
+
+# My Sample
+# general:
+# #   branches:
+# #     only:
+# #       - dev # or regexes /dev-.*/
+# 
+# machine:
+#   timezone: America/New_York
+#   environment:
+#     # from https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli_standalone.htm
+#     # and https://developer.salesforce.com/media/salesforce-cli/manifest.json
+#     DX_CLI_URL: https://developer.salesforce.com/media/salesforce-cli/sfdx-v5.7.6-d42cf65-linux-amd64.tar.xz
+#     SFDX_DISABLE_ENCRYPTION: true
+# 
+# dependencies:
+#   override:
+#     - wget -qO- $DX_CLI_URL | tar xJf -
+#     - ./sfdx/install
+#     - mkdir tmp
+#     - echo $SERVER_KEY_HEX | xxd -r -ps >> keys/server.key
+#     - openssl rsa -in keys/server.key -check -noout
+#     - sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY --jwtkeyfile keys/server.key --username $SFDC_USER --setdefaultdevhubusername
+# 
+# test:
+#   override:
+#     - sfdx force --help
+#     - . refreshOrg.sh
+
+## sample from circleci
+
+#     # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+#     version: 2.1
+#     # Use a package of configuration called an orb.
+#     orbs:
+#       # Declare a dependency on the welcome-orb
+#       welcome: circleci/welcome-orb@0.4.1
+#     # Orchestrate or schedule a set of jobs
+#     workflows:
+#       # Name the workflow "welcome"
+#       welcome:
+#         # Run the welcome/run job in its own container
+#         jobs:
+#           - welcome/run
+#      
+#      We'll add the Hello World starter config to SalesforceCloudServices/loreal-2020-lightning-service-sandbox on a new branch. Then, we'll kick off your first pipeline. If you prefer, you can add a config file manually instead.
+#      New branch:
+#      circleci-project-setup
+#      Commit summary:
+#      Add .circleci/config.yml
