@@ -53,19 +53,25 @@ global class ltng_MockupController extends VisualEditor.DynamicPicklist {
 
         myValues.addRow(row);
         
-        try {
-            for (StaticResource resource : [
-                SELECT Name
-                FROM StaticResource
-            ]){
-                row = new VisualEditor.DataRow(resource.Name, resource.Name);
-                myValues.addRow(row);
-            }
-        } catch(Exception err) {
-
+        for (StaticResource resource : [
+            SELECT Name
+            FROM StaticResource
+        ]){
+            row = new VisualEditor.DataRow(resource.Name, resource.Name);
+            myValues.addRow(row);
         }
 
         return myValues;
+    }
+
+    /**
+     * Determines the settings for the Mock components.
+     * @return ltng_mockupSettings__c
+     */
+    @AuraEnabled
+    public static ltng_mockupSettings__c getSettings(){
+        ltng_mockupSettings__c results = ltng_mockupSettings__c.getOrgDefaults();
+        return results;
     }
 
 	//-- Helper Functions

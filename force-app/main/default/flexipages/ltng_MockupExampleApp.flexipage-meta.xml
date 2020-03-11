@@ -19,6 +19,25 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>imgHeight</name>
+                <value>auto</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>imgWidth</name>
+                <value>100%</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>resourceNameFromPicklist</name>
+                <value>ltng_ExampleComponent</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>resourceNameManualEntry</name>
+                <value>ltng_ExamplePlaceholderImage</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupImage</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
                 <name>iconCategory</name>
                 <value>custom</value>
             </componentInstanceProperties>

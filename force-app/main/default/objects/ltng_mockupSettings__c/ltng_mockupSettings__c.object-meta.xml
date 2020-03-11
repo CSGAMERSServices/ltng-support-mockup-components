@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for working with Lightning Mockups.
+(Such as invalidating caches to simplify workshops)</description>
+    <enableFeeds>false</enableFeeds>
+    <label>Lightning Mockup Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

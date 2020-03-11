@@ -4,10 +4,22 @@
 import { createElement } from 'lwc';
 import ltng_mockupImage from 'c/ltng_mockupImage';
 
+import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+import apexGetSettings from '@salesforce/apex/ltng_MockupController.getSettings';
+
+const apexGetSettingsStub = registerLdsTestWireAdapter(apexGetSettings);
+
 // import ltng_ExamplePlaceholderImage from '@salesforce/resourceUrl/ltng_ExamplePlaceholderImage';
 
 //-- @see https://gist.github.com/paulroth3d/8f91d88a823d566da9f404645d1bd30c
 const mockCustomEvent = CustomEvent;
+
+const settingsWithCacheDisabled = {
+  Enable_Mock_Image_Caching__c: false
+};
+const settingsWithCacheEnabled = {
+  Enable_Mock_Image_Caching__c: true
+};
 
 jest.mock(
   'lightning/navigation',
@@ -69,6 +81,14 @@ class TestSettings {
   }
 
   /**
+   * Tells the component to ignore the cache
+   */
+  ignoreCache() {
+    this.element.ignoreCache = 'true';
+    return this;
+  }
+
+  /**
    * Specifies the description, resource name and target address
    */
   setupDefaults() {
@@ -105,12 +125,34 @@ describe('c-ltng_mockupImage', () => {
     expect(ts.element.width).toBe(elementDefaults.width);
   });
 
-  it('calculates the resourceAddress', () => {
-    const ts = new TestSettings()
-      .setupDefaults()
-      .attachElement();
-    
-    expect(ts.element.resourceAddress).toBe('/resource/ltng_ExamplePlaceholderImage');
+  describe('calculates the resourceAddress', () => {
+    it('when settings ignore cache', (done) => {
+      const ts = new TestSettings()
+        .setupDefaults()
+        .attachElement();
+      
+      apexGetSettingsStub.emit(settingsWithCacheDisabled);
+      
+      return Promise.resolve().then(() => {
+        expect(ts.element.resourceAddress).toContain('/resource/ltng_ExamplePlaceholderImage');
+        expect(ts.element.resourceAddress).toContain('?');
+        done();
+      });
+    });
+
+    it('when NOT settings ignore cache', (done) => {
+      const ts = new TestSettings()
+        .setupDefaults()
+        .attachElement();
+      
+        apexGetSettingsStub.emit(settingsWithCacheEnabled);
+      
+      return Promise.resolve().then(() => {
+        expect(ts.element.resourceAddress).toContain('/resource/ltng_ExamplePlaceholderImage');
+        expect(ts.element.resourceAddress).not.toContain('?');
+        done();
+      });
+    });
   });
 
   it('calculates the style based on the height and width provided', (done) => {
