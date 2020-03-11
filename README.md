@@ -29,17 +29,22 @@ Sometimes, there can be difficulty in transitioning from Paper to their Salesfor
 *  Create a compelling story to share with others
 *  Perform A-B testing or "Digital Paper Prototypes" to get feedback
 
-For example, after opening up the org, we think it would be helpful to include a new component to show the current sales numbers.
+---
+## For Example
+
+We might discover a new component to show the current sales numbers during our wireframe session...
 
 ![Screenshot of Ideation for new Component](docs/images/Ideation1.png)
 
-We can then mock that up in our favorite app.
+We can then mock that up in our favorite app: (like [Avonni Creator](https://www.avonni.app/products/avonni-creator), [Figma](https://www.figma.com/) using their [LDS Kit](https://www.figma.com/file/5dgFdCHB6FGjfOPAZEDNVK/Lightning-Design-System-Components-for-Web?node-id=0%3A1), [Framer](https://www.framer.com/) using their [LDS Kit](https://github.com/salesforce-ux/design-system-ui-kit-framerx), or [Balsamiq](https://balsamiq.com/wireframes/))
 
-(like [Avonni Creator](https://www.avonni.app/products/avonni-creator), [Figma](https://www.figma.com/) using their [LDS Kit](https://www.figma.com/file/5dgFdCHB6FGjfOPAZEDNVK/Lightning-Design-System-Components-for-Web?node-id=0%3A1), [Framer](https://www.framer.com/) using their [LDS Kit](https://github.com/salesforce-ux/design-system-ui-kit-framerx), or [Balsamiq](https://balsamiq.com/wireframes/))
-
-And then include within our layout, so we can get early feedback.
+And then include within our layout (using the [Mockup Image component](https://github.com/SalesforceCloudServices/ltng-support-mockup-components#mockup-image) below),<br />
+so we can get feedback right away.
 
 ![Screenshot of mockup component in layout](docs/images/Ideation2.png)
+
+Using App Builder filters based on permissions, then only authorized people will see it within our A/B tests.
+It also gives power to the Administrators, so they can ‘play’ without needing to request new wires.
 
 Then one by one, replace your Mockups to make it real.
 
