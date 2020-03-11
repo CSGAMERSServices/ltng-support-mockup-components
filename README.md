@@ -1,3 +1,8 @@
+[![CircleCI](https://circleci.com/gh/SalesforceCloudServices/ltng-support-mockup-components.svg?style=shield&circle-token=e9f229e21244665f91971d91836b8056410ef187)](https://circleci.com/gh/SalesforceCloudServices/ltng-support-mockup-components)
+[![Github](https://img.shields.io/badge/license-MIT-343434.svg)](https://choosealicense.com/licenses/mit/)
+[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-99-00BB00.svg)](https://circleci.com/gh/SalesforceCloudServices/ltng-support-storybook)
+[![Code Coverage](https://img.shields.io/badge/Branch%20Coverage-95-00BB00.svg)](https://circleci.com/gh/SalesforceCloudServices/ltng-support-storybook)
+
 # Overview
 
 Please see the [Installation](#install) section below for more on how to install on your Sandbox / Demo org.
