@@ -1,3 +1,39 @@
 <template>
-    
+    <div class="static-resource-helperslds-box slds-theme_default">
+        <h1 class="slds-text-heading_small">Update / Create Static Resources</h1>
+        <div onkeyup={handleKeyUp} class='search-box'>
+            <lightning-input
+                name="search"
+                label="Search for static resources by name (or empty for recent)"
+                type="search"
+            ></lightning-input>
+        </div>
+        <div if:true={staticResources}>
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-max-medium-table--stacked-horizontal">
+            <thead>
+                <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Static Resource Name">Static Resource Name</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Last Modified Date">Last Modified Date</div>
+                </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={staticResources} for:item="staticResource">
+                    <tr key={staticResource.Id} class="slds-hint-parent">
+                    <th data-label="Static Resource Name" scope="row">
+                        <div class="slds-truncate" title={staticResource.Name}>{staticResource.Name}</div>
+                    </th>
+                    <td data-label="Last Modified Date">
+                        <div class="slds-truncate" title={staticResource.LastModifiedDate}>{staticResource.LastModifiedDate}</div>
+                    </td>
+                    </tr>
+                </template>
+            </tbody>
+            </table>
+
+        </div>
+    </div>
 </template>
