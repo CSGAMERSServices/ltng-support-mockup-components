@@ -24,8 +24,4 @@ export default class story_staticResourceHelper extends LightningElement {
       message: 'Example_text'
     })
   ];
-
-  handleSceneChanged(sceneEvent) {
-    this.currentScene = sceneEvent.detail;
-  }
 }

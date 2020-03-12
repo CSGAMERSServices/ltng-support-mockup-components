@@ -1,14 +1,16 @@
 <template>
-    <div class="static-resource-helperslds-box slds-theme_default">
+    <div class="static-resource-helper slds-box slds-card slds-theme_default">
         <h1 class="slds-text-heading_small">Update / Create Static Resources</h1>
-        <div onkeyup={handleKeyUp} class='search-box'>
+        <div  class='search-box'>
             <lightning-input
                 name="search"
                 label="Search for static resources by name (or empty for recent)"
                 type="search"
+                onchange={handleSearchChanged}
+                onkeyup={handleKeyUp}
             ></lightning-input>
         </div>
-        <div if:true={staticResources}>
+        <div if:true={staticResources} class="slds-m-top_small">
             <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-max-medium-table--stacked-horizontal">
             <thead>
                 <tr class="slds-line-height_reset">
@@ -27,7 +29,15 @@
                         <div class="slds-truncate" title={staticResource.Name}>{staticResource.Name}</div>
                     </th>
                     <td data-label="Last Modified Date">
-                        <div class="slds-truncate" title={staticResource.LastModifiedDate}>{staticResource.LastModifiedDate}</div>
+                        <div class="slds-truncate" title={staticResource.LastModifiedDate}>
+                            <lightning-formatted-date-time
+                                value={staticResource.LastModifiedDate}
+                                day="2-digit"
+                                month="long"
+                                hour="2-digit"
+                                minute="2-digit"
+                            ></lightning-formatted-date-time>
+                        </div>
                     </td>
                     </tr>
                 </template>

@@ -47,6 +47,26 @@ Bob, Parr, 42, Red`,
   )
 };
 
+/**
+ * Compares two LabelValue tables
+ * @param {LabelValue[][]} expectedLabelValue
+ * @param {LabelValue[][]} resultLabelValue
+ * @return {boolean}
+ */
+function compareLabelValueTables(expectedLabelValue, resultLabelValue) {
+  let resultRow;
+  let resultLV;
+
+  expectedLabelValue.forEach((expectedRow, rowIndex) => {
+    resultRow = resultLabelValue[rowIndex];
+    expectedRow.forEach((expectedLV, lvIndex) => {
+      resultLV = resultRow[lvIndex];
+      expect(expectedLV.label).toBe(resultLV.label);
+      expect(expectedLV.value).toBe(resultLV.value);
+    });
+  })
+}
+
 describe('c-ltng_mockupCsvParser', () => {
   it('all imports are found', () => {
     expect(ltng_mockupCsvParser).toBeTruthy();
@@ -349,6 +369,7 @@ describe('c-ltng_mockupCsvParser', () => {
 
       expect(csvParse).toStrictEqual(expected);
     });
+
     it('when the data is valid', () => {
       let csv;
       let csvParse;
@@ -362,7 +383,8 @@ describe('c-ltng_mockupCsvParser', () => {
 
       expect(csvParse.data).not.toBeNull();
       expect(csvParse.data.length).toStrictEqual(expected.data.length);
-      expect(JSON.stringify(csvParse.data)).toStrictEqual(JSON.stringify(expected.data));
+
+      compareLabelValueTables(expected.data, csvParse.data);
     });
 
     it('can use escaped newlines for tables', () => {

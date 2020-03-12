@@ -11,11 +11,18 @@ import apexFindStaticResources from '@salesforce/apex/ltng_staticResourceHelperC
 import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
 const apexFindStaticResourcesStub = registerLdsTestWireAdapter(apexFindStaticResources);
 
-const staticResourceResults = {
-  data: [{
-    type: 'StaticResource'
-  }]
-};
+const staticResourceResults = [
+  {
+    "Id": "081R0000000HkXpIAK",
+    "Name": "ltng_ExampleComponent",
+    "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+  },
+  {
+    "Id": "081R0000000HkK7IAK",
+    "Name": "ltng_ExamplePlaceholderImage",
+    "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+  }
+];
 /* eslint-enable no-unused-vars */
 
 const defaultProperties = {};
@@ -74,13 +81,52 @@ describe('c-ltng_staticResourceHelper', () => {
     // expect(div.textContent).toBe('Hello, World!');
   });
 
+  describe('user types up the search', () => {
+    it('does not do the search yet', (done) => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .attachElement();
+      
+      const searchTerm = 'som';
+
+      const searchInput = ts.element.shadowRoot
+        .querySelector('div.search-box > lightning-input');
+      
+      expect(searchInput).toBeTruthy();
+
+      searchInput.value = searchTerm;
+      
+      //-- @kludge
+      const changeEvent = new CustomEvent('change', {
+        detail: {
+          value: searchTerm
+        }
+      });
+      searchInput.dispatchEvent(changeEvent);
+
+      // see https://javascript.info/dispatch-events
+      const enterEvent = new CustomEvent('keyup', {
+        detail: {
+          keyCode: ENTER_KEY + 1
+        },
+        keyCode: ENTER_KEY + 1,
+        bubbles: true
+      });
+      searchInput.dispatchEvent(enterEvent);
+
+      expect(ts.element.queryTerm).not.toBe(searchTerm);
+
+      done();
+    });
+  });
+
   describe('user presses return on the search', () => {
     it('updates the query term', (done) => {
       const ts = new TestSettings()
         .applyDefaultProperties()
         .attachElement();
 
-      const searchTerm = 'ltng_';
+      const searchTerm = 'some random search term';
 
       // const searchInputContainer = ts.element.shadowRoot
       //   .querySelector('div.search-box');
@@ -91,6 +137,15 @@ describe('c-ltng_staticResourceHelper', () => {
       expect(searchInput).toBeTruthy();
 
       searchInput.value = searchTerm;
+      
+      //-- @kludge
+      const changeEvent = new CustomEvent('change', {
+        detail: {
+          value: searchTerm
+        }
+      });
+      searchInput.dispatchEvent(changeEvent);
+
       // see https://javascript.info/dispatch-events
       const enterEvent = new CustomEvent('keyup', {
         detail: {
@@ -107,17 +162,17 @@ describe('c-ltng_staticResourceHelper', () => {
     });
   });
 
-  /*
-  it('performs a search', (done) => {
-    const ts = new TestSettings()
-      .applyDefaultProperties()
-      .attachElement();
-
-    apexFindStaticResourcesStub.emit(staticResourceResults);
-
-    expect(ts.staticResources).toBeTruthy();
-
-    done();
+  describe('when the results are found', () => {
+    it('stores the static resources', (done) => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .attachElement();
+  
+      apexFindStaticResourcesStub.emit(staticResourceResults);
+  
+      expect(ts.element.staticResources).toBeTruthy();
+  
+      done();
+    });
   });
-  */
 });

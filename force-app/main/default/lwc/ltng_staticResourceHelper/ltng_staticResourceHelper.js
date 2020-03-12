@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 
 import apexFindStaticResources from '@salesforce/apex/ltng_staticResourceHelperCtrl.findStaticResources';
 
@@ -27,20 +27,22 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   @api queryTerm = 'ltng_'
 
   /**
+   * Collection of static resources captured
+   */
+  @api staticResources;
+
+
+  /**
    * The static resources found
    * @type {StaticResource[]}
    */
   @wire (apexFindStaticResources, { searchStr: '$queryTerm' })
-  handleResults({data, error}) {
-    console.log('results came in');
-    console.log(data);
-    console.log(error);
+  handleResults({data}) {
+    // console.log('results came in');
     if (data) {
       this.staticResources = data;
     }
   }
-
-  @api staticResources;
 
   //-- handlers
 
@@ -49,17 +51,37 @@ export default class Ltng_staticResourceHelper extends LightningElement {
    * @param {CustomEvent} evt
    */
   handleKeyUp(evt) {
-    //-- @see https://developer.salesforce.com/docs/component-library/bundle/lightning-input/example
-    //-- specifically 'Search Input'
-    console.log('key up');
     const isEnterKey = evt.keyCode === ENTER_KEY || evt.detail.keyCode === ENTER_KEY;
     if (isEnterKey) {
-      this.queryTerm = this.searchQuery;
+      this.queryTerm = this.queryTransition;
+
+      /*
+      @TODO - investigate why the demo works here:
+      https://developer.salesforce.com/docs/component-library/bundle/lightning-input/example
+      specifically 'Search Input'
+      but:
+      * evt.target.value == undefined
+      * evt.target.getSource() == not a function
+      * this.template.querySelector(...).value == undefined
+      */
     }
   }
 
-  get searchQuery() {
-    return this.template.querySelector('div.search-box > lightning-input').value;
+  //-- kludge
+
+  /**
+   * @KLUDGE
+   * because we could not get the value of the input any other way.
+   */
+  @track queryTransition = '';
+
+  /**
+   * @KLUDGE
+   * Handle when the user changed the value on the input
+   * @param {CustomEvent} evt 
+   */
+  handleSearchChanged(evt) {
+    this.queryTransition=evt.detail.value;
   }
 }
 
