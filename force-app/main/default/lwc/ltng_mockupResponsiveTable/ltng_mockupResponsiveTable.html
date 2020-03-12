@@ -15,7 +15,7 @@
             >
                 <td 
                     data-label={dataCell.label} title={dataCell.label}
-                    for:each={dataRow} for:item="dataCell" key={dataCell.value} 
+                    for:each={dataRow} for:item="dataCell" key={dataCell.uniqueKey} 
                 ><div>
                     {dataCell.value}
                 </div></td>

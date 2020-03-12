@@ -11,6 +11,12 @@
 const MAX_ITERATIONS = 1000;
 
 /**
+ * Global unique index for the table row
+ * @type {Number}
+ */
+let GLOBAL_UNIQUE_ID = 0;
+
+/**
  * Represents a label value pair
  */
 class LabelValue {
@@ -193,7 +199,6 @@ function parseCsvToLabelValue(str) {
   var rowColumnCount;
   var resultRow;
   var resultLV;
-  var arrayUniqueKey = 0;
 
 
   if (!parsedCSV ||
@@ -219,9 +224,10 @@ function parseCsvToLabelValue(str) {
         headers[i],
         dataRow[i]
       );
+      resultLV.uniqueKey = ++GLOBAL_UNIQUE_ID;
       resultRow.push(resultLV);
     }
-    resultRow.uniqueKey = ++arrayUniqueKey;
+    resultRow.uniqueKey = ++GLOBAL_UNIQUE_ID;
     result.data.push(resultRow);
   });
 
