@@ -31,6 +31,11 @@ export default class Ltng_staticResourceHelper extends LightningElement {
    */
   @api staticResources;
 
+  /**
+   * accepted formats
+   * @type {String[]}
+   */
+  @api acceptedFormats = ['.gif', '.png', '.jpg', '.jpeg'];
 
   /**
    * The static resources found
@@ -65,6 +70,14 @@ export default class Ltng_staticResourceHelper extends LightningElement {
       * this.template.querySelector(...).value == undefined
       */
     }
+  }
+
+  /**
+   * Handle the file upload finished
+   * @param {CustomEvent}
+   */
+  handleUploadFinished(evt) {
+    console.log('file upload finished', evt);
   }
 
   //-- kludge

@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 <template for:each={staticResources} for:item="staticResource">
-                    <tr key={staticResource.Id} class="slds-hint-parent">
+                    <tr key={staticResource.Id} class="slds-hint-parent" data-id={staticResource.id}>
                     <th data-label="Static Resource Name" scope="row">
                         <div class="slds-truncate" title={staticResource.Name}>{staticResource.Name}</div>
                     </th>
@@ -43,7 +43,16 @@
                 </template>
             </tbody>
             </table>
-
+            <div class='file-upload'>
+                <lightning-file-upload
+                    label="Upload"
+                    name="fileUploader"
+                    accept={acceptedFormats}
+                    record-id={myRecordId}
+                    onuploadfinished={handleUploadFinished}
+                    multiple>
+                </lightning-file-upload>
+            </div>
         </div>
     </div>
 </template>
