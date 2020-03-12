@@ -19,9 +19,7 @@ export default class story_staticResourceHelper extends LightningElement {
    */
   @api allScenes = [
     new Scene('Large Width Scene', {
-      description: 'Example_description',
-      width: 'large',
-      message: 'Example_text'
+      width: 'large'
     })
   ];
 }
