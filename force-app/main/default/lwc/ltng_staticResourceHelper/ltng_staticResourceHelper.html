@@ -20,7 +20,7 @@
                       </span>
                         -->
                     </div>
-                    <div if:true={staticResources} id="listbox-id-4" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+                    <div if:true={showDropdown} id="listbox-id-4" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
                       <ul class="slds-listbox slds-listbox_vertical" role="presentation">
                         <li role="presentation" class="slds-listbox__item"
                             for:each={staticResources} for:item="staticResource" key={staticResource.Id}

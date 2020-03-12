@@ -27,116 +27,62 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   @api queryTerm = 'ltng_'
 
   /**
+   * Static resource to update
+   * @type {StaticResource}
+   */
+  @api resourceToUpdate;
+
+  /**
    * Collection of static resources captured
    */
   @api staticResources = [
     {
-      "Id": "081R0000000HkXpIAK",
+      "Id": "081R0000000HkXpIAK1",
       "Name": "ltng_ExampleComponent",
       "LastModifiedDate": "2020-03-11T20:39:45.000Z"
     },
     {
-      "Id": "081R0000000HkK7IAK",
+      "Id": "081R0000000HkK7IAK2",
       "Name": "ltng_ExamplePlaceholderImage",
       "LastModifiedDate": "2020-03-11T16:20:55.000Z"
     },
     {
-      "Id": "081R0000000HkXpIAK",
+      "Id": "081R0000000HkXpIAK3",
       "Name": "ltng_ExampleComponent",
       "LastModifiedDate": "2020-03-11T20:39:45.000Z"
     },
     {
-      "Id": "081R0000000HkK7IAK",
+      "Id": "081R0000000HkK7IAK4",
       "Name": "ltng_ExamplePlaceholderImage",
       "LastModifiedDate": "2020-03-11T16:20:55.000Z"
     },
     {
-      "Id": "081R0000000HkXpIAK",
+      "Id": "081R0000000HkXpIAK5",
       "Name": "ltng_ExampleComponent",
       "LastModifiedDate": "2020-03-11T20:39:45.000Z"
     },
     {
-      "Id": "081R0000000HkK7IAK",
+      "Id": "081R0000000HkK7IAK6",
       "Name": "ltng_ExamplePlaceholderImage",
       "LastModifiedDate": "2020-03-11T16:20:55.000Z"
     },
     {
-      "Id": "081R0000000HkXpIAK",
+      "Id": "081R0000000HkXpIAK7",
       "Name": "ltng_ExampleComponent",
       "LastModifiedDate": "2020-03-11T20:39:45.000Z"
     },
     {
-      "Id": "081R0000000HkK7IAK",
+      "Id": "081R0000000HkK7IAK8",
       "Name": "ltng_ExamplePlaceholderImage",
       "LastModifiedDate": "2020-03-11T16:20:55.000Z"
     },
     {
-      "Id": "081R0000000HkXpIAK",
+      "Id": "081R0000000HkXpIAK9",
       "Name": "ltng_ExampleComponent",
       "LastModifiedDate": "2020-03-11T20:39:45.000Z"
     },
     {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK",
+      "Id": "081R0000000HkK7IAK0",
       "Name": "ltng_ExamplePlaceholderImage",
       "LastModifiedDate": "2020-03-11T16:20:55.000Z"
     }
@@ -158,6 +104,16 @@ export default class Ltng_staticResourceHelper extends LightningElement {
     if (data) {
       this.staticResources = data;
     }
+  }
+
+  //-- geters / setters
+  /**
+   * Whether the dropdown should be shown
+   * @type {Boolean}
+   */
+  get showDropdown() {
+    // console.log('resourceToUpdate:' + (this.resourceToUpdate?'true':'false'));
+    return this.staticResources && !this.resourceToUpdate;
   }
 
   //-- handlers
