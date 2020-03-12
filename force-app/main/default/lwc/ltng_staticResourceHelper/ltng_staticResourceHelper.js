@@ -29,7 +29,118 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   /**
    * Collection of static resources captured
    */
-  @api staticResources;
+  @api staticResources = [
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    },
+    {
+      "Id": "081R0000000HkXpIAK",
+      "Name": "ltng_ExampleComponent",
+      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
+    },
+    {
+      "Id": "081R0000000HkK7IAK",
+      "Name": "ltng_ExamplePlaceholderImage",
+      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
+    }
+  ];
 
   /**
    * accepted formats
@@ -58,6 +169,7 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   handleKeyUp(evt) {
     const isEnterKey = evt.keyCode === ENTER_KEY || evt.detail.keyCode === ENTER_KEY;
     if (isEnterKey) {
+      console.log('enter key pressed');
       this.queryTerm = this.queryTransition;
 
       /*
