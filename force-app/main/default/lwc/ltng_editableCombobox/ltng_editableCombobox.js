@@ -24,7 +24,7 @@ export default class Ltng_editableCombobox extends LightningElement {
    * Collection of combobox options
    * @type {EditableComboboxOption}
    */
-  @api options;
+  @api options = [];
 
   /**
    * In addition to updating the options,
@@ -47,6 +47,12 @@ export default class Ltng_editableCombobox extends LightningElement {
    * @type {String}
    */
   @api label = '';
+
+  /**
+   * Placeholder to use for the input
+   * @type {String}
+   */
+  @api placeholder = 'Search or enter a value';
 
   //-- getter / setters
 
