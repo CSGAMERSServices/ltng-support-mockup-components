@@ -154,6 +154,22 @@ export default class Ltng_editableCombobox extends LightningElement {
     }
   }
 
+  /**
+   * Close the input if currently open and the user clicks it.
+   * @param {CustomEvent} evt
+   */
+  handleInputClicked() {
+    /*
+    const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
+    console.log('isInputFocused:' + isInputFocused);
+    const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
+    if (this.isOpen && this.value) {
+      this.isOpen = false;
+      this.dispatchChange(this.value);
+    }
+    */
+  }
+
   //-- internal methods
 
   /**
