@@ -1,6 +1,6 @@
 <template>
     <div class="slds-form-element">
-        <label class="slds-form-element__label" for="editable-text">Static Resource to Update</label>
+        <label class="slds-form-element__label" for="editable-text">{label}</label>
         <div class="slds-form-element__control">
             <div class="slds-combobox_container">
                 <div class={comboboxCSS_Classes} aria-expanded="true" aria-haspopup="listbox" role="combobox">
@@ -18,16 +18,6 @@
                         <lightning-icon icon-name="utility:search" alternative-text="Search" size="x-small"
                             class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"
                         ></lightning-icon>
-                        <!--
-                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
-                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
-                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down">
-                        </svg>
-                    </span>
-                        <lightning-input type="search" class="editable-text slds-has-focus"
-                            value={_text}
-                        ></lightning-input>
-                        -->
                     </div>
                     <div id="select-dropdown" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
                     <ul class="slds-listbox slds-listbox_vertical" role="presentation">

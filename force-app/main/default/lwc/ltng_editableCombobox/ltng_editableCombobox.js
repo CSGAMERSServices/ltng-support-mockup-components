@@ -42,6 +42,12 @@ export default class Ltng_editableCombobox extends LightningElement {
    */
   @api isOpen;
 
+  /**
+   * Label of the input
+   * @type {String}
+   */
+  @api label = '';
+
   //-- getter / setters
 
   /**
@@ -120,7 +126,7 @@ export default class Ltng_editableCombobox extends LightningElement {
    */
   handleItemClicked(evt) {
     // console.log('item was clicked');
-    
+
     this._selection = evt.target.value;
     this.text = evt.target.label;
     this.dispatchChange(this._selection);
