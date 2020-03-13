@@ -94,6 +94,14 @@ export default class Ltng_editableCombobox extends LightningElement {
   @track _selection;
 
   /**
+   * Whether the value has changed.
+   * @type {Boolean}
+   */
+  get hasChanged() {
+    return this._text !== this._selection;
+  }
+
+  /**
    * The current value of the combobox.
    * (If the user has made a selection, then that value is returned,
    * otherwise it is the user written value)
@@ -166,12 +174,12 @@ export default class Ltng_editableCombobox extends LightningElement {
    */
   handleInputClicked() {
     /*
-    const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
-    console.log('isInputFocused:' + isInputFocused);
-    const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
-    if (this.isOpen && this.value) {
-      this.isOpen = false;
-      this.dispatchChange(this.value);
+    // const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
+    // console.log('isInputFocused:' + isInputFocused);
+    // const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
+    if (this.hasChanged) {
+      this.isOpen = !this.isOpen;
+      this.dispatchChange(this._text);
     }
     */
   }
@@ -184,6 +192,7 @@ export default class Ltng_editableCombobox extends LightningElement {
    */
   dispatchChange(newValue) {
     this.isOpen = false;
+    this._selection = newValue;
     this.dispatchEvent(new CustomEvent('change', {
       detail: {
         value: newValue
