@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { LightningElement, api, track, wire } from 'lwc';
 
 import apexFindStaticResources from '@salesforce/apex/ltng_staticResourceHelperCtrl.findStaticResources';
@@ -21,6 +22,16 @@ const utcDateToLocal = (dateStr) => {
   }
   return new Date(parsedDate).toLocaleString();
 };
+
+/**
+ * Trims the file load contents into just the base64 data
+ * ex: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
+ * @param {String} b64data - contents from FileReader.
+ * @returns {String} Just the base64 data. ex: iVBORw0KGgoA...
+ */
+const fileReaderBase64 = (b64Data) => {
+  return b64Data.substring(b64Data.indexOf(',')+1);
+}
 
 /**
  * Icon (group:name) to use for static resources
@@ -202,5 +213,6 @@ export default class Ltng_staticResourceHelper extends LightningElement {
 
 export {
   utcDateToLocal,
+  fileReaderBase64,
   STATIC_RESOURCE_ICON
 };

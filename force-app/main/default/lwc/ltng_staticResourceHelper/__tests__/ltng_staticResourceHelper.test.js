@@ -1,4 +1,5 @@
-/* eslint-disable @lwc/lwc/no-inner-html */
+/* eslint-disable */
+/* @lwc/lwc/no-inner-html */
 
 /* eslint-disable no-unused-vars */
 /** JEST Test for ltng_staticResourceHelper/__tests__/ltng_staticResourceHelper **/
@@ -23,7 +24,17 @@ const staticResourceResults = [
     "LastModifiedDate": "2020-03-11T16:20:55.000Z"
   }
 ];
-/* eslint-enable no-unused-vars */
+
+const exampleFileToUpload = {
+  name: 'example.png',
+  lastModified: 1584132769273,
+  lastModifiedDate: new Date(1584132769273),
+  webkitRelativePath: '',
+  size: 10842,
+  type: 'image/png'
+};
+
+const exampleResourceData = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANgAAADZCAYAAABCfP5I'
 
 const defaultProperties = {};
 
