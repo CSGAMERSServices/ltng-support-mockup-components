@@ -27,7 +27,21 @@
                     img-width="100%; max-width: 100px"
                 ></c-ltng_mockup-image>
             </div>
-            File Upload...
+            <div if:true={fileToUpload}>
+                Will upload {fileToUpload.name}
+            </div>
+            <lightning-input
+                type="file" label="File"
+                class="file-selector"
+                required accept="image/png, image/jpg, image/jpeg, image/gif"
+                message-when-value-missing="Please upload an image (png, gif, jpg)"
+                onchange={handleFileChanged}
+            ></lightning-input>
+            <lightning-button
+                label='Upload'
+                class="submit"
+                onclick={handleUpload}
+            ></lightning-button>
         </div>
         <div if:false={hasResourceToUpdate}>
         </div>

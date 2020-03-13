@@ -61,12 +61,6 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   @api staticResources = [];
 
   /**
-   * accepted formats
-   * @type {String[]}
-   */
-  @api acceptedFormats = ['.gif', '.png', '.jpg', '.jpeg'];
-
-  /**
    * timeout used to delay searching
    * @type {TimerHandler}
    */
@@ -138,6 +132,53 @@ export default class Ltng_staticResourceHelper extends LightningElement {
       this.resourceToUpdate = value;
     }
     this.clearKeyListener();
+  }
+
+  fileToUpload = null;
+  showSpinner = false;
+  fileReaderObj = null;
+  base64FileData = null;
+
+  /**
+   * Handles when the file input has changed
+   * @param {CustomEvent} evt 
+   */
+  handleFileChanged(evt) {
+    console.log('file changed');
+    debugger;
+    const fileSelector = this.template.querySelector('lightning-input.file-selector');
+    const filesToUpload = evt.target.files;
+    if (filesToUpload.length > 0) {
+      const fileToUpload = filesToUpload[0];
+      this.fileToUpload = fileToUpload;
+    }
+  }
+
+  loadFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        console.log('load');
+        resolve(reader.result);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      }
+    });
+  }
+
+  async handleUpload(evt) {
+    console.log('user clicked the upload button');
+    debugger;
+    this.showSpinner = true;
+
+    const result = await this.loadFileAsBase64(this.fileToUpload)
+      .catch(e => {
+        console.error('error occurred', e);
+      });
+    
+    console.log('I have results:' + (typeof result));
   }
 
   /**
