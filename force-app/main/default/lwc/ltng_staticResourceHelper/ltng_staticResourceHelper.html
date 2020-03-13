@@ -3,9 +3,34 @@
         <h1 class="slds-text-heading_small">Update / Create Static Resources</h1>
         <c-ltng_editable-combobox
             label="Static Resource"
-            is-open="true"
+            is-open="false"
             placeholder="Name of static resource (or new resource to create)"
             options={staticResources}
+            onchange={handleResourceChanged}
+            onkeyup={handleKeyUp}
         ></c-ltng_editable-combobox>
+        <!--
+        <ul>
+            <li>resourceToUpdate: {resourceToUpdate}</li>
+            <li>hasResourceToUpdate: {hasResourceToUpdate}</li>
+            <li>isNewStaticResource: {isNewStaticResource}</li>
+        </ul>
+        -->
+        <div if:true={hasResourceToUpdate}>
+            <div if:true={isNewStaticResource}>
+                <div>New resource will be created: {resourceToUpdate.Name}</div>
+            </div>
+            <div if:false={isNewStaticResource}>
+                <div>Will update resource: {resourceToUpdate.Name}</div>
+                <c-ltng_mockup-image
+                    resource-name-manual-entry={resourceToUpdate.Name}
+                    img-width="100%; max-width: 100px"
+                ></c-ltng_mockup-image>
+            </div>
+            File Upload...
+        </div>
+        <div if:false={hasResourceToUpdate}>
+        </div>
+
     </div>
 </template>

@@ -29,6 +29,12 @@ const utcDateToLocal = (dateStr) => {
 const STATIC_RESOURCE_ICON = 'standard:file';
 
 /**
+ * Length in milliseconds to wait before searching
+ * @type {Number}
+ */
+const TIMEOUT_DELAY = 1000;
+
+/**
  * This is a component to allow a user to upload static resources
  * (so we can provide images for mockups)
  * without having to go to the setup screen.
@@ -47,69 +53,24 @@ export default class Ltng_staticResourceHelper extends LightningElement {
    * Static resource to update
    * @type {StaticResource}
    */
-  @api resourceToUpdate;
+  @api resourceToUpdate = null;
 
   /**
    * Collection of static resources captured
    */
-  @api staticResources = [
-    {
-      "Id": "081R0000000HkXpIAK1",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK2",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK3",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK4",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK5",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK6",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK7",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK8",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    },
-    {
-      "Id": "081R0000000HkXpIAK9",
-      "Name": "ltng_ExampleComponent",
-      "LastModifiedDate": "2020-03-11T20:39:45.000Z"
-    },
-    {
-      "Id": "081R0000000HkK7IAK0",
-      "Name": "ltng_ExamplePlaceholderImage",
-      "LastModifiedDate": "2020-03-11T16:20:55.000Z"
-    }
-  ];
+  @api staticResources = [];
 
   /**
    * accepted formats
    * @type {String[]}
    */
   @api acceptedFormats = ['.gif', '.png', '.jpg', '.jpeg'];
+
+  /**
+   * timeout used to delay searching
+   * @type {TimerHandler}
+   */
+  delayTimeout;
 
   /**
    * The static resources found
@@ -132,14 +93,18 @@ export default class Ltng_staticResourceHelper extends LightningElement {
     }
   }
 
-  //-- geters / setters
+  //-- getters / setters
+
   /**
-   * Whether the dropdown should be shown
+   * Whether the static resource is new
    * @type {Boolean}
    */
-  get showDropdown() {
-    // console.log('resourceToUpdate:' + (this.resourceToUpdate?'true':'false'));
-    return this.staticResources && !this.resourceToUpdate;
+  get isNewStaticResource() {
+    return !this.resourceToUpdate || !this.resourceToUpdate.Id;
+  }
+
+  get hasResourceToUpdate() {
+    return this.resourceToUpdate !== null;
   }
 
   //-- handlers
@@ -149,21 +114,30 @@ export default class Ltng_staticResourceHelper extends LightningElement {
    * @param {CustomEvent} evt
    */
   handleKeyUp(evt) {
-    const isEnterKey = evt.keyCode === ENTER_KEY || evt.detail.keyCode === ENTER_KEY;
-    if (isEnterKey) {
-      console.log('enter key pressed');
-      this.queryTerm = this.queryTransition;
+    const searchStr = evt.target.value;
+    this.clearKeyListener();
 
-      /*
-      @TODO - investigate why the demo works here:
-      https://developer.salesforce.com/docs/component-library/bundle/lightning-input/example
-      specifically 'Search Input'
-      but:
-      * evt.target.value == undefined
-      * evt.target.getSource() == not a function
-      * this.template.querySelector(...).value == undefined
-      */
+    this.delayTimeout = setTimeout(() => { // eslint-disable-line
+      console.log(`searching for:${searchStr}`);
+      this.queryTerm = searchStr;
+    }, TIMEOUT_DELAY);
+  }
+
+  /**
+   * Handles when the editable combobox value has changed
+   * @param {CustomEvent}
+   */
+  handleResourceChanged(evt) {
+    const value = evt.detail.value;
+    console.log('resource changed');
+    if (typeof value === "string") {
+      this.resourceToUpdate = {
+        Name: value
+      };
+    } else {
+      this.resourceToUpdate = value;
     }
+    this.clearKeyListener();
   }
 
   /**
@@ -174,21 +148,14 @@ export default class Ltng_staticResourceHelper extends LightningElement {
     console.log('file upload finished', evt);
   }
 
-  //-- kludge
+  disconnectedCallback() {
+    this.clearKeyListener();
+  }
 
-  /**
-   * @KLUDGE
-   * because we could not get the value of the input any other way.
-   */
-  @track queryTransition = '';
+  //-- internal methods
 
-  /**
-   * @KLUDGE
-   * Handle when the user changed the value on the input
-   * @param {CustomEvent} evt 
-   */
-  handleSearchChanged(evt) {
-    this.queryTransition=evt.detail.value;
+  clearKeyListener() {
+    window.clearTimeout(this.delayTimeout);
   }
 }
 
