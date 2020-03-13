@@ -5,6 +5,8 @@ import { LightningElement, api } from 'lwc';
 import {Scene} from 'c/story_book';
 // import { isObject } from 'util';
 
+const LONG_TEXT = 'Long long long long long long long long long long long long long long long long long long long long long';
+
 export default class Story_exampleComplex extends LightningElement {
 
   /**
@@ -29,8 +31,28 @@ export default class Story_exampleComplex extends LightningElement {
     new Scene('Label Only', {
       width: 'large',
       label: 'ltng_ExampleComponent',
+      icon: 'standard:partners',
+      value: 'someIDxyz'
+    }),
+    new Scene('Very Long text', {
+      width: 'narrow',
+      label: LONG_TEXT,
+      subLabel: LONG_TEXT,
       icon: 'standard:file',
       value: 'someIDxyz'
+    }),
+    new Scene('No Icon', {
+      width: 'large',
+      label: 'ltng_ExampleComponent',
+      value: 'someIDxyz'
+    }),
+    new Scene('Label Only: Selected', {
+      width: 'large',
+      description: 'if the selected value matches, the checkbox icon is used instead',
+      label: 'ltng_ExampleComponent',
+      icon: 'standard:file',
+      value: 'someIDxyz',
+      selectedValue: 'someIDxyz'
     })
   ];
 }
