@@ -9,7 +9,24 @@ import apexFindStaticResources from '@salesforce/apex/ltng_staticResourceHelperC
  * @property {String} LastModifiedDate - date the resource was last modified
  */
 
-const ENTER_KEY = 13;
+/**
+ * Converts a UTC DateTime string to local
+ * @param {String} utcDateTime - ex: '2020-03-11T20:39:45.000Z'
+ * @returns {String} - ex: 3/11/2020, 3:39:45 PM
+ */
+const utcDateToLocal = (dateStr) => {
+  const parsedDate = Date.parse(dateStr);
+  if (!parsedDate) {
+    return dateStr;
+  }
+  return new Date(parsedDate).toLocaleString();
+};
+
+/**
+ * Icon (group:name) to use for static resources
+ * @type {String}
+ */
+const STATIC_RESOURCE_ICON = 'standard:file';
 
 /**
  * This is a component to allow a user to upload static resources
@@ -102,7 +119,16 @@ export default class Ltng_staticResourceHelper extends LightningElement {
   handleResults({data}) {
     // console.log('results came in');
     if (data) {
-      this.staticResources = data;
+      console.log('data came back', data);
+      this.staticResources = data.map((staticResource) => {
+        return staticResource ? {
+          key: staticResource.Id,
+          label: staticResource.Name,
+          subLabel: utcDateToLocal(staticResource.LastModifiedDate),
+          icon: STATIC_RESOURCE_ICON,
+          value: staticResource
+        } : {};
+      });
     }
   }
 
@@ -167,5 +193,6 @@ export default class Ltng_staticResourceHelper extends LightningElement {
 }
 
 export {
-  ENTER_KEY
+  utcDateToLocal,
+  STATIC_RESOURCE_ICON
 };

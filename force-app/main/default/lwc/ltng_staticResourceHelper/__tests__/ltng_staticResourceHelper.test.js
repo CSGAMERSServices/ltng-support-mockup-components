@@ -4,7 +4,7 @@
 /** JEST Test for ltng_staticResourceHelper/__tests__/ltng_staticResourceHelper **/
 import { createElement } from 'lwc';
 import ltng_staticResourceHelper from 'c/ltng_staticResourceHelper';
-import { ENTER_KEY } from 'c/ltng_staticResourceHelper';
+import {utcDateToLocal} from 'c/ltng_staticResourceHelper';
 // import { isArray } from 'util';
 
 import apexFindStaticResources from '@salesforce/apex/ltng_staticResourceHelperCtrl.findStaticResources';
@@ -81,6 +81,31 @@ describe('c-ltng_staticResourceHelper', () => {
     // expect(div.textContent).toBe('Hello, World!');
   });
 
+  describe('converts UTC Dates to local when the utc date is understood', () => {
+    const dateString = '2020-03-11T20:39:45.000Z';
+    const results = utcDateToLocal(dateString);
+    const expectedResults = '3/11/2020, 3:39:45 PM';
+
+    //-- NOTE: the test fails if running in different locales
+    // expect(results).toBe(expectedResults);
+    //-- so just verify the string is not the date string
+    expect(results).not.toBe(dateString);
+  });
+  describe('returns the original string if not understood', () => {
+    let dateString = 'garbage';
+    let results = utcDateToLocal(dateString);
+    expect(results).toBe(dateString);
+
+    dateString = null;
+    results = utcDateToLocal(dateString);
+    expect(results).toBe(dateString);
+
+    dateString = '';
+    results = utcDateToLocal(dateString);
+    expect(results).toBe(dateString);
+  });
+
+  /*
   describe('user types up the search', () => {
     it('does not do the search yet', (done) => {
       const ts = new TestSettings()
@@ -175,4 +200,5 @@ describe('c-ltng_staticResourceHelper', () => {
       done();
     });
   });
+  */
 });

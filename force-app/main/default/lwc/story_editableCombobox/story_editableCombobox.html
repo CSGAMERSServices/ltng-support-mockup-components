@@ -5,6 +5,14 @@
         note the large width is based on the Lightning Design System width
         @see https://www.lightningdesignsystem.com/utilities/sizing/
     -->
+    <c-story_book width="narrow" title="Attributes not sent">
+        <div slot="description">
+            Verify the component works without sending:
+        </div>
+        <c-ltng_editable-combobox
+        ></c-ltng_editable-combobox>
+    </c-story_book>
+
     <template for:each={allScenes} for:item="scene">
         <c-story_book key={scene.label} width={scene.value.width} title={scene.label}
             sandbox-styles={scene.value.sceneStyles}

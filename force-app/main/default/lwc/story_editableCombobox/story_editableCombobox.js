@@ -104,9 +104,10 @@ export default class Story_exampleComplex extends LightningElement {
     new Scene('Closed initially', {
       width: 'large',
       sceneStyles: 'height:100px',
-      label: 'Static resource to update',
+      label: 'Story Label',
+      placeholder: 'Story Placeholder',
       isOpen: 'false',
-      text: 'ltng_',
+      text: '',
       options: SHORT_OPTIONS
     }),
     new Scene('Open initially', {
@@ -114,7 +115,7 @@ export default class Story_exampleComplex extends LightningElement {
       sceneStyles: 'height:300px',
       label: 'Editable Picklist',
       isOpen: 'true',
-      text: '',
+      text: 'ltng_',
       options: LONG_OPTIONS
     })
   ];
