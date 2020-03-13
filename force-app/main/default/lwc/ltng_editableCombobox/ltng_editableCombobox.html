@@ -1,0 +1,54 @@
+<template>
+    <div class="slds-form-element">
+        <label class="slds-form-element__label" for="editable-text">Static Resource to Update</label>
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container">
+                <div class={comboboxCSS_Classes} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <input type="text"
+                            class="editable-text slds-input slds-combobox__input slds-has-focus"
+                            id="editable-text" aria-controls="select-dropdown"
+                            autocomplete="off" role="textbox"
+                            placeholder="Select an Option" readonly=""
+                            value={_text}
+                            onfocusin={handleEditableTextFocus}
+                            onfocusout={handleEditableTextBlur}
+                            onkeyup={handleKeyUp}
+                        />
+                        <lightning-icon icon-name="utility:search" alternative-text="Search" size="x-small"
+                            class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"
+                        ></lightning-icon>
+                        <!--
+                    <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                        <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down">
+                        </svg>
+                    </span>
+                        <lightning-input type="search" class="editable-text slds-has-focus"
+                            value={_text}
+                        ></lightning-input>
+                        -->
+                    </div>
+                    <div id="select-dropdown" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <template
+                            for:each={options} for:item="option" 
+                        >
+                        <li key={option.key} role="presentation" class="slds-listbox__item">
+                            <c-ltng_editable-combobox_item
+                                key={option.key}
+                                label={option.label}
+                                sub-label={option.subLabel}
+                                icon={option.icon}
+                                value={option.value}
+                                onclick={handleItemClicked}
+                            ></c-ltng_editable-combobox_item>
+                        </li>
+                        </template>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</template>
