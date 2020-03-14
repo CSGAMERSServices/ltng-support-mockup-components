@@ -1,0 +1,8 @@
+.preview {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #AAA;
+    color: #888;
+    border-radius: 5px;
+    text-align: center;
+}

@@ -1,16 +1,55 @@
 <template>
     <div class="static-resource-helper slds-box slds-card slds-theme_default">
         <h1 class="slds-text-heading_small">Update / Create Files</h1>
+
+        <lightning-input
+            type="file" label="Image"
+            class="file-selector"
+            required accept="image/png, image/jpg, image/jpeg, image/gif"
+            message-when-value-missing="Please upload an image (png, gif, jpg)"
+            onchange={handleFileChanged}
+        ></lightning-input>
+
         <c-ltng_editable-combobox
-            label="Files"
-            is-open="false"
+            label="Salesforce File"
+            is-open="true"
             placeholder="Name of File (or new File to create)"
             text={queryTerm}
             options={options}
             onchange={handleRecordChanged}
             onkeyup={handleKeyUp}
         ></c-ltng_editable-combobox>
-        <!--
-        -->
+
+        <span if:true={hasRecordToUpdate}>
+            <!--
+            <div class='alert' if:true={hasRecordToUpdate}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+                    <span class="slds-assistive-text">warning</span>
+                    <lightning-icon icon-name="utility:warning" class="slds-m-right_x-small"
+                        alternative-text="Warning" title="Warning"
+                    ></lightning-icon>
+                    <h2 if:true={isNew}>
+                        New file will be created: {newFileName}
+                    </h2>
+                    <h2 if:false={isNew}>
+                        File will be updated: {newFileName}
+                    </h2>
+                </div>
+            </div>
+            -->
+            <div class="preview" if:true={fileToUploadBase64}>
+                <img 
+                    src={fileToUploadBase64}
+                    style="width: 100px; height: auto;"
+                />
+                <p>(Preview)</p>
+            </div>
+            <div class='actions'>
+                <lightning-button
+                    variant="brand"
+                    label={buttonLabel}
+                ></lightning-button>
+            </div>
+        </span>
     </div>
 </template>

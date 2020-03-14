@@ -27,13 +27,37 @@ export const utcDateToLocal = (dateStr) => {
 };
 
 /**
- * Trims the file load contents into just the base64 data
- * ex: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
- * @param {String} b64data - contents from FileReader.
- * @returns {String} Just the base64 data. ex: iVBORw0KGgoA...
+ * Converts a filename into a Salesforce file title
+ * @param {String} fileName
+ * @returns {String}
  */
-export const fileReadBase64 = (b64Data) => {
-  return b64Data.substring(b64Data.indexOf(',')+1);
+export const fileNameToFileTitle = (fileName) => {
+  return fileName.replace(/\.[^\n.]+$/i, '');
+}
+
+/**
+ * Loads a file and returns the base64 encoding
+ * @param {File} fileToLoad -
+ * @param {FileReder} fileReaderInstance - (allow for mock/testing)
+ * @return {String} - base64 string of the contents of the file
+ */
+export const loadFileAsBase64 = (fileToLoad, fileReaderInstance) => {
+  return new Promise((resolve, reject) => {
+    fileReaderInstance.readAsDataURL(fileToLoad);
+    fileReaderInstance.onload = () => {
+      console.log('loaded');
+      let fileResult = fileReaderInstance.result;
+      // if (fileResult) {
+      //   fileResult = fileResult.substr(fileResult.indexOf(',') + 1);
+      //   resolve(fileResult);
+      // }
+      // reject('reader.result is empty');
+      resolve(fileResult);
+    }
+    fileReaderInstance.onerror = (error) => {
+      reject(error);
+    }
+  });
 }
 
 /**
@@ -60,6 +84,24 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * @type {ContentVersion}
    */
   @track recordToUpdate = null;
+
+  /**
+   * Information about the file to be uploaded
+   * @type {File}
+   */
+  fileToUpload;
+
+  /**
+   * Name to use if new file
+   * @type {String}
+   */
+  newFileName;
+
+  /**
+   * contents of the file to be uploaded to salesforce
+   * @type {String}
+   */
+  fileToUploadBase64;
 
   /**
    * Collection of static resources captured
@@ -110,6 +152,20 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     return this.recordToUpdate !== null;
   }
 
+  /**
+   * Label to show on the button
+   * @type {String}
+   */
+  get buttonLabel() {
+    let result = '';
+    if (this.isNew) {
+      result = `Create File: ${this.newFileName}`;
+    } else {
+      result = `Update File: ${this.newFileName}`;
+    }
+    return result;
+  }
+
   //-- handlers
   /**
    * Handles when the user presses the return key
@@ -139,7 +195,37 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     } else {
       this.recordToUpdate = value;
     }
+    this.newFileName = this.recordToUpdate.Title;
+
     this.clearKeyListener();
+  }
+
+  /**
+   * Handles when the file input has changed
+   * @param {CustomEvent} evt 
+   */
+  async handleFileChanged(evt) {
+    console.log('file changed');
+    
+    const fileSelector = this.template  // eslint-disable-line
+      .querySelector('lightning-input.file-selector');
+    const editableCombobox = this.template // eslint-disable-line
+      .querySelector('c-ltng_editable-combobox');
+    
+    const filesToUpload = evt.target.files;
+    if (filesToUpload.length > 0) {
+      this.fileToUpload = filesToUpload[0];
+
+      const fileName = fileNameToFileTitle(this.fileToUpload.name);
+      this.newFileName = fileName;
+
+      if (!editableCombobox.text) {
+        editableCombobox.text = fileName;
+        this.queryTerm = fileName;
+      }
+
+      this.fileToUploadBase64 = await loadFileAsBase64(this.fileToUpload, new FileReader());
+    }
   }
 
   //-- internal methods
