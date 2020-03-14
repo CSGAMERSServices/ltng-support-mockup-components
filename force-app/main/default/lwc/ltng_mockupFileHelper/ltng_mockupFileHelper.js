@@ -1,7 +1,17 @@
 
 import { LightningElement, api, track, wire } from 'lwc';
 
+import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
 
+/**
+ * @typedef {Object} ContentDocument
+ * @property {String} Id - 
+ * @property {String} Title - 
+ * @property {String} LatestPublishedVersionId -
+ * @property {String} LastModifiedDate -
+ */
+
+/** @type {import('c/ltng_editableCombobox').EditableComboboxOption} */
 
 /**
  * Converts a UTC DateTime string to local
@@ -36,29 +46,105 @@ export const STATIC_RESOURCE_ICON = 'standard:file';
  * Length in milliseconds to wait before searching
  * @type {Number}
  */
-// const TIMEOUT_DELAY = 1000;
+const TIMEOUT_DELAY = 1000;
 
 export default class Ltng_mockupFileHelper extends LightningElement {
   /**
    * The term to search for
    * @type {String}
    */
-  @api queryTerm = 'Mock'
+  @api queryTerm = '';
 
   /**
    * Content version to update
    * @type {ContentVersion}
    */
-  @api contentVersionToUpdate = null;
+  @track recordToUpdate = null;
 
   /**
    * Collection of static resources captured
    */
-  @api options = [];
+  @track options = [];
+
+  @wire (apexFindFiles, { searchStr: '$queryTerm' })
+  handleResults({data, error}) {
+    // console.log('results came in');
+    if (error) {
+      console.error('error occurred', error);
+    }
+    if (data) {
+      console.log('data came back', data);
+      this.options = data.map((contentDocument) => {
+        return contentDocument ? {
+          key: contentDocument.LatestPublishedVersionId,
+          label: contentDocument.Title,
+          subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
+          icon: STATIC_RESOURCE_ICON,
+          value: contentDocument
+        } : {};
+      });
+    }
+  }
 
   /**
    * timeout used to delay searching
    * @type {TimerHandler}
    */
   delayTimeout;
+
+  //-- getters / setters
+
+  /**
+   * Whether the ContentDocument is new
+   * @type {Boolean}
+   */
+  get isNew() {
+    return !this.recordToUpdate || !this.recordToUpdate.Id;
+  }
+
+  /**
+   * Whether there is a record to update
+   * @type {Boolean}
+   */
+  get hasRecordToUpdate() {
+    return this.recordToUpdate !== null;
+  }
+
+  //-- handlers
+  /**
+   * Handles when the user presses the return key
+   * @param {CustomEvent} evt
+   */
+  handleKeyUp(evt) {
+    const searchStr = evt.target.value;
+    this.clearKeyListener();
+
+    this.delayTimeout = setTimeout(() => { // eslint-disable-line
+      console.log(`searching for:${searchStr}`);
+      this.queryTerm = searchStr;
+    }, TIMEOUT_DELAY);
+  }
+
+  /**
+   * Handles when the editable combobox value has changed
+   * @param {CustomEvent}
+   */
+  handleRecordChanged(evt) {
+    const value = evt.detail.value;
+    console.log('record changed');
+    if (typeof value === "string") {
+      this.recordToUpdate = {
+        Title: value
+      };
+    } else {
+      this.recordToUpdate = value;
+    }
+    this.clearKeyListener();
+  }
+
+  //-- internal methods
+
+  clearKeyListener() {
+    window.clearTimeout(this.delayTimeout);
+  }
 }

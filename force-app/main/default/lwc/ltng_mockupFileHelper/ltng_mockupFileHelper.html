@@ -5,11 +5,12 @@
             label="Files"
             is-open="false"
             placeholder="Name of File (or new File to create)"
+            text={queryTerm}
+            options={options}
+            onchange={handleRecordChanged}
+            onkeyup={handleKeyUp}
         ></c-ltng_editable-combobox>
         <!--
-            options={fileOptions}
-            onchange={handleFileChanged}
-            onkeyup={handleKeyUp}
         -->
     </div>
 </template>

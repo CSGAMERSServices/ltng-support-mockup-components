@@ -7,7 +7,10 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     public static final String CONTENT_URL_FORMAT = '/sfc/servlet.shepherd/version/download/{0}';
     
     /** Label for the NO CHOICE MADE on resource selection */
-    public static final String RESOURCE_NAME_NOT_CHOSEN = '-- Use Manual Entry --';
+    public static final String NO_FILES_FOUND = '-- No Files Found --';
+
+    /** Max number of Files to return with a given search */
+    public static final Integer MAX_RESULTS = 100;
 
     //-- settings methods
 
@@ -25,7 +28,7 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     global override VisualEditor.DataRow getDefaultValue() {
         VisualEditor.DynamicPickListRows allValues = getValues();
         VisualEditor.DataRow row = new VisualEditor.DataRow(
-            RESOURCE_NAME_NOT_CHOSEN,
+            NO_FILES_FOUND,
             null
         );
 
@@ -71,6 +74,41 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
         }
 
         return myValues;
+    }
+
+    //-- finds static resources with a specific search criteria
+
+    /**
+     * Finds files that match the name of the search criteria provided.
+     * (if the search string is empty, it will return at most 10 of the most recent static resources modified)
+     * @param (String) searchString
+     * @return ContentDocument[]
+     */
+    @AuraEnabled(cacheable=true)
+    public static ContentDocument[] findFiles( String searchStr ){
+        ContentDocument[] results = new ContentDocument[]{};
+        String cleanedSearchStr = '%'
+            + (String.isEmpty(searchStr)?'':searchStr)
+            + '%';
+
+        if (String.isEmpty(searchStr)) {
+            results = [
+                SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate
+                FROM ContentDocument
+                ORDER BY LastModifiedDate desc
+                limit :MAX_RESULTS
+            ];
+        } else {
+            results = [
+                SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate
+                FROM ContentDocument
+                WHERE Title like :cleanedSearchStr
+                ORDER BY LastModifiedDate desc
+                limit :MAX_RESULTS
+            ];
+        }
+
+        return results;
     }
 
     //-- image methods
