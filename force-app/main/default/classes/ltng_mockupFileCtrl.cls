@@ -43,12 +43,31 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
         VisualEditor.DataRow row;
         VisualEditor.DynamicPickListRows myValues = new VisualEditor.DynamicPickListRows();
 
-        for (ContentDocument fileContent : [
-            SELECT Id, Title, LatestPublishedVersionId
-            FROM ContentDocument
-        ]){
-            row = new VisualEditor.DataRow(fileContent.Title, String.valueOf(fileContent.Id));
-            myValues.addRow(row);
+        ltng_mockupSettings__c mockupSettings = ltng_mockupSettings__c.getOrgDefaults();
+        String selectionFilter = null;
+
+        if (mockupSettings != null && !String.isEmpty(mockupSettings.Mock_Image_File_Filter__c)) {
+            selectionFilter = '%' + mockupSettings.Mock_Image_File_Filter__c + '%';
+            //-- avoiding dynamic soql to better loop across values
+            //-- seems to not be any better security wise though
+            for (ContentDocument fileContent : [
+                SELECT Id, Title, LatestPublishedVersionId
+                FROM ContentDocument
+                WHERE Title like :selectionFilter
+                ORDER BY LastModifiedDate desc
+            ]){
+                row = new VisualEditor.DataRow(fileContent.Title, String.valueOf(fileContent.Id));
+                myValues.addRow(row);
+            }
+        } else {
+            for (ContentDocument fileContent : [
+                SELECT Id, Title, LatestPublishedVersionId
+                FROM ContentDocument
+                ORDER BY LastModifiedDate desc
+            ]){
+                row = new VisualEditor.DataRow(fileContent.Title, String.valueOf(fileContent.Id));
+                myValues.addRow(row);
+            }
         }
 
         return myValues;
