@@ -87,7 +87,10 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
 
   @api get contentAddress() {
     let result = '';
-    if (this.contentURL) {
+    if (this.contentId && this.contentId.indexOf('/') > -1) {
+      //-- if needed, we use the contentId as the whole URL (for local testing)
+      result = this.contentId;
+    } else if (this.contentURL) {
       result = `${this.contentURL.data}${this.cacheBuster}`;
     }
     return result;
