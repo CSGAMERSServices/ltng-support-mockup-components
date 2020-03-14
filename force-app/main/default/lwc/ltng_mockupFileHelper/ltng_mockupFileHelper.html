@@ -2,7 +2,7 @@
     <div class="static-resource-helper slds-box slds-card slds-theme_default">
         <h1 class="slds-text-heading_small">Update / Create Files</h1>
         <lightning-layout multiple-rows="true" horizontal-align="center">
-            <lightning-layout-item size="12">
+            <lightning-layout-item size="12" padding="around-small">
                 <lightning-input
                     type="file" label="Image"
                     class="file-selector"
@@ -11,7 +11,8 @@
                     onchange={handleFileChanged}
                 ></lightning-input>
             </lightning-layout-item>
-            <lightning-layout-item size="12">
+            <lightning-layout-item size="12" padding="around-small">
+                <!--
                 <div class='alert' if:true={hasRecordToUpdate}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
                         <span class="slds-assistive-text">warning</span>
@@ -26,6 +27,7 @@
                         </h2>
                     </div>
                 </div>
+                -->
                 <c-ltng_editable-combobox
                     label="Salesforce File"
                     is-open="true"
@@ -36,7 +38,7 @@
                     onkeyup={handleKeyUp}
                 ></c-ltng_editable-combobox>
             </lightning-layout-item>
-            <lightning-layout-item size="12">
+            <lightning-layout-item size="12" padding="around-small">
                 <div class="preview" if:true={fileToUploadBase64}>
                     <img 
                         src={fileToUploadBase64}
@@ -45,7 +47,7 @@
                     <p>(Preview)</p>
                 </div>
             </lightning-layout-item>
-            <lightning-layout-item size="12">
+            <lightning-layout-item size="12" padding="around-small">
                 <div class='actions'>
                     <lightning-button
                         variant="brand"
