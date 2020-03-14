@@ -166,6 +166,18 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     return result;
   }
 
+  /**
+   * Whether we are ready for submission
+   * @type {Boolean}
+   */
+  @api get isSubmissionDisabled() {
+    return !(
+      this.recordToUpdate !== null
+      && (this.fileToUploadBase64 ? true : false)
+      && (this.newFileName ? true : false)
+    );
+  }
+
   //-- handlers
   /**
    * Handles when the user presses the return key
