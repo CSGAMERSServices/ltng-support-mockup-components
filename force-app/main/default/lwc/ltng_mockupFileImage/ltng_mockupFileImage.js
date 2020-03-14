@@ -1,15 +1,9 @@
 import { LightningElement, api, track, wire } from 'lwc'; // eslint-disable-line no-unused-vars
 import { NavigationMixin } from 'lightning/navigation';
 
-import apexDetermineContentURL from '@salesforce/apex/ltng_MockupController2.determineContentURL';
+import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
 
-import apexGetSettings from '@salesforce/apex/ltng_MockupController2.getSettings';
-
-/**
- * Sentinel meaning no choice was made for reource selection
- * @type {String}
- */
-// const RESOURCE_NAME_NOT_CHOSEN = '-- Use Manual Entry --';
+import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
 
 /**
  * @typedef {Object} ltng_mockupSettings__c
@@ -27,14 +21,7 @@ export function generateCacheBuster(ignoreCache) {
   return '';
 }
 
-// content id = 069R0000000qlZcIAI
-// content version = 068R0000000qx8LIAQ
-
-/**
- * Alternative version of the mockup image that uses files instead
- */
-export default class Ltng_mockupImage2 extends NavigationMixin(LightningElement) {
-
+export default class Ltng_mockupFileImage extends NavigationMixin(LightningElement) {
   /**
    * Id of the File Content we want to follow
    * @type {String}
@@ -75,36 +62,20 @@ export default class Ltng_mockupImage2 extends NavigationMixin(LightningElement)
    * Unique cache buster to break the cache when asking for resources
    * @type {String}
    */
-  @track cacheBuster = '';
+  @track cacheBuster = '?129312391293123';
 
   /**
-   * 
-   * @param {ltng_} param0 
-   */
-  @wire (apexGetSettings)
-  handleApexSettings({ data }) {
-    this.cacheBuster = generateCacheBuster(
-      (data && data.Enable_Mock_Image_Caching__c === false)
-    );
-  }
-
-  /** 
-   * Address URL of the content version
-   * @type {String}
-   **/
-  @wire(apexDetermineContentURL, {contentId: '$contentId'})
-  contentURL;
-
-  /**
-   * Getter to determine the url to use,
-   * plus optional cache busting
+   * URL for the contentVersion
    * @type {String}
    */
+  @track contentURL = '';
+  // '/sfc/servlet.shepherd/version/download/{0}';
+
+  //-- getters / setters
+
   @api get contentAddress() {
     let result = '';
-    if (this.contentURL && this.contentURL.data) {
-      result = `${this.contentURL.data}${this.cacheBuster}`;
-    }
+    result = `/sfc/servlet.shepherd/version/download/${this.contentVersionId}${this.cacheBuster}`;
     return result;
   }
 

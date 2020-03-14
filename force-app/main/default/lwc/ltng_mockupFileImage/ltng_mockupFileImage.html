@@ -1,0 +1,12 @@
+<template>
+    <div>content address: {contentAddress}</div>
+    <template if:true={contentAddress}>
+        <div data-id='mockup-image-container' style='text-align: center;'>
+            <a onclick={handleClick}>
+                <img class='mockup-image' src={contentAddress} alt={description}
+                    style={calculatedStyle}
+                />
+            </a>
+        </div>
+    </template>
+</template>

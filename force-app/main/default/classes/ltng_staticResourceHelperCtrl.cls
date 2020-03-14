@@ -51,7 +51,7 @@ public with sharing class ltng_staticResourceHelperCtrl {
             Name = resourceName,
             body = b
         );
-        insert result;
+        // insert result;
         return result;
     }
 
@@ -68,7 +68,7 @@ public with sharing class ltng_staticResourceHelperCtrl {
             Id = resourceId,
             body = b
         );
-        update result;
+        // update result;
         return result;
     }
 }
