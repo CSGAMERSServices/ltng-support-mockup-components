@@ -19,9 +19,8 @@ export default class story_mockupFileHelper extends LightningElement {
    */
   @api allScenes = [
     new Scene('Large Width Scene', {
-      description: 'Example_description',
       width: 'large',
-      message: 'Example_text'
+      sceneStyle: 'height: 300px;'
     })
   ];
 }

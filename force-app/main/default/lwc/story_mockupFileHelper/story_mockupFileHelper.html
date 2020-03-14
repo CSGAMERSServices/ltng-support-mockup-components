@@ -6,16 +6,17 @@
         @see https://www.lightningdesignsystem.com/utilities/sizing/
     -->
     <template for:each={allScenes} for:item="scene">
-        <c-story_book key={scene.label} width={scene.value.width} title={scene.label}>
+        <c-story_book key={scene.label} width={scene.value.width} title={scene.label}
+            sandbox-styles={scene.value.sceneStyle}
+        >
 
             <!--
                 Finally we show our component.
                 This will be placed inside the 'sandbox' of the story
             -->
 
-            <c-story_sample-component
-                message={scene.value.messageToShow}
-            ></c-story_sample-component>
+            <c-ltng_mockup-file-helper
+            ></c-ltng_mockup-file-helper>
 
 
             <!--
@@ -23,7 +24,7 @@
                 and it will be shown within the story.
             -->
             
-            <div slot="description">
+            <div if:true={scene.value.description} slot="description">
                 {scene.value.description}
             </div>
         </c-story_book>

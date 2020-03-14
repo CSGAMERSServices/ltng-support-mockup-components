@@ -1,3 +1,15 @@
 <template>
-    
+    <div class="static-resource-helper slds-box slds-card slds-theme_default">
+        <h1 class="slds-text-heading_small">Update / Create Files</h1>
+        <c-ltng_editable-combobox
+            label="Files"
+            is-open="false"
+            placeholder="Name of File (or new File to create)"
+        ></c-ltng_editable-combobox>
+        <!--
+            options={fileOptions}
+            onchange={handleFileChanged}
+            onkeyup={handleKeyUp}
+        -->
+    </div>
 </template>
