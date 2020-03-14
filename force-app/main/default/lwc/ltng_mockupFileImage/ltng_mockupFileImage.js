@@ -29,12 +29,6 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
   @api contentId = '069R0000000qlZcIAI';
 
   /**
-   * Id of the content version
-   * @type {String}
-   */
-  @track contentVersionId = '068R0000000qx8LIAQ';
-
-  /**
    * The screen reader tooltip for the image
    * @type {String}
    */
@@ -75,6 +69,13 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
     }
   }
 
+  /** 
+   * Address URL of the content version
+   * @type {String}
+   **/
+  @wire(apexDetermineFileContentURL, {contentId: '$contentId'})
+  contentURL;
+
   /**
    * URL for the contentVersion
    * @type {String}
@@ -86,7 +87,9 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
 
   @api get contentAddress() {
     let result = '';
-    result = `/sfc/servlet.shepherd/version/download/${this.contentVersionId}${this.cacheBuster}`;
+    if (this.contentURL) {
+      result = `${this.contentURL.data}${this.cacheBuster}`;
+    }
     return result;
   }
 

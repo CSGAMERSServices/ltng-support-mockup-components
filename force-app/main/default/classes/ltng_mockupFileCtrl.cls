@@ -66,17 +66,21 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     public static String determineFileContentURL(Id contentId, String cacheBuster) {
         String result = '';
         
-        ContentDocument content = [
-            SELECT Id, Title, LatestPublishedVersionId
-            FROM ContentDocument
-            WHERE id = :contentId
-        ];
+        try {
+            ContentDocument content = [
+                SELECT Id, Title, LatestPublishedVersionId
+                FROM ContentDocument
+                WHERE id = :contentId
+            ];
 
-        return String.format(
-            CONTENT_URL_FORMAT,
-            new String[]{
-                content.LatestPublishedVersionId
-            }
-        );
+            result = String.format(
+                CONTENT_URL_FORMAT,
+                new String[]{
+                    content.LatestPublishedVersionId
+                }
+            );
+        } catch(Exception err) {}
+
+        return result;
     }
 }
