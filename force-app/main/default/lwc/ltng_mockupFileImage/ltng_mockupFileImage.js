@@ -62,7 +62,18 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
    * Unique cache buster to break the cache when asking for resources
    * @type {String}
    */
-  @track cacheBuster = '?129312391293123';
+  @track cacheBuster = '';
+
+  /**
+   * 
+   * @param {ltng_} param0 
+   */
+  @wire (apexGetSettings)
+  handleApexSettings({ data }) {
+    if (data) {
+      this.cacheBuster = generateCacheBuster(data.Enable_Mock_Image_Caching__c !== true);
+    }
+  }
 
   /**
    * URL for the contentVersion

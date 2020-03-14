@@ -15,7 +15,7 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
      * Determines the settings for the Mock components.
      * @return ltng_mockupSettings__c
      */
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static ltng_mockupSettings__c getSettings(){
         ltng_mockupSettings__c results = ltng_mockupSettings__c.getOrgDefaults();
         return results;
