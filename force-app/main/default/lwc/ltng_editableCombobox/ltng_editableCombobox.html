@@ -16,8 +16,11 @@
                             onfocusout={handleEditableTextBlur}
                             onkeyup={handleKeyUp}
                         />
-                        <lightning-icon icon-name="utility:search" alternative-text="Search" size="x-small"
-                            class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"
+                        <lightning-icon if:true={isOpen} icon-name="utility:chevrondown" alternative-text="Search" size="x-small"
+                            class="slds-icon_container slds-icon-utility-chevrondown slds-input__icon slds-input__icon_right"
+                        ></lightning-icon>
+                        <lightning-icon if:false={isOpen} icon-name="utility:chevronup" alternative-text="Search" size="x-small"
+                            class="slds-icon_container slds-icon-utility-chevronup slds-input__icon slds-input__icon_right"
                         ></lightning-icon>
                     </div>
                     <div id="select-dropdown" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
