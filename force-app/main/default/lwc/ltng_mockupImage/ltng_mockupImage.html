@@ -2,7 +2,7 @@
     <template if:true={resourceAddress}>
         <div data-id='mockup-image-container' style='text-align: center;'>
             <a onclick={handleClick}>
-                <img class='mockup-image' src={resourceAddress} alt={description}
+                <img class='mockup-image' src={resourceAddress} alt={description} title={tooltip}
                     style={calculatedStyle}
                 />
             </a>

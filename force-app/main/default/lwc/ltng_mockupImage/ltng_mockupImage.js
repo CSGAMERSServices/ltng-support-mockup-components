@@ -148,6 +148,14 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
     return `width:${this.imgWidth}; height:${this.imgHeight}`;
   }
 
+  /**
+   * The tooltip to show on the image
+   * @returns {String}
+   */
+  @api get tooltip() {
+    return `${this.resourceName} - ${this.description ? this.description : ''}`;
+  }
+
   //-- handlers
   /**
    * Handler when the user clicks on the image
