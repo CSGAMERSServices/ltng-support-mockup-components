@@ -36,6 +36,15 @@ export const fileNameToFileTitle = (fileName) => {
 }
 
 /**
+ * Extracts the base64 content of a FileReader content
+ * @param {String} str - ex: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…
+ * @returns {String} - ex: iVBORw0KGgoAAAANSUhEUgAAABgA…
+ */
+export const extractFileReaderBase64 = (str) => {
+  return str.substr(str.indexOf(',')+1)
+}
+
+/**
  * Loads a file and returns the base64 encoding
  * @param {File} fileToLoad -
  * @param {FileReder} fileReaderInstance - (allow for mock/testing)
@@ -231,17 +240,20 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     const editableCombobox = this.template // eslint-disable-line
       .querySelector('c-ltng_editable-combobox');
     
-    const filesToUpload = evt.target.files;
+    // const filesToUpload = evt.target.files;
+    const filesToUpload = evt.detail.files;
+
     if (filesToUpload.length > 0) {
       this.fileToUpload = filesToUpload[0];
 
       const fileName = fileNameToFileTitle(this.fileToUpload.name);
       this.newFileName = fileName;
 
-      if (!editableCombobox.text) {
-        editableCombobox.text = fileName;
-        this.queryTerm = fileName;
-      }
+      // if (!editableCombobox.text) {
+      //   editableCombobox.text = fileName;
+      //   this.queryTerm = fileName;
+      // }
+      this.queryTerm = fileName;
 
       this.fileToUploadBase64 = await loadFileAsBase64(this.fileToUpload, new FileReader());
     }
@@ -255,7 +267,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
       fileName: this.fileToUpload.name,
-      body: this.fileToUploadBase64
+      body: extractFileReaderBase64(this.fileToUploadBase64)
     })
       .then(data => {
         //-- @TODO: handle data
@@ -266,7 +278,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         //-- @TODO: handle error
         debugger;
         console.error('error occurred', JSON.stringify(error));
-        this.error = error;
+        this.error = error.body.message;
       });
   }
 

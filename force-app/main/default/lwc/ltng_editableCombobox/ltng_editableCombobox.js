@@ -60,11 +60,11 @@ export default class Ltng_editableCombobox extends LightningElement {
    * The editable text value
    * @type {String}
    */
-  @api
   get text(){
     const el = this.template.querySelector('.editable-text');
     return el ? el.value : this._text;
   }
+  @api
   set text(val) {
     this._text = val;
     const el = this.template.querySelector('.editable-text');
@@ -78,11 +78,11 @@ export default class Ltng_editableCombobox extends LightningElement {
    * Which dropdown value is initially set
    * @type {any}
    */
-  @api
   get selection() {
     const el = this.template.querySelector('.combobox');
     return el ? el.value : this._selection;
   }
+  @api
   set selection(val) {
     const el = this.template.querySelector('.combobox');
     if (el) {
