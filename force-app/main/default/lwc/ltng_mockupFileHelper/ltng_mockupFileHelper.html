@@ -2,7 +2,7 @@
     <div class="static-resource-helper slds-box slds-card slds-theme_default">
         <h1 class="slds-text-heading_small">Update / Create Files</h1>
         <lightning-layout multiple-rows="true" horizontal-align="center">
-            <lightning-layout-item size="12" padding="around-small">
+            <lightning-layout-item size="12" small-device-size="6" padding="around-small">
                 <lightning-input
                     type="file" label="Image"
                     class="file-selector"
@@ -10,6 +10,15 @@
                     message-when-value-missing="Please upload an image (png, gif, jpg)"
                     onchange={handleFileChanged}
                 ></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" padding="around-small">
+                <div class="preview" if:true={fileToUploadBase64}>
+                    <img 
+                        src={fileToUploadBase64}
+                        style="max-width: 100%; max-height: 100px;"
+                    />
+                    <p>(Preview)</p>
+                </div>
             </lightning-layout-item>
             <lightning-layout-item size="12" padding="around-small">
                 <!--
@@ -37,15 +46,6 @@
                     onchange={handleRecordChanged}
                     onkeyup={handleKeyUp}
                 ></c-ltng_editable-combobox>
-            </lightning-layout-item>
-            <lightning-layout-item size="12" padding="around-small">
-                <div class="preview" if:true={fileToUploadBase64}>
-                    <img 
-                        src={fileToUploadBase64}
-                        style="width: 100px; height: auto;"
-                    />
-                    <p>(Preview)</p>
-                </div>
             </lightning-layout-item>
             <lightning-layout-item size="12" padding="around-small">
                 <div class='actions'>

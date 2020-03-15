@@ -89,19 +89,19 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Information about the file to be uploaded
    * @type {File}
    */
-  fileToUpload;
+  @track fileToUpload;
 
   /**
    * Name to use if new file
    * @type {String}
    */
-  newFileName;
+  @track newFileName;
 
   /**
    * contents of the file to be uploaded to salesforce
    * @type {String}
    */
-  fileToUploadBase64;
+  @track fileToUploadBase64;
 
   /**
    * Collection of static resources captured
@@ -170,7 +170,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Whether we are ready for submission
    * @type {Boolean}
    */
-  @api get isSubmissionDisabled() {
+  get isSubmissionDisabled() {
     return !(
       this.recordToUpdate !== null
       && (this.fileToUploadBase64 ? true : false)
