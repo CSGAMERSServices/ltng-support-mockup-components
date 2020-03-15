@@ -132,15 +132,27 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     }
     if (data) {
       console.log('data came back', data);
-      this.options = data.map((contentDocument) => {
-        return contentDocument ? {
-          key: contentDocument.Id, // LatestPublishedVersionId,
-          label: contentDocument.Title,
-          subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
+      if (data.length === 0) {
+        this.options = [{
+          key: 'new',
+          label: `New Resource: ${this.queryTerm}`,
+          subLabel: '',
           icon: STATIC_RESOURCE_ICON,
-          value: contentDocument
-        } : {};
-      });
+          value: {
+            Title: this.queryTerm
+          }
+        }];
+      } else {
+        this.options = data.map((contentDocument) => {
+          return contentDocument ? {
+            key: contentDocument.Id, // LatestPublishedVersionId,
+            label: contentDocument.Title,
+            subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
+            icon: STATIC_RESOURCE_ICON,
+            value: contentDocument
+          } : {};
+        });
+      }
     }
   }
 
@@ -200,7 +212,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * @param {CustomEvent} evt
    */
   handleKeyUp(evt) {
-    const searchStr = evt.target.value;
+    let searchStr = evt.target.value;
+    if (searchStr === undefined) searchStr = 'q';
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
@@ -271,7 +284,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     })
       .then(data => {
         //-- @TODO: handle data
-        debugger;
+        // debugger;
         console.log('creation was successful', data);
       })
       .catch(error => {
