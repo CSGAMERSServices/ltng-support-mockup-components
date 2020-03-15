@@ -14,6 +14,5 @@ export default class TestFileInput extends LightningElement {
         files: evt.target.files
       }
     }));
-    debugger;
   }
 }
