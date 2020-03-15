@@ -13,8 +13,6 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
  * @property {String} LastModifiedDate -
  */
 
-/** @type {import('c/ltng_editableCombobox').EditableComboboxOption} */
-
 /**
  * Converts a UTC DateTime string to local
  * @param {String} utcDateTime - ex: '2020-03-11T20:39:45.000Z'
