@@ -11,6 +11,14 @@ import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
  */
 
 /**
+ * @typedef {Object} FileAddressInfo
+ * @property {String} ContentDocumentId -
+ * @property {String} ContentVersionId -
+ * @property {String} Title -
+ * @property {String} Address - 
+ */
+
+/**
  * Updates the cache buster
  * (the unique string that invalidates the cache)
  */
@@ -69,18 +77,12 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
     }
   }
 
+  @wire(apexDetermineFileContentURL, {contentId: '$contentId'})
   /** 
    * Address URL of the content version
-   * @type {String}
+   * @type {FileAddressInfo}
    **/
-  @wire(apexDetermineFileContentURL, {contentId: '$contentId'})
-  contentURL;
-
-  /**
-   * URL for the contentVersion
-   * @type {String}
-   */
-  @track contentURL = '';
+  contentFileAddress = null;
   // '/sfc/servlet.shepherd/version/download/{0}';
 
   //-- getters / setters
@@ -90,13 +92,12 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
     if (this.contentId && this.contentId.indexOf('/') > -1) {
       //-- if needed, we use the contentId as the whole URL (for local testing)
       result = this.contentId;
-    } else if (this.contentURL) {
-      result = `${this.contentURL.data}${this.cacheBuster}`;
+    } else if (this.contentFileAddress && this.contentFileAddress.data) {
+      result = `${this.contentFileAddress.data.Address}${this.cacheBuster}`;
     }
     return result;
   }
 
-  //-- getters / setters
   /**
    * the calculated style of the image
    * @returns {String}
@@ -104,6 +105,22 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
   @api
   get calculatedStyle() {
     return `width:${this.imgWidth}; height:${this.imgHeight}`;
+  }
+
+  /**
+   * Tooltip to show for the image, so we can better find and update the file
+   * @returns {String}
+   */
+  @api get tooltip() {
+    let result = 'File:';
+    if (this.contentFileAddress && this.contentFileAddress.data) {
+      const title = this.contentFileAddress.data.Title;
+      const ContentDocumentId = this.contentFileAddress.data.ContentDocumentId;
+      const ContentVersionId = this.contentFileAddress.data.ContentVersionId;
+      const description = this.description ? this.description : '';
+      result += `${title} (document:${ContentDocumentId}/version:${ContentVersionId}) - ${description}`;
+    }
+    return result;
   }
 
   //-- handlers

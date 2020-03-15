@@ -117,11 +117,11 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
      * Determines the URL for the latest contentVersion of a content
      * @param contentId (Id) - Id of the content we want
      * @param cacheBuster (String) - optional cache busting technique for conditional caching.
-     * @return String - url for that content
+     * @return FileAddress - url for that content
      */
     @AuraEnabled(cacheable=true)
-    public static String determineFileContentURL(Id contentId, String cacheBuster) {
-        String result = '';
+    public static FileAddressInfo determineFileContentURL(Id contentId, String cacheBuster) {
+        FileAddressInfo result = new FileAddressInfo();
         
         try {
             ContentDocument content = [
@@ -130,13 +130,53 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
                 WHERE id = :contentId
             ];
 
-            result = String.format(
+            result.ContentDocumentId = content.Id;
+            result.ContentVersionId = content.LatestPublishedVersionId;
+            result.Title = content.Title;
+            result.Address = String.format(
                 CONTENT_URL_FORMAT,
                 new String[]{
                     content.LatestPublishedVersionId
                 }
             );
         } catch(Exception err) {}
+
+        return result;
+    }
+
+    class FileAddressInfo {
+        @AuraEnabled public Id ContentDocumentId;
+        @AuraEnabled public Id ContentVersionId;
+        @AuraEnabled public String Address;
+        @AuraEnabled public String Title;
+    }
+
+    //-- file modification methods
+
+    /**
+     * Creates a new file version
+     * @param documentId (Id) - id of the document (or null if new)
+     * @param title (String) - title of the document
+     * @param fileName (String) - name of the file (with extension)
+     * @param body (String) - base64 encoded content
+     * @return {ContentVersion}
+     */
+    @AuraEnabled(cacheable=false)
+    public static ContentVersion createContentVersion(
+        Id documentId, String title, String fileName, String body
+    ) {
+        ContentVersion result = new ContentVersion(
+            ContentLocation = 'S',
+            Title = title,
+            PathOnClient = fileName,
+            VersionData = EncodingUtil.base64Decode(body)
+        );
+
+        if (documentId != null) {
+            result.ContentDocumentId = documentId;
+        }
+
+        insert result;
 
         return result;
     }

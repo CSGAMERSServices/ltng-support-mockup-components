@@ -23,11 +23,11 @@
             <property name="targetAddress" type="String" label="OnClick Address"
                 description="Where should users go when clicking the hero"
             />
-            <property name="imgWidth" type="String" label="Image Width"
+            <property name="imgWidth" type="String" label="Width CSS"
                 description="Width of the hero (px or %)" default="100%"
             />
-            <property name="imgHeight" type="String" label="Image Height"
-                description="Height of the hero image (px or % or auto)" default="auto"
+            <property name="imgHeight" type="String" label="Height CSS"
+                description="Height of the hero image (px or % or auto)" default="auto;"
             />
         </targetConfig>
     </targetConfigs>

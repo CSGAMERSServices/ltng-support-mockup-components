@@ -153,7 +153,7 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
    * @returns {String}
    */
   @api get tooltip() {
-    return `${this.resourceName} - ${this.description ? this.description : ''}`;
+    return `resource:${this.resourceName} - ${this.description ? this.description : ''}`;
   }
 
   //-- handlers

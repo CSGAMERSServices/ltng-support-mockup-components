@@ -21,6 +21,17 @@
                 </div>
             </lightning-layout-item>
             <lightning-layout-item size="12" padding="around-small">
+                <div class='alert' if:true={error}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">Error</span>
+                        <lightning-icon icon-name="utility:error" class="slds-m-right_x-small"
+                            alternative-text="Error" title="Error"
+                        ></lightning-icon>
+                        <h2>
+                            {error}
+                        </h2>
+                    </div>
+                </div>
                 <!--
                 <div class='alert' if:true={hasRecordToUpdate}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
@@ -53,6 +64,7 @@
                         variant="brand"
                         disabled={isSubmissionDisabled}
                         label={buttonLabel}
+                        onclick={handleSubmit}
                     ></lightning-button>
                 </div>
             </lightning-layout-item>

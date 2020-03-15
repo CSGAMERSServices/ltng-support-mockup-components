@@ -3,6 +3,8 @@ import { LightningElement, api, track, wire } from 'lwc';
 
 import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
 
+import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
+
 /**
  * @typedef {Object} ContentDocument
  * @property {String} Id - 
@@ -105,8 +107,15 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
   /**
    * Collection of static resources captured
+   * @type {EditableComboboxOption[]}
    */
   @track options = [];
+
+  /**
+   * Error string to show
+   * @type {String}
+   */
+  @track error;
 
   @wire (apexFindFiles, { searchStr: '$queryTerm' })
   handleResults({data, error}) {
@@ -118,7 +127,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       console.log('data came back', data);
       this.options = data.map((contentDocument) => {
         return contentDocument ? {
-          key: contentDocument.LatestPublishedVersionId,
+          key: contentDocument.Id, // LatestPublishedVersionId,
           label: contentDocument.Title,
           subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
           icon: STATIC_RESOURCE_ICON,
@@ -238,6 +247,29 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
       this.fileToUploadBase64 = await loadFileAsBase64(this.fileToUpload, new FileReader());
     }
+  }
+
+  /**
+   * Attempts to submit to create the contentResource
+   */
+  handleSubmit() {
+    apexCreateContentVersion({
+      documentId: this.recordToUpdate.Id,
+      title: this.newFileName,
+      fileName: this.fileToUpload.name,
+      body: this.fileToUploadBase64
+    })
+      .then(data => {
+        //-- @TODO: handle data
+        debugger;
+        console.log('creation was successful', data);
+      })
+      .catch(error => {
+        //-- @TODO: handle error
+        debugger;
+        console.error('error occurred', JSON.stringify(error));
+        this.error = error;
+      });
   }
 
   //-- internal methods

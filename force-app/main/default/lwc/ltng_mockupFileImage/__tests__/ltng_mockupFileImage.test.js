@@ -5,7 +5,9 @@ import { createElement } from 'lwc';
 import ltng_mockupFileImage from 'c/ltng_mockupFileImage';
 // import { isArray } from 'util';
 
-const defaultProperties = {};
+const defaultProperties = {
+  contentId: '/assets/431edcbfb2/ltng_ExamplePlaceholderImage'
+};
 
 class TestSettings {
   constructor() {
