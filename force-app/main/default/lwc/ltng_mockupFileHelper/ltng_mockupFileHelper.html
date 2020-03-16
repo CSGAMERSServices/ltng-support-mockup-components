@@ -10,11 +10,6 @@
                     message-when-value-missing="Please upload an image (png, gif, jpg)"
                     onchange={handleFileChanged}
                 ></lightning-input>
-            <!--
-                <c-test-file-input
-                    onfilechange={handleFileChanged}
-                ></c-test-file-input>
-            -->
             </lightning-layout-item>
             <lightning-layout-item size="12" small-device-size="6" padding="around-small">
                 <div class="preview" if:true={fileToUploadBase64}>

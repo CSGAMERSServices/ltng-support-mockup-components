@@ -91,12 +91,18 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
             + (String.isEmpty(searchStr)?'':searchStr)
             + '%';
 
+        ltng_mockupSettings__c settings = ltng_mockupSettings__c.getOrgDefaults();
+        Integer maxSearchResults = Integer.valueOf(settings.Max_Search_Results__c);
+        if (maxSearchResults == null) {
+            maxSearchResults = MAX_RESULTS;
+        }
+
         if (String.isEmpty(searchStr)) {
             results = [
                 SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate
                 FROM ContentDocument
                 ORDER BY LastModifiedDate desc
-                limit :MAX_RESULTS
+                limit :maxSearchResults
             ];
         } else {
             results = [
@@ -104,7 +110,7 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
                 FROM ContentDocument
                 WHERE Title like :cleanedSearchStr
                 ORDER BY LastModifiedDate desc
-                limit :MAX_RESULTS
+                limit :maxSearchResults
             ];
         }
 

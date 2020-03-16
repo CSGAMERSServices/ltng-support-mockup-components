@@ -187,6 +187,9 @@
             </componentInstanceProperties>
             <componentName>flexipage:richText</componentName>
         </componentInstances>
+        <componentInstances>
+            <componentName>ltng_mockupFileHelper</componentName>
+        </componentInstances>
         <name>region3</name>
         <type>Region</type>
     </flexiPageRegions>
