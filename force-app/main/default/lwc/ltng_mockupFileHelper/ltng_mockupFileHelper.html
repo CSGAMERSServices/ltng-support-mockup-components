@@ -50,7 +50,6 @@
                 -->
                 <c-ltng_editable-combobox
                     label="Salesforce File"
-                    is-open="false"
                     placeholder="Name of File (or new File to create)"
                     text={queryTerm}
                     options={options}
@@ -59,7 +58,7 @@
                 ></c-ltng_editable-combobox>
             </lightning-layout-item>
             <lightning-layout-item size="12" padding="around-small">
-                <div class='actions'>
+                <div class='actions' if:true={newFileName}>
                     <lightning-button
                         variant="brand"
                         disabled={isSubmissionDisabled}

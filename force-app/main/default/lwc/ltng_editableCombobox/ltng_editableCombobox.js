@@ -40,7 +40,7 @@ export default class Ltng_editableCombobox extends LightningElement {
    * Whether the combobox is open when it first is created
    * @type {String}
    */
-  @api isOpen;
+  @api isOpen = false;
 
   /**
    * Label of the input
@@ -84,11 +84,10 @@ export default class Ltng_editableCombobox extends LightningElement {
   }
   @api
   set selection(val) {
+    this._selection = val;
     const el = this.template.querySelector('.combobox');
     if (el) {
       el.value = val;
-    } else {
-      this._selection = val;
     }
   }
   @track _selection;
@@ -112,6 +111,15 @@ export default class Ltng_editableCombobox extends LightningElement {
     let result = this.selection;
     if (!result) result = this.text;
     return result;
+  }
+
+  /**
+   * Resets the combobox
+   */
+  @api clear() {
+    this.selection = null;
+    this.text = null;
+    this.isOpen = false;
   }
 
   //-- internal getters / setters

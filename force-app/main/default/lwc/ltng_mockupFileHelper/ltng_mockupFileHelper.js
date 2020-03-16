@@ -197,6 +197,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
         editableCombobox.text = fileName;
         this.queryTerm = fileName;
+
+        // this.openCombobox(true);
       }
 
       this.fileToUploadBase64 = await Ltng_mockupFileHelper.loadFileAsBase64(this.fileToUpload, new FileReader());
@@ -207,6 +209,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Attempts to submit to create the contentResource
    */
   handleSubmit() {
+    this.clearNotifications();
+
     apexCreateContentVersion({
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
@@ -218,7 +222,10 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         // debugger;
         console.log('creation was successful', data);
 
-        
+        this.clearFileInput();
+        this.clearSelection();
+
+        this.queryTerm = null;
       })
       .catch(error => {
         //-- @TODO: handle error
@@ -232,6 +239,32 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
   clearKeyListener() {
     window.clearTimeout(this.delayTimeout);
+  }
+
+  clearNotifications() {
+    this.error = null;
+  }
+
+  clearFileInput() {
+    const fileInput = this.template.querySelector('lightning-input.file-selector');
+    fileInput.value = null;
+
+    this.fileToUploadBase64 = null;
+    this.fileToUpload = null;
+    this.newFileName = null;
+  }
+
+  clearSelection() {
+    const editableCombobox = this.template // eslint-disable-line
+      .querySelector('c-ltng_editable-combobox');
+    
+    editableCombobox.clear();
+  }
+
+  openCombobox(isOpen) {
+    const editableCombobox = this.template // eslint-disable-line
+      .querySelector('c-ltng_editable-combobox');
+    editableCombobox.isOpen = isOpen;
   }
 
   //-- moved
