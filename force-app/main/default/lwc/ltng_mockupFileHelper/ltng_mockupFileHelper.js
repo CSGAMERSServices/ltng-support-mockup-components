@@ -32,6 +32,13 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   @api queryTerm = '';
 
   /**
+   * Whether to include a spacer at the bottom
+   * (to give space for the dropdown)
+   * @type {Boolean}
+   */
+  @api showDropdownSpacer = false;
+
+  /**
    * Content version to update
    * @type {ContentVersion}
    */
@@ -75,27 +82,25 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     }
     if (data) {
       console.log('data came back', data);
-      if (data.length === 0) {
-        this.options = [{
-          key: 'new',
-          label: `New Resource: ${this.queryTerm}`,
-          subLabel: '',
+      const newResource = {
+        key: 'new',
+        label: `New Resource: ${this.queryTerm}`,
+        subLabel: '',
+        icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
+        value: {
+          Title: this.queryTerm
+        }
+      };
+      this.options = data.map((contentDocument) => {
+        return contentDocument ? {
+          key: contentDocument.Id, // LatestPublishedVersionId,
+          label: contentDocument.Title,
+          subLabel: Ltng_mockupFileHelper.utcDateToLocal(contentDocument.LastModifiedDate),
           icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
-          value: {
-            Title: this.queryTerm
-          }
-        }];
-      } else {
-        this.options = data.map((contentDocument) => {
-          return contentDocument ? {
-            key: contentDocument.Id, // LatestPublishedVersionId,
-            label: contentDocument.Title,
-            subLabel: Ltng_mockupFileHelper.utcDateToLocal(contentDocument.LastModifiedDate),
-            icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
-            value: contentDocument
-          } : {};
-        });
-      }
+          value: contentDocument
+        } : {};
+      });
+      this.options.unshift(newResource);
     }
   }
 

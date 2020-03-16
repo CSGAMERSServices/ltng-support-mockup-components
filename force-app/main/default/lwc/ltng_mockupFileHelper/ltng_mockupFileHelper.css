@@ -10,3 +10,8 @@
 .preview img {
     border: 1px solid #DDD;
 }
+
+.spacer {
+    width: 100%;
+    height: 200px;
+}

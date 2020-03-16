@@ -7,6 +7,12 @@
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
         <target>lightning__HomePage</target>
-        <target>lightning__Tab</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+            <property name="showDropdownSpacer" type="Boolean" default="false"
+                description="Whether to include a space so the dropdown does not appear below screen."
+            />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
