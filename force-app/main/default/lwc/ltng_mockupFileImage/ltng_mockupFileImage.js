@@ -1,9 +1,11 @@
 import { LightningElement, api, track, wire } from 'lwc'; // eslint-disable-line no-unused-vars
-import { NavigationMixin } from 'lightning/navigation';
+import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
+import { refreshApex } from '@salesforce/apex';
 
 import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
-
 import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
+
+import { registerListener, unregisterListener } from 'c/ltng_mockupEventBus';
 
 /**
  * @typedef {Object} ltng_mockupSettings__c
@@ -17,6 +19,8 @@ import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
  * @property {String} Title -
  * @property {String} Address - 
  */
+
+const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
 
 /**
  * Updates the cache buster
@@ -65,6 +69,12 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
    * @type {String}
    */
   @track cacheBuster = '';
+
+  /**
+   * Current page reference
+   */
+  @wire(CurrentPageReference)
+  pageRef;
 
   /**
    * 
@@ -141,5 +151,24 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
     };
 
     this[NavigationMixin.Navigate](pageReference);
+  }
+
+  /**
+   * Handles when an image was uploaded by the File Helper.
+   * @param {CustomEvent} evt 
+   */
+  handleImageUpload(evt) {
+    console.log('image upload registered by the mockup file image', evt);
+    this.cacheBuster = generateCacheBuster(true);
+    refreshApex(this.contentFileAddress);
+  }
+
+  connectedCallback() {
+    console.log('file image connectedCallback');
+    registerListener(IMAGE_CHANGED_EVENT_TYPE, this.handleImageUpload, this);
+  }
+
+  disconnectedCallback() {
+    unregisterListener(IMAGE_CHANGED_EVENT_TYPE, this.handleImageUpload, this);
   }
 }

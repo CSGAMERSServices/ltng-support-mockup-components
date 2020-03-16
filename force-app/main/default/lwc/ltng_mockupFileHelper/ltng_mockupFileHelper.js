@@ -1,9 +1,13 @@
 
 import { LightningElement, api, track, wire } from 'lwc';
+import { CurrentPageReference } from 'lightning/navigation';
 
 import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
-
 import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
+
+import { fireEvent } from 'c/ltng_mockupEventBus';
+
+const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
 
 /**
  * @typedef {Object} ContentDocument
@@ -14,6 +18,12 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
  */
 
 export default class Ltng_mockupFileHelper extends LightningElement {
+
+  /**
+   * Current page reference
+   */
+  @wire(CurrentPageReference)
+  pageRef;
 
   /**
    * The term to search for
@@ -140,6 +150,12 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   //-- handlers
+  connectedCallback() {
+  }
+
+  disconnectedCallback() {
+  }
+
   /**
    * Handles when the user presses the return key
    * @param {CustomEvent} evt
@@ -226,6 +242,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         this.clearSelection();
 
         this.queryTerm = null;
+
+        fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, data);
       })
       .catch(error => {
         //-- @TODO: handle error
@@ -233,6 +251,10 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         console.error('error occurred', JSON.stringify(error));
         this.error = error.body.message;
       });
+  }
+
+  handleImageUpdate() {
+    fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, 'something');
   }
 
   //-- internal methods
