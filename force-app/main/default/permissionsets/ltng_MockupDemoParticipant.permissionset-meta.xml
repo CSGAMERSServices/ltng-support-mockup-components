@@ -4,6 +4,10 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>Lightning Mockup Demo Participant</label>
     <tabSettings>
+        <tab>ltng_FileHelper</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>ltng_MockupExampleAppPage</tab>
         <visibility>Visible</visibility>
     </tabSettings>
