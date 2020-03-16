@@ -188,6 +188,21 @@
             <componentName>flexipage:richText</componentName>
         </componentInstances>
         <componentInstances>
+            <componentInstanceProperties>
+                <name>contentId</name>
+                <value>069R0000000qqwfIAA</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>imgHeight</name>
+                <value>auto; max-width: 400px;</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>imgWidth</name>
+                <value>auto; max-width: 400px;</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupFileImage</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentName>ltng_mockupFileHelper</componentName>
         </componentInstances>
         <name>region3</name>

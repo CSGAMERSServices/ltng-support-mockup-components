@@ -87,32 +87,39 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     @AuraEnabled(cacheable=true)
     public static ContentDocument[] findFiles( String searchStr ){
         ContentDocument[] results = new ContentDocument[]{};
-        String cleanedSearchStr = '%'
-            + (String.isEmpty(searchStr)?'':searchStr)
-            + '%';
-
+        String[] whereClauses = new String[]{};
+        
         ltng_mockupSettings__c settings = ltng_mockupSettings__c.getOrgDefaults();
         Integer maxSearchResults = Integer.valueOf(settings.Max_Search_Results__c);
         if (maxSearchResults == null) {
             maxSearchResults = MAX_RESULTS;
         }
-
-        if (String.isEmpty(searchStr)) {
-            results = [
-                SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate
-                FROM ContentDocument
-                ORDER BY LastModifiedDate desc
-                limit :maxSearchResults
-            ];
-        } else {
-            results = [
-                SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate
-                FROM ContentDocument
-                WHERE Title like :cleanedSearchStr
-                ORDER BY LastModifiedDate desc
-                limit :maxSearchResults
-            ];
+        
+        String cleanedSearchStr = null;
+        if (!String.isEmpty(searchStr)) {
+            cleanedSearchStr = '%'
+                + String.escapeSingleQuotes(searchStr)
+                + '%';
+            whereClauses.add('Title like :cleanedSearchStr');
         }
+
+        String searchFilter = null;
+        if (!String.isEmpty(settings.Mock_Image_File_Filter__c)) {
+            searchFilter = '%' +
+                String.escapeSingleQuotes(settings.Mock_Image_File_Filter__c)
+                + '%';
+            whereClauses.add('Title like :searchFilter');
+        }
+
+        String query = 'SELECT Id, Title, LatestPublishedVersionId, LastModifiedDate FROM ContentDocument ';
+        if (whereClauses.size() > 0 ) {
+            query += 'WHERE ' + String.join(whereClauses, ' AND ') + ' ';
+        }
+        query += 'ORDER BY LastModifiedDate desc limit :maxSearchResults';
+
+        System.debug('query' + query);
+
+        results = Database.query(query);
 
         return results;
     }
@@ -171,6 +178,12 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     public static ContentVersion createContentVersion(
         Id documentId, String title, String fileName, String body
     ) {
+        String searchPrefix = '';
+        ltng_mockupSettings__c settings = ltng_mockupSettings__c.getOrgDefaults();
+        if (!String.isEmpty(settings.Mock_Image_File_Filter__c)) {
+            searchPrefix = settings.Mock_Image_File_Filter__c;
+        }
+
         ContentVersion result = new ContentVersion(
             ContentLocation = 'S',
             Title = title,
@@ -180,6 +193,8 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
 
         if (documentId != null) {
             result.ContentDocumentId = documentId;
+        } else {
+            result.Title = searchPrefix + result.Title;
         }
 
         insert result;
