@@ -3,7 +3,6 @@
         <h1 class="slds-text-heading_small">Update / Create Files</h1>
         <lightning-layout multiple-rows="true" horizontal-align="center">
             <lightning-layout-item size="12" small-device-size="6" padding="around-small">
-            <!--
                 <lightning-input
                     type="file" label="Image"
                     class="file-selector"
@@ -11,10 +10,11 @@
                     message-when-value-missing="Please upload an image (png, gif, jpg)"
                     onchange={handleFileChanged}
                 ></lightning-input>
-            -->
+            <!--
                 <c-test-file-input
                     onfilechange={handleFileChanged}
                 ></c-test-file-input>
+            -->
             </lightning-layout-item>
             <lightning-layout-item size="12" small-device-size="6" padding="around-small">
                 <div class="preview" if:true={fileToUploadBase64}>
