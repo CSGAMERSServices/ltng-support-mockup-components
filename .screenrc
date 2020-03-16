@@ -9,10 +9,31 @@ screen -X title "mockupComponents"
 # but note that restarting will lose that tab
 
 screen -t default
-screen -t log 
-screen -t lint # npm run lint:lwc:watch
-screen -t test # npm run test:lwc:watch
-screen -t lwc # npm run lwc
+screen -p default -X stuff "cd force-app/main/default;^M"
+screen -t log 1
+screen -t lint 2
+screen -p lint -X stuff "npm run lint:lwc:watch;^M"
+screen -t test 3
+screen -p test -X stuff "npm run test:lwc:watch;^M"
+screen -t lwc 4
+screen -p lwc -X stuff "npm run lwc;^M"
 
 screen -X select 0
 
+# create layouts
+
+screen -X layout new default
+screen -X select mockupComponents
+
+screen -X layout new lwc
+screen -X select lint
+screen -X split -v
+screen -X focus
+screen -X select test
+
+screen -X layout new apex
+screen -X select mockupComponents
+screen -X split -v
+screen -X select log
+
+screen -X layout select default
