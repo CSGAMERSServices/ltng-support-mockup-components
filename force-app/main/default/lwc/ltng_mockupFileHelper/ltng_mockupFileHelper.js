@@ -68,11 +68,24 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    */
   @track options = [];
 
+  /** 
+   * Whether the spinner should be shown
+   * @type {Boolean}
+   */
+  @track showSpinner = false;
+
   /**
    * Error string to show
    * @type {String}
    */
   @track error;
+
+  /**
+   * Success message to show
+   * @type {String}
+   */
+  @track success;
+  successTimer = null;
 
   @wire (apexFindFiles, { searchStr: '$queryTerm' })
   handleResults({data, error}) {
@@ -82,15 +95,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     }
     if (data) {
       console.log('data came back', data);
-      const newResource = {
-        key: 'new',
-        label: `New Resource: ${this.queryTerm}`,
-        subLabel: '',
-        icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
-        value: {
-          Title: this.queryTerm
-        }
-      };
+      const results = [];
       this.options = data.map((contentDocument) => {
         return contentDocument ? {
           key: contentDocument.Id, // LatestPublishedVersionId,
@@ -100,7 +105,17 @@ export default class Ltng_mockupFileHelper extends LightningElement {
           value: contentDocument
         } : {};
       });
-      this.options.unshift(newResource);
+      if (data.length > 0) {
+        results.unshift({
+          key: 'new',
+          label: `New Resource: ${this.queryTerm}`,
+          subLabel: '',
+          icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
+          value: {
+            Title: this.queryTerm
+          }
+        });
+      }
     }
   }
 
@@ -232,6 +247,16 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   handleSubmit() {
     this.clearNotifications();
 
+    /*
+    this.showSpinner = true;
+    clearTimeout(this.timeoutPointer);
+    this.timeoutPointer = setTimeout(() => { // eslint-disable-line
+      this.showSpinner = false;
+      console.log('done');
+    }, 3000 );
+    */
+
+    this.showSpinner = true;
     apexCreateContentVersion({
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
@@ -242,6 +267,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         //-- @TODO: handle data
         // debugger;
         console.log('creation was successful', data);
+
+        this.showSuccessMessage('Success', 1000);
 
         this.clearFileInput();
         this.clearSelection();
@@ -255,7 +282,23 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         debugger;
         console.error('error occurred', JSON.stringify(error));
         this.error = error.body.message;
+      })
+      .finally(() => {
+        this.showSpinner = false;
       });
+  }
+
+  /**
+   * Show a success message for a specific period of time
+   * @param {String} msg - Message to show
+   * @param {Number} timeout - Number of milliseconds to show the message.
+   */
+  showSuccessMessage(msg, timeout) {
+    window.clearTimeout(this.successTimer);
+    this.success = msg;
+    this.successTimer = setTimeout(() => { // eslint-disable-line
+      this.success = null;
+    }, timeout);
   }
 
   handleImageUpdate() {
@@ -270,6 +313,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
   clearNotifications() {
     this.error = null;
+    this.success = null;
   }
 
   clearFileInput() {

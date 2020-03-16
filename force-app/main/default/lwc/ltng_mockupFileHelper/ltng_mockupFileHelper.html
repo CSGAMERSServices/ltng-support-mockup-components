@@ -1,6 +1,9 @@
 <template>
     <div class="static-resource-helper slds-box slds-card slds-theme_default">
         <h1 class="slds-text-heading_small">Update / Create Files</h1>
+        <lightning-spinner if:true={showSpinner}
+            alternative-text="Loading" size="large"
+        ></lightning-spinner>
         <lightning-layout multiple-rows="true" horizontal-align="center">
             <lightning-layout-item size="12" small-device-size="6" padding="around-small">
                 <lightning-input
@@ -57,7 +60,7 @@
                     onkeyup={handleKeyUp}
                 ></c-ltng_editable-combobox>
             </lightning-layout-item>
-            <lightning-layout-item size="12" padding="around-small">
+            <lightning-layout-item size="12" padding="around-small" class="slds-align_absolute-center">
                 <div class='actions' if:true={newFileName}>
                     <lightning-button
                         variant="brand"
@@ -65,6 +68,19 @@
                         label={buttonLabel}
                         onclick={handleSubmit}
                     ></lightning-button>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" padding="around-small">
+                <div class='alert' if:true={success}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
+                        <span class="slds-assistive-text">Info</span>
+                        <lightning-icon icon-name="utility:user" class="slds-m-right_x-small"
+                            alternative-text="Info" title="Info"
+                        ></lightning-icon>
+                        <h2>
+                            {success}
+                        </h2>
+                    </div>
                 </div>
             </lightning-layout-item>
             <lightning-layout-item size="12" if:true={showDropdownSpacer}>
