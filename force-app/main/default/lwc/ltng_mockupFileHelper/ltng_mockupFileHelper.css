@@ -6,3 +6,7 @@
     border-radius: 5px;
     text-align: center;
 }
+
+.preview img {
+    border: 1px solid #DDD;
+}
