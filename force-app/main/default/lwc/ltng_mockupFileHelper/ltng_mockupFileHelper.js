@@ -279,7 +279,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       })
       .catch(error => {
         //-- @TODO: handle error
-        debugger;
+        debugger; // eslint-disable-line no-debugger
         console.error('error occurred', JSON.stringify(error));
         this.error = error.body.message;
       })
@@ -351,7 +351,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       return dateStr;
     }
     return new Date(parsedDate).toLocaleString();
-  };
+  }
 
   /**
    * Converts a filename into a Salesforce file title
