@@ -14,6 +14,7 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
  */
 
 export default class Ltng_mockupFileHelper extends LightningElement {
+
   /**
    * The term to search for
    * @type {String}
@@ -190,15 +191,13 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
     if (filesToUpload.length > 0) {
       this.fileToUpload = filesToUpload[0];
+      if (!editableCombobox.value) {
+        const fileName = Ltng_mockupFileHelper.fileNameToFileTitle(this.fileToUpload.name);
+        this.newFileName = fileName;
 
-      const fileName = Ltng_mockupFileHelper.fileNameToFileTitle(this.fileToUpload.name);
-      this.newFileName = fileName;
-
-      // if (!editableCombobox.text) {
-      //   editableCombobox.text = fileName;
-      //   this.queryTerm = fileName;
-      // }
-      this.queryTerm = fileName;
+        editableCombobox.text = fileName;
+        this.queryTerm = fileName;
+      }
 
       this.fileToUploadBase64 = await Ltng_mockupFileHelper.loadFileAsBase64(this.fileToUpload, new FileReader());
     }
@@ -218,6 +217,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         //-- @TODO: handle data
         // debugger;
         console.log('creation was successful', data);
+
+        
       })
       .catch(error => {
         //-- @TODO: handle error
@@ -278,11 +279,6 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       fileReaderInstance.onload = () => {
         console.log('loaded');
         let fileResult = fileReaderInstance.result;
-        // if (fileResult) {
-        //   fileResult = fileResult.substr(fileResult.indexOf(',') + 1);
-        //   resolve(fileResult);
-        // }
-        // reject('reader.result is empty');
         resolve(fileResult);
       }
       fileReaderInstance.onerror = (error) => {
