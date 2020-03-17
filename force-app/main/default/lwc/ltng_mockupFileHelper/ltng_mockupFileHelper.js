@@ -9,6 +9,10 @@ import { fireEvent } from 'c/ltng_mockupEventBus';
 
 const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
 
+const isEmptyString = (str) => {
+  return str === null ? true : str === undefined ? true : (`${str}`).trim() === "" ? true : false;
+}
+
 /**
  * @typedef {Object} ContentDocument
  * @property {String} Id - 
@@ -95,8 +99,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     }
     if (data) {
       console.log('data came back', data);
-      const results = [];
-      this.options = data.map((contentDocument) => {
+      let results = [];
+      results = data.map((contentDocument) => {
         return contentDocument ? {
           key: contentDocument.Id, // LatestPublishedVersionId,
           label: contentDocument.Title,
@@ -105,7 +109,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
           value: contentDocument
         } : {};
       });
-      if (data.length > 0) {
+      if (!isEmptyString(this.queryTerm)) {
         results.unshift({
           key: 'new',
           label: `New Resource: ${this.queryTerm}`,
@@ -116,6 +120,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
           }
         });
       }
+      this.options = results;
     }
   }
 
@@ -339,6 +344,15 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   //-- moved
+
+  /**
+   * 
+   * @param {String} str - string to check
+   * @returns {Boolean} - whether it is an empty string (true) or not (false) 
+   */
+  static isEmptyString(str) {
+    return str === null ? true : str === undefined ? true : (`${str}`).trim() === "" ? true : false;
+  }
 
   /**
    * Converts a UTC DateTime string to local
