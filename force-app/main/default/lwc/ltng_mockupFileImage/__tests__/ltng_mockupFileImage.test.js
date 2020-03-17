@@ -9,6 +9,20 @@ const defaultProperties = {
   contentId: '/assets/431edcbfb2/ltng_ExamplePlaceholderImage'
 };
 
+import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+import { CurrentPageReference } from 'lightning/navigation';
+const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
+
+import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
+const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
+
+import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
+const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
+
+const examplePageRef = { type:'standard__navItemPage', attributes:{ apiName:'ltng_MockupExampleAppPage'}, state:{}};
+
+debugger;
+
 class TestSettings {
   constructor() {
     /**
@@ -36,6 +50,7 @@ class TestSettings {
   }
 
   attachElement() {
+    pageReferenceMock.emit(examplePageRef);
     document.body.appendChild(this.element);
     return this;
   }
@@ -48,11 +63,15 @@ describe('c-ltng_mockupFileImage', () => {
       document.body.removeChild(document.body.firstChild);
     }
   });
-  
+
   it('can be created', () => {
     const ts = new TestSettings()
-      .applyDefaultProperties()
-      .attachElement();
+      .applyDefaultProperties();
+
+    debugger;
+
+    ts.attachElement();
+      //.attachElement();
     
     expect(ts.element).not.toBe(null);
     

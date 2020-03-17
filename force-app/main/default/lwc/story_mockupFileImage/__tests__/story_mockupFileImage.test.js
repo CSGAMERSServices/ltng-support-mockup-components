@@ -5,6 +5,16 @@ import { createElement } from 'lwc';
 import story_mockupFileImage from 'c/story_mockupFileImage';
 import { isArray } from 'util';
 
+import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+import { CurrentPageReference } from 'lightning/navigation';
+const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
+
+import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
+const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
+
+import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
+const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
+
 class TestSettings {
   constructor() {
     /**
