@@ -40,9 +40,9 @@
     </c-story_book>
 
     <c-story_book width="wide" title="Alert not shown">
-        <c-ltng_mockup-alert theme='info' class='hidden-alert'>
+        <c-ltng_mockup-alert theme='info' data-id="hidden-alert" class='hidden-alert'>
         </c-ltng_mockup-alert>
 
-        <lightning-button label='Show Alert' onclick={handleShowAlert}></lightning-button>
+        <lightning-button data-id="show-alert-btn" label='Show Alert' onclick={handleShowAlert}></lightning-button>
     </c-story_book>
 </template>

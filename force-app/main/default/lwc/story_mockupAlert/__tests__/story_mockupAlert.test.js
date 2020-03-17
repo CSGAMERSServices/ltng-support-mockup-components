@@ -51,4 +51,19 @@ describe('c-story_mockupAlert', () => {
     expect(isArray(ts.element.allScenes)).toBeTruthy();
     expect(ts.element.allScenes.length).toBeGreaterThan(0);
   });
+
+  it('shows the alert when the button is pushed', () => {
+    const ts = new TestSettings()
+      .attachElement();
+    
+    const btn = ts.element.shadowRoot.querySelector('[data-id="show-alert-btn"]');
+    expect(btn).toBeTruthy();
+
+    btn.dispatchEvent(new CustomEvent('click'));
+
+    const alert = ts.element.shadowRoot.querySelector('[data-id="hidden-alert"]');
+    expect(alert).toBeTruthy();
+
+    expect(alert.isShown).toBe(true);
+  });
 });
