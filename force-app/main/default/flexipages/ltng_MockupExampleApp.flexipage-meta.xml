@@ -114,6 +114,25 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>iconName</name>
+                <value>info</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>isShown</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>message</name>
+                <value>Your alert here</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>theme</name>
+                <value>info</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupAlert</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
                 <name>iconCategory</name>
                 <value>standard</value>
             </componentInstanceProperties>
@@ -189,20 +208,9 @@
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
-                <name>contentId</name>
-                <value>069R0000000qqwfIAA</value>
+                <name>showDropdownSpacer</name>
+                <value>false</value>
             </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>imgHeight</name>
-                <value>auto; max-width: 400px;</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>imgWidth</name>
-                <value>auto; max-width: 400px;</value>
-            </componentInstanceProperties>
-            <componentName>ltng_mockupFileImage</componentName>
-        </componentInstances>
-        <componentInstances>
             <componentName>ltng_mockupFileHelper</componentName>
         </componentInstances>
         <name>region3</name>

@@ -21,41 +21,35 @@ export default class story_mockupAlert extends LightningElement {
     new Scene('Wide alert', {
       width: 'large',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'error'
     }),
     new Scene('Narrow alert', {
       width: 'narrow',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'info'
     }),
     new Scene('info', {
       width: 'large',
       theme: 'info',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'info'
     }),
     new Scene('warning', {
       width: 'large',
       theme: 'warning',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'warning'
     }),
     new Scene('error', {
       width: 'large',
       theme: 'error',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'error'
     }),
     new Scene('offline', {
       width: 'large',
       theme: 'offline',
       message: 'Example_text',
-      iconCategory: 'utility',
       iconName: 'offline'
     })
   ];

@@ -21,7 +21,7 @@ export default class Ltng_mockupAlert extends LightningElement {
    * The group of icon to use
    * @type {String}
    */
-  @api iconCategory = 'utility';
+  iconCategory = 'utility'; // hard code for now
 
   /**
    * The name of the icon to use
