@@ -11,17 +11,19 @@ const defaultProperties = {
 
 import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
 import { CurrentPageReference } from 'lightning/navigation';
+
+import * as data from './ltng_mockupFileImage_data.json';
+
 const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
+const executePageReferenceMock = () => pageReferenceMock.emit(data.pageRef);
 
 import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
 const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
+const execGetSettings = () => getSettingsMock.emit(data.getSettings);
 
 import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
 const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
-
-const examplePageRef = { type:'standard__navItemPage', attributes:{ apiName:'ltng_MockupExampleAppPage'}, state:{}};
-
-debugger;
+const execFileContentURL = () => determineFileContentMock.emit(data.determineFileContentURL);
 
 class TestSettings {
   constructor() {
@@ -50,7 +52,10 @@ class TestSettings {
   }
 
   attachElement() {
-    pageReferenceMock.emit(examplePageRef);
+    execFileContentURL();
+    execGetSettings();
+    executePageReferenceMock();
+
     document.body.appendChild(this.element);
     return this;
   }
@@ -67,8 +72,6 @@ describe('c-ltng_mockupFileImage', () => {
   it('can be created', () => {
     const ts = new TestSettings()
       .applyDefaultProperties();
-
-    debugger;
 
     ts.attachElement();
       //.attachElement();

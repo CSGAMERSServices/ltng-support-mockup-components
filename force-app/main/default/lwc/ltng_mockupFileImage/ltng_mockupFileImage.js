@@ -157,14 +157,14 @@ export default class Ltng_mockupFileImage extends NavigationMixin(LightningEleme
    * Handles when an image was uploaded by the File Helper.
    * @param {CustomEvent} evt 
    */
-  handleImageUpload(evt) {
-    console.log('image upload registered by the mockup file image', evt);
+  handleImageUpload() {
+    // console.log('image upload registered by the mockup file image', evt);
     this.cacheBuster = generateCacheBuster(true);
     refreshApex(this.contentFileAddress);
   }
 
   connectedCallback() {
-    console.log('file image connectedCallback');
+    // console.log('file image connectedCallback');
     registerListener(IMAGE_CHANGED_EVENT_TYPE, this.handleImageUpload, this);
   }
 
