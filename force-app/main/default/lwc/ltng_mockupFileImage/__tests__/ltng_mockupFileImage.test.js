@@ -9,21 +9,7 @@ const defaultProperties = {
   contentId: '/assets/431edcbfb2/ltng_ExamplePlaceholderImage'
 };
 
-import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
-import { CurrentPageReference } from 'lightning/navigation';
-
-import * as data from './ltng_mockupFileImage_data.json';
-
-const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
-const executePageReferenceMock = () => pageReferenceMock.emit(data.pageRef);
-
-import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
-const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
-const execGetSettings = () => getSettingsMock.emit(data.getSettings);
-
-import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
-const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
-const execFileContentURL = () => determineFileContentMock.emit(data.determineFileContentURL);
+import * as data from '../__data__';
 
 class TestSettings {
   constructor() {
@@ -52,9 +38,9 @@ class TestSettings {
   }
 
   attachElement() {
-    execFileContentURL();
-    execGetSettings();
-    executePageReferenceMock();
+    data.execFileContentURL();
+    data.execGetSettings();
+    data.execPageReferenceMock();
 
     document.body.appendChild(this.element);
     return this;

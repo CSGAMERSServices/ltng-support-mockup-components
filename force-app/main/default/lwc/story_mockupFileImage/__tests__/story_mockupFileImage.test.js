@@ -5,29 +5,7 @@ import { createElement } from 'lwc';
 import story_mockupFileImage from 'c/story_mockupFileImage';
 import { isArray } from 'util';
 
-import * as data from '../../ltng_mockupFileImage/__tests__/ltng_mockupFileImage_data.json';
-
-import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
-import { CurrentPageReference } from 'lightning/navigation';
-/*
-const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
-
-import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
-const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
-
-import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
-const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
-*/
-const pageReferenceMock = registerLdsTestWireAdapter(CurrentPageReference);
-const executePageReferenceMock = () => pageReferenceMock.emit(data.pageRef);
-
-import apexGetSettings from '@salesforce/apex/ltng_mockupFileCtrl.getSettings';
-const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
-const execGetSettings = () => getSettingsMock.emit(data.getSettings);
-
-import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
-const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
-const execFileContentURL = () => determineFileContentMock.emit(data.determineFileContentURL);
+import * as data from '../../ltng_mockupFileImage/__data__';
 
 class TestSettings {
   constructor() {
@@ -47,10 +25,9 @@ class TestSettings {
   }
 
   attachElement() {
-
-    execFileContentURL();
-    execGetSettings();
-    executePageReferenceMock();
+    data.execFileContentURL();
+    data.execGetSettings();
+    data.execPageReferenceMock();
 
     document.body.appendChild(this.element);
     return this;
