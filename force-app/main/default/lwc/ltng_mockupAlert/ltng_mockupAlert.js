@@ -21,7 +21,7 @@ export default class Ltng_mockupAlert extends LightningElement {
    * The group of icon to use
    * @type {String}
    */
-  @api iconGroup = 'utility';
+  @api iconCategory = 'utility';
 
   /**
    * The name of the icon to use
@@ -58,48 +58,13 @@ export default class Ltng_mockupAlert extends LightningElement {
   }
 
   /**
-   * Determines the right class for the icon
-   * @type {String}
-   */
-  @api get iconClasses() {
-    let themeClass = 'slds-theme_info';
-    const dictionary = {
-      'error': 'inverse',
-      'info': 'inverse',
-      'warning': 'inverse',
-      'offline': 'inverse'
-    };
-    if (this.theme && dictionary &&
-      typeof dictionary[this.theme] !== 'undefined' // eslint-disable-line no-prototype-builtins
-    ) {
-      themeClass = dictionary[this.theme];
-    }
-    return themeClass;
-
-    /*
-    let iconClass = '';
-    if (this.iconGroup && this.iconName) {
-      iconClass = `slds-icon-${this.iconGroup}-${this.iconName}`;
-    }
-    let themeClass = '';
-    if (this.theme) {
-      themeClass = `slds-theme--${this.theme}`;
-    }
-    let results = `slds-icon slds-m-right_x-small ${iconClass} ${themeClass}`;
-    console.log(`iconGroup:${this.iconGroup}, iconName:${this.iconName}`);
-    console.log(`iconClasses:${results}`);
-    return results;
-    */
-  }
-
-  /**
    * The icon phrase to use (group:name)
    * @returns {String}
    */
   @api get iconPhrase() {
     let results = '';
-    if (this.iconGroup && this.iconName) {
-      results = `${this.iconGroup}:${this.iconName}`;
+    if (this.iconCategory && this.iconName) {
+      results = `${this.iconCategory}:${this.iconName}`;
     }
     return results;
   }
