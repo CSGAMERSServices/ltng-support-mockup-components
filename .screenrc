@@ -37,3 +37,10 @@ screen -X split -v
 screen -X select log
 
 screen -X layout select default
+
+# key bindings
+
+# screen -X bindkey -k k1 layout select 0
+# screen -X bindkey -k k2 layout select 1
+# screen -X bindkey -k k3 layout select 2
+
