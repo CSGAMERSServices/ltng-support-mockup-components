@@ -17,15 +17,5 @@ export default class story_mockupEventBus extends LightningElement {
    * List of all scenes we have
    * @type {Scene[]}
    */
-  @api allScenes = [
-    new Scene('Large Width Scene', {
-      description: 'Example_description',
-      width: 'large',
-      message: 'Example_text'
-    })
-  ];
-
-  handleSceneChanged(sceneEvent) {
-    this.currentScene = sceneEvent.detail;
-  }
+  @api allScenes = [];
 }
