@@ -14,6 +14,9 @@ const getSettingsMock = registerLdsTestWireAdapter(apexGetSettings);
 import * as getSettingsData from './getSettings.json';
 const execGetSettings = () => getSettingsMock.emit(getSettingsData);
 
+import * as getSettingsDataCaching from './getSettingsCaching.json';
+const execGetSettingsDataCaching = () => getSettingsMock.emit(getSettingsDataCaching);
+
 import apexDetermineFileContentURL from '@salesforce/apex/ltng_mockupFileCtrl.determineFileContentURL';
 const determineFileContentMock = registerLdsTestWireAdapter(apexDetermineFileContentURL);
 import * as determineFileContentURL_Data from './determineFileContentURL.json';
@@ -22,5 +25,9 @@ const execFileContentURL = () => determineFileContentMock.emit(determineFileCont
 export {
   execPageReferenceMock,
   execGetSettings,
-  execFileContentURL
+  execGetSettingsDataCaching,
+  execFileContentURL,
+  pageRefData,
+  getSettingsData,
+  determineFileContentURL_Data
 }

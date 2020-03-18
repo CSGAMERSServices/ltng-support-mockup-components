@@ -22,23 +22,31 @@ import { registerListener, unregisterListener } from 'c/ltng_mockupEventBus';
 
 const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
 
+let UNIQUE = 1;
+
 /**
  * Updates the cache buster
  * (the unique string that invalidates the cache)
  */
-export function generateCacheBuster(ignoreCache) {
+function generateCacheBuster(ignoreCache) {
   if (ignoreCache) {
-    return `?t=${new Date().getTime()}`;
+    return `?t=${++UNIQUE}_${new Date().getTime()}`;
   }
   return '';
 }
 
 export default class Ltng_mockupFileImage extends NavigationMixin(LightningElement) {
+
+  @api constants = {
+    IMAGE_CHANGED_EVENT_TYPE,
+    generateCacheBuster
+  };
+
   /**
    * Id of the File Content we want to follow
    * @type {String}
    */
-  @api contentId = '069R0000000qlZcIAI';
+  @api contentId = '';
 
   /**
    * The screen reader tooltip for the image
