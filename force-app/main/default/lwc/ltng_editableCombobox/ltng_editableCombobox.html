@@ -5,15 +5,14 @@
             <div class="slds-combobox_container">
                 <div class={comboboxCSS_Classes} aria-expanded="true" aria-haspopup="listbox" role="combobox">
                     <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <!-- onfocusout={handleEditableTextBlur} -->
                         <input type="text"
                             class="editable-text slds-input slds-combobox__input slds-has-focus"
                             id="editable-text" aria-controls="select-dropdown"
                             autocomplete="off" role="textbox"
                             placeholder={placeholder} readonly=""
                             value={_text}
-                            onclick={handleInputClicked}
                             onfocusin={handleEditableTextFocus}
-                            onfocusout={handleEditableTextBlur}
                             onkeyup={handleKeyUp}
                         />
                         <lightning-icon if:true={isOpen} icon-name="utility:chevrondown" alternative-text="Search" size="x-small"

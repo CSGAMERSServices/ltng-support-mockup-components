@@ -83,26 +83,29 @@ export default class Ltng_editableCombobox extends LightningElement {
    * @type {any}
    */
   get selection() {
-    const el = this.template.querySelector('.combobox');
-    return el ? el.value : this._selection;
+    return this._selection;
+    // const el = this.template.querySelector('.combobox');
+    // return el ? el.value : this._selection;
   }
   @api
   set selection(val) {
     this._selection = val;
+    /*
     const el = this.template.querySelector('.combobox');
     if (el) {
       el.value = val;
     }
+    */
   }
-  @track _selection;
+  @track _selection = null;
 
   /**
    * Whether the value has changed.
    * @type {Boolean}
    */
-  get hasChanged() {
-    return this._text !== this._selection;
-  }
+  // get hasChanged() {
+  //   return this._text !== this._selection;
+  // }
 
   /**
    * The current value of the combobox.
@@ -142,9 +145,9 @@ export default class Ltng_editableCombobox extends LightningElement {
   handleEditableTextFocus() {
     this.isOpen = 'true';
   }
-  handleEditableTextBlur() {
-    // this.isOpen = 'false';
-  }
+  // handleEditableTextBlur() {
+  //   this.isOpen = 'false';
+  // }
 
   /**
    * Handles when the user clicks a combobox item
@@ -184,8 +187,8 @@ export default class Ltng_editableCombobox extends LightningElement {
    * Close the input if currently open and the user clicks it.
    * @param {CustomEvent} evt
    */
+  /*
   handleInputClicked() {
-    /*
     // const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
     // console.log('isInputFocused:' + isInputFocused);
     // const isInputFocused = this.template.querySelector('.editable-text.slds-has-focus') ? true : false;
@@ -193,8 +196,8 @@ export default class Ltng_editableCombobox extends LightningElement {
       this.isOpen = !this.isOpen;
       this.dispatchChange(this._text);
     }
-    */
   }
+  */
 
   //-- internal methods
 
