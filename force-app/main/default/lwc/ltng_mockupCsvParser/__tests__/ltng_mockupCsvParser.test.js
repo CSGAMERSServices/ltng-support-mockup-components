@@ -140,6 +140,10 @@ describe('c-ltng_mockupCsvParser', () => {
       var csvParse = null;
       var expected = null;
 
+      csvLine = null;
+      csvParse = nextCsvStringCell(csvLine);
+      expected = null;
+
       csvLine = '    ';
       csvParse = nextCsvStringCell(csvLine);
       expected = null;
@@ -256,10 +260,26 @@ describe('c-ltng_mockupCsvParser', () => {
       var csvParse = null;
       var expected = [];
 
+      csvLine = null;
+      csvParse = parseCsvLine(csvLine);
+      expected = [];
+
       csvLine = '    ';
       csvParse = parseCsvLine(csvLine);
       expected = [];
 
+      expect(csvParse).toStrictEqual(expected);
+      
+      csvLine = ' one ,';
+      csvParse = parseCsvLine(csvLine);
+      expected = ['one'];
+  
+      expect(csvParse).toStrictEqual(expected);
+      
+      csvLine = ' one , two, ';
+      csvParse = parseCsvLine(csvLine);
+      expected = ['one', 'two'];
+  
       expect(csvParse).toStrictEqual(expected);
       
       csvLine = ' , two, three';

@@ -153,16 +153,15 @@ function parseCsvLine(str) {
 
   if (remaining) {
     for (let i = 0; remaining && i < MAX_ITERATIONS; i++){
-      if (remaining) {
-        let nextToken = nextCsvStringCell(remaining);
-        if (!nextToken) nextToken = nextCsvCell(remaining);
+      let nextToken = nextCsvStringCell(remaining);
+      if (!nextToken) nextToken = nextCsvCell(remaining);
 
-        if (!nextToken) {
-          remaining = null;
-        } else {
-          [currentCell, remaining] = nextToken;
-          results.push(currentCell);
-        }
+      if(nextToken) {
+        [currentCell, remaining] = nextToken;
+        results.push(currentCell);
+      } else {
+        //-- leave in - just in case nextCsvCell doesn't catch everything
+        remaining = null;
       }
     }
   }
