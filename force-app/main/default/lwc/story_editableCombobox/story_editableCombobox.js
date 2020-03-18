@@ -138,10 +138,7 @@ export default class Story_exampleComplex extends LightningElement {
 
   clearKeyListener() {
     window.clearTimeout(this.delayTimeout);
-  }
-
-  handleSceneChanged(sceneEvent) {
-    this.currentScene = sceneEvent.detail;
+    this.delayTimeout = null;
   }
 
   disconnectedCallback() {

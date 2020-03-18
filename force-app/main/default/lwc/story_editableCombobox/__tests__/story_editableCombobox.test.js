@@ -26,6 +26,10 @@ class TestSettings {
     document.body.appendChild(this.element);
     return this;
   }
+
+  getComboboxes() {
+    return [...this.element.shadowRoot.querySelectorAll('c-ltng_editable-combobox')];
+  }
 }
 
 describe('c-story_mockupImage', () => {
@@ -51,4 +55,48 @@ describe('c-story_mockupImage', () => {
     expect(isArray(ts.element.allScenes)).toBeTruthy();
     expect(ts.element.allScenes.length).toBeGreaterThan(0);
   });
+
+  //-- the story only shows console logs anyway
+  it('handles change events without error', () => {
+    const ts = new TestSettings()
+      .attachElement();
+    
+    let comboboxes = ts.getComboboxes();
+    
+    comboboxes.forEach(el => el.dispatchEvent(new CustomEvent('change')));
+
+    //-- we are only showing console log messages
+    expect(comboboxes).toBeTruthy();
+  });
+
+  it('handles key up events without error', () => {
+    const ts = new TestSettings()
+      .attachElement();
+
+    jest.useFakeTimers();
+    
+    let comboboxes = ts.getComboboxes();
+  
+    comboboxes.forEach(el => el.dispatchEvent(new CustomEvent('keyup')));
+
+    jest.runAllTimers();
+
+    return Promise.resolve().then(() => {
+      expect(comboboxes).toBeTruthy();
+    });
+  });
+
+  it('can be disconnected without error', () => {
+    const ts = new TestSettings()
+      .attachElement();
+    
+    const comboboxes = ts.getComboboxes();
+
+    document.body.removeChild(ts.element);
+
+    return Promise.resolve().then(() => {
+      expect(comboboxes).toBeTruthy();
+    });
+  });
+
 });
