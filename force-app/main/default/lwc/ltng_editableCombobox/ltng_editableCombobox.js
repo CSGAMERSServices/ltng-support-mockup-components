@@ -20,6 +20,10 @@ const ENTER_KEY = 13;
 
 export default class Ltng_editableCombobox extends LightningElement {
 
+  @api constants = {
+    ENTER_KEY
+  };
+
   /**
    * Collection of combobox options
    * @type {EditableComboboxOption}
