@@ -8,13 +8,97 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
 
 import { fireEvent } from 'c/ltng_mockupEventBus';
 
+
+
+/**
+ * EventBus notification type dispatched when the image has changed
+ * @type {String}
+ */
 const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
 
+/**
+ * Icon (group:name) to use for static resources
+ * @type {String}
+ */
+const STATIC_RESOURCE_ICON = 'standard:file';
+
+/**
+ * Length in milliseconds to wait before searching
+ * @type {Number}
+ */
+const TIMEOUT_SEARCH_DELAY = 1000;
+
+/**
+ * Type the number of milliseconds to wait before timing out an error
+ * @type {Number}
+ */
 const TIMEOUT_ERROR = 10000;
+
+
+/**
+ * Type the number of milliseconds to wait before timing out a notification
+ * @type {Number}
+ */
 const TIMEOUT_NOTIFICATION = 5000;
 
-const isEmptyString = (str) => {
+/**
+ * 
+ * @param {String} str - string to check
+ * @returns {Boolean} - whether it is an empty string (true) or not (false) 
+ */
+function isEmptyString(str) {
   return str === null ? true : str === undefined ? true : (`${str}`).trim() === "" ? true : false;
+}
+
+/**
+ * Converts a UTC DateTime string to local
+ * @param {String} utcDateTime - ex: '2020-03-11T20:39:45.000Z'
+ * @returns {String} - ex: 3/11/2020, 3:39:45 PM
+ */
+function utcDateToLocal(dateStr) {
+  const parsedDate = Date.parse(dateStr);
+  if (!parsedDate) {
+    return dateStr;
+  }
+  return new Date(parsedDate).toLocaleString();
+}
+
+/**
+ * Converts a filename into a Salesforce file title
+ * @param {String} fileName
+ * @returns {String}
+ */
+function fileNameToFileTitle(fileName) {
+  return fileName.replace(/\.[^\n.]+$/i, '');
+}
+
+/**
+ * Extracts the base64 content of a FileReader content
+ * @param {String} str - ex: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…
+ * @returns {String} - ex: iVBORw0KGgoAAAANSUhEUgAAABgA…
+ */
+function extractFileReaderBase64(str) {
+  return str.substr(str.indexOf(',')+1)
+}
+
+/**
+ * Loads a file and returns the base64 encoding
+ * @param {File} fileToLoad -
+ * @param {FileReder} fileReaderInstance - (allow for mock/testing)
+ * @return {String} - base64 string of the contents of the file
+ */
+function loadFileAsBase64(fileToLoad, fileReaderInstance) {
+  return new Promise((resolve, reject) => {
+    fileReaderInstance.readAsDataURL(fileToLoad);
+    fileReaderInstance.onload = () => {
+      console.log('loaded');
+      let fileResult = fileReaderInstance.result;
+      resolve(fileResult);
+    }
+    fileReaderInstance.onerror = (error) => {
+      reject(error);
+    }
+  });
 }
 
 /**
@@ -26,6 +110,20 @@ const isEmptyString = (str) => {
  */
 
 export default class Ltng_mockupFileHelper extends LightningElement {
+
+  @api constants = {
+    TIMEOUT_SEARCH_DELAY,
+    TIMEOUT_ERROR,
+    TIMEOUT_NOTIFICATION,
+    STATIC_RESOURCE_ICON,
+    IMAGE_CHANGED_EVENT_TYPE,
+
+    isEmptyString,
+    utcDateToLocal,
+    fileNameToFileTitle,
+    extractFileReaderBase64,
+    loadFileAsBase64
+  }
 
   /**
    * Current page reference
@@ -102,8 +200,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         return contentDocument ? {
           key: contentDocument.Id, // LatestPublishedVersionId,
           label: contentDocument.Title,
-          subLabel: Ltng_mockupFileHelper.utcDateToLocal(contentDocument.LastModifiedDate),
-          icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
+          subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
+          icon: STATIC_RESOURCE_ICON,
           value: contentDocument
         } : {};
       });
@@ -112,7 +210,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
           key: 'new',
           label: `New Resource: ${this.queryTerm}`,
           subLabel: '',
-          icon: Ltng_mockupFileHelper.STATIC_RESOURCE_ICON,
+          icon: STATIC_RESOURCE_ICON,
           value: {
             Title: this.queryTerm
           }
@@ -191,7 +289,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
       console.log(`searching for:${searchStr}`);
       this.queryTerm = searchStr;
-    }, Ltng_mockupFileHelper.TIMEOUT_DELAY);
+    }, TIMEOUT_SEARCH_DELAY);
   }
 
   /**
@@ -231,7 +329,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     if (filesToUpload.length > 0) {
       this.fileToUpload = filesToUpload[0];
       if (!editableCombobox.value) {
-        const fileName = Ltng_mockupFileHelper.fileNameToFileTitle(this.fileToUpload.name);
+        const fileName = fileNameToFileTitle(this.fileToUpload.name);
         this.newFileName = fileName;
 
         editableCombobox.text = fileName;
@@ -240,7 +338,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         // this.openCombobox(true);
       }
 
-      this.fileToUploadBase64 = await Ltng_mockupFileHelper.loadFileAsBase64(this.fileToUpload, new FileReader());
+      this.fileToUploadBase64 = await loadFileAsBase64(this.fileToUpload, new FileReader());
     }
   }
 
@@ -265,13 +363,11 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
       fileName: this.fileToUpload.name,
-      body: Ltng_mockupFileHelper.extractFileReaderBase64(this.fileToUploadBase64)
+      body: extractFileReaderBase64(this.fileToUploadBase64)
     })
     
       .then(data => {
-        console.log('creation was successful', data);
-
-        this.showNotification(false, 'Success', data);
+        this.showNotification(false, `Successfully updated: ${data.Title}`, data);
 
         this.clearFileInput();
         this.clearSelection();
@@ -357,78 +453,4 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       .querySelector('c-ltng_editable-combobox');
     editableCombobox.isOpen = isOpen;
   }
-
-  //-- moved
-
-  /**
-   * 
-   * @param {String} str - string to check
-   * @returns {Boolean} - whether it is an empty string (true) or not (false) 
-   */
-  static isEmptyString(str) {
-    return str === null ? true : str === undefined ? true : (`${str}`).trim() === "" ? true : false;
-  }
-
-  /**
-   * Converts a UTC DateTime string to local
-   * @param {String} utcDateTime - ex: '2020-03-11T20:39:45.000Z'
-   * @returns {String} - ex: 3/11/2020, 3:39:45 PM
-   */
-  static utcDateToLocal(dateStr) {
-    const parsedDate = Date.parse(dateStr);
-    if (!parsedDate) {
-      return dateStr;
-    }
-    return new Date(parsedDate).toLocaleString();
-  }
-
-  /**
-   * Converts a filename into a Salesforce file title
-   * @param {String} fileName
-   * @returns {String}
-   */
-  static fileNameToFileTitle(fileName) {
-    return fileName.replace(/\.[^\n.]+$/i, '');
-  }
-
-  /**
-   * Extracts the base64 content of a FileReader content
-   * @param {String} str - ex: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…
-   * @returns {String} - ex: iVBORw0KGgoAAAANSUhEUgAAABgA…
-   */
-  static extractFileReaderBase64(str) {
-    return str.substr(str.indexOf(',')+1)
-  }
-
-  /**
-   * Loads a file and returns the base64 encoding
-   * @param {File} fileToLoad -
-   * @param {FileReder} fileReaderInstance - (allow for mock/testing)
-   * @return {String} - base64 string of the contents of the file
-   */
-  static loadFileAsBase64(fileToLoad, fileReaderInstance) {
-    return new Promise((resolve, reject) => {
-      fileReaderInstance.readAsDataURL(fileToLoad);
-      fileReaderInstance.onload = () => {
-        console.log('loaded');
-        let fileResult = fileReaderInstance.result;
-        resolve(fileResult);
-      }
-      fileReaderInstance.onerror = (error) => {
-        reject(error);
-      }
-    });
-  }
-
-  /**
-   * Icon (group:name) to use for static resources
-   * @type {String}
-   */
-  static STATIC_RESOURCE_ICON = 'standard:file';
-
-  /**
-   * Length in milliseconds to wait before searching
-   * @type {Number}
-   */
-  static TIMEOUT_DELAY = 1000;
 }
