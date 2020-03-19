@@ -82,7 +82,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Error string to show
    * @type {String}
    */
-  @track error;
+  @track error = 'Successful';
 
   /**
    * Success message to show
@@ -251,23 +251,25 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    */
   handleSubmit() {
     this.clearNotifications();
+    this.showSpinner = true;
 
     /*
-    this.showSpinner = true;
-    clearTimeout(this.timeoutPointer);
-    this.timeoutPointer = setTimeout(() => { // eslint-disable-line
-      this.showSpinner = false;
-      console.log('done');
-    }, 3000 );
+    console.log('mocking the upload');
+    return new Promise((resolve) => {
+      clearTimeout(this.timeoutPointer);
+      this.timeoutPointer = setTimeout(() => { // eslint-disable-line
+        this.showSpinner = false;
+        resolve({})
+      }, 10000 );
+    })
     */
-
-    this.showSpinner = true;
     apexCreateContentVersion({
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
       fileName: this.fileToUpload.name,
       body: Ltng_mockupFileHelper.extractFileReaderBase64(this.fileToUploadBase64)
     })
+    
       .then(data => {
         //-- @TODO: handle data
         // debugger;

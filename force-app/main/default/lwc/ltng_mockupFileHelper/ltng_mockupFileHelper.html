@@ -24,33 +24,6 @@
                 </div>
             </lightning-layout-item>
             <lightning-layout-item size="12" padding="around-small">
-                <div class='alert' if:true={error}>
-                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
-                        <span class="slds-assistive-text">Error</span>
-                        <lightning-icon icon-name="utility:error" class="slds-m-right_x-small"
-                            alternative-text="Error" title="Error"
-                        ></lightning-icon>
-                        <h2>
-                            {error}
-                        </h2>
-                    </div>
-                </div>
-                <!--
-                <div class='alert' if:true={hasRecordToUpdate}>
-                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
-                        <span class="slds-assistive-text">warning</span>
-                        <lightning-icon icon-name="utility:warning" class="slds-m-right_x-small"
-                            alternative-text="Warning" title="Warning"
-                        ></lightning-icon>
-                        <h2 if:true={isNew}>
-                            New file will be created: {newFileName}
-                        </h2>
-                        <h2 if:false={isNew}>
-                            File will be updated: {newFileName}
-                        </h2>
-                    </div>
-                </div>
-                -->
                 <c-ltng_editable-combobox
                     label="Salesforce File"
                     placeholder="Name of File (or new File to create)"
@@ -70,7 +43,18 @@
                     ></lightning-button>
                 </div>
             </lightning-layout-item>
-            <lightning-layout-item size="12" padding="around-small">
+            <lightning-layout-item size="12">
+                <div class='alert' if:true={error}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">Error</span>
+                        <lightning-icon icon-name="utility:error" class="slds-m-right_x-small"
+                            alternative-text="Error" title="Error"
+                        ></lightning-icon>
+                        <h2>
+                            {error}
+                        </h2>
+                    </div>
+                </div>
                 <div class='alert' if:true={success}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
                         <span class="slds-assistive-text">Info</span>
@@ -87,5 +71,7 @@
                 <div class='spacer'>&nbsp;</div>
             </lightning-layout-item>
         </lightning-layout>
+        <div class='notifications'>
+        </div>
     </div>
 </template>
