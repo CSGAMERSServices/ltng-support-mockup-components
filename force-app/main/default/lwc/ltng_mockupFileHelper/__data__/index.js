@@ -21,6 +21,9 @@ export const exec_findFilesRecent = () => findFilesMock.emit(convertJsonArray(fi
 import * as findFilesEmpty from './findFilesEmpty.json';
 export const exec_findFilesEmpty = () => findFilesMock.emit(convertJsonArray(findFilesEmpty));
 
+import * as findFilesSearch from './findFilesSearch.json';
+export const exec_findFilesSearch = () => findFilesMock.emit(convertJsonArray(findFilesSearch));
+
 import createContentVersionApex from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
 export const createContentVersionMock = registerLdsTestWireAdapter(createContentVersionApex);
 import * as createContentVersion from './createContentVersion.json';

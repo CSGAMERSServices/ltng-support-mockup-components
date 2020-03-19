@@ -118,6 +118,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     STATIC_RESOURCE_ICON,
     IMAGE_CHANGED_EVENT_TYPE,
 
+    FILE_READER:null,
+
     isEmptyString,
     utcDateToLocal,
     fileNameToFileTitle,
@@ -339,7 +341,16 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         // this.openCombobox(true);
       }
 
-      this.fileToUploadBase64 = await loadFileAsBase64(this.fileToUpload, new FileReader());
+      //-- allow for tests to override
+      let fileReader = new FileReader();
+      if (this.constants.FILE_READER) {
+        fileReader = this.constants.FILE_READER;
+      }
+
+      loadFileAsBase64(this.fileToUpload, fileReader)
+        .then(fileBase64 => {
+          this.fileToUploadBase64 = fileBase64;
+        });
     }
   }
 

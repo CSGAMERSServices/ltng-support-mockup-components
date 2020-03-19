@@ -7,9 +7,43 @@ import ltng_mockupFileHelper from 'c/ltng_mockupFileHelper';
 
 import * as data from '../__data__';
 
+/**
+ * Base64WithMeta
+ * @type {String}
+ */
+const BASE64_WITH_META = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…';
+
+/**
+ * Base64 data without the metadata
+ */
+const BASE64='iVBORw0KGgoAAAANSUhEUgAAABgA…';
+
+/**
+ * Example file evt
+ * @type {Object}
+ */
+const exampleFile = {
+  name:'smallLightTest.png',
+  lastModified:1584635423243,
+  lastModifiedDate:'2020-03-19T16:30:23.243Z',
+  size:3848,
+  type:'image/png'
+};
+
+/**
+ * Example name of a file
+ * @type {String}
+ */
+const EXAMPLE_FILE_PATH = '/path/to/my/file';
+
 const defaultProperties = {
   showDropDownSpacer: false
 };
+
+const mockFileReader = {
+  readAsDataURL: jest.fn(),
+  result: BASE64_WITH_META
+}
 
 class TestSettings {
   constructor() {
@@ -45,6 +79,11 @@ class TestSettings {
     data.execPageReferenceMock();
     return this;
   }
+
+  setQueryTerm(str) {
+    this.element.queryTerm = str;
+    return this;
+  }
   
   /**
    * Fire wire mock to get recent files with values
@@ -73,35 +112,71 @@ class TestSettings {
     return this;
   }
 
+  /**
+   * mock selecting an option in the combobox
+   * @param {Number} index - the index in the combobox to select
+   * @returns {Object} - the value at that index
+   */
+  selectComboboxOption(index) {
+    const combobox = this.getCombobox();
+    const optionSelected = combobox.options[index];
+    expect(optionSelected).toBeTruthy();
+
+    const recordUpdateEvent = new CustomEvent('change', {
+      detail : {
+        value: optionSelected.value
+      }
+    });
+    combobox.dispatchEvent(recordUpdateEvent);
+
+    return optionSelected;
+  }
+
+  /**
+   * mock uploading a file
+   * (note the mockFileReader can then be resolved through `onload`
+   * or rejected through `onerror(error)`)
+   */
+  uploadFile() {
+    expect(mockFileReader.readAsDataURL).not.toHaveBeenCalled();
+
+    this.element.constants
+      .loadFileAsBase64(EXAMPLE_FILE_PATH, mockFileReader);
+
+    const fileChangeEvt = new CustomEvent('change');
+    const fileInput = this.getFileInput();
+    fileInput.files = [exampleFile];
+    fileInput.dispatchEvent(fileChangeEvt);
+
+    mockFileReader.onload();
+  }
+
   attachElement() {
     document.body.appendChild(this.element);
     return this;
   }
+
+  getCombobox() {
+    return this.element.shadowRoot.querySelector('c-ltng_editable-combobox');
+  }
+  getFileInput() {
+    return this.element.shadowRoot.querySelector('lightning-input.file-selector');
+  }
+  getPreviewImg() {
+    return this.element.shadowRoot.querySelector('div.preview img');
+  }
+  getSubmitBtn() {
+    return this.element.shadowRoot.querySelector('div.actions lightning-button');
+  }
+  getErrorAlert() {
+    return this.element.shadowRoot.querySelector('c-ltng_mockup-alert.error');
+  }
+  getNotificationAlert() {
+    return this.element.shadowRoot.querySelector('c-ltng_mockup-alert.success');
+  }
 }
 
-describe('c-ltng_mockupFileHelper', () => {
-  //-- boilerplate DOM reset
-  afterEach(() => {
-    while (document.body.firstChild){
-      document.body.removeChild(document.body.firstChild);
-    }
-  });
-  
-  it('can be created', () => {
-    const ts = new TestSettings()
-      .applyDefaultProperties()
-      .firePageReference()
-      .fireFindFilesRecent()
-      .attachElement();
-    
-    expect(ts.element).not.toBe(null);
-
-    expect(ts.element.showDropDownSpacer).toBe(defaultProperties.showDropDownSpacer);
-    
-    // const div = ts.element.shadowRoot.querySelector('div');
-    // expect(div.textContent).toBe('Hello, World!');
-  });
-
+describe('c-ltng_mockupFileHelper utility/critical methods', () => {
   describe('isEmptyString', () => {
     it('is empty if the string is null', () => {
       const ts = new TestSettings();
@@ -217,18 +292,18 @@ describe('c-ltng_mockupFileHelper', () => {
     it('strips the mime type etc if provided', () => {
       const ts = new TestSettings();
 
-      const valToCheck = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…';
+      const valToCheck = BASE64_WITH_META;
       const result = ts.element.constants.extractFileReaderBase64(valToCheck);
-      const expected = 'iVBORw0KGgoAAAANSUhEUgAAABgA…';
+      const expected = BASE64;
 
       expect(result).toBe(expected);
     });
     it('returns base64 if base64 is sent', () => {
       const ts = new TestSettings();
 
-      const valToCheck = 'iVBORw0KGgoAAAANSUhEUgAAABgA…';
+      const valToCheck = BASE64;
       const result = ts.element.constants.extractFileReaderBase64(valToCheck);
-      const expected = 'iVBORw0KGgoAAAANSUhEUgAAABgA…';
+      const expected = BASE64;
 
       expect(result).toBe(expected);
     });
@@ -240,12 +315,7 @@ describe('c-ltng_mockupFileHelper', () => {
 
       const ts = new TestSettings();
 
-      const mockFileReader = {
-        readAsDataURL: jest.fn(),
-        result: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgA…'
-      };
-
-      const fileToLoad = '/path/to/my/file';
+      const fileToLoad = EXAMPLE_FILE_PATH;
       const expected = mockFileReader.result;
 
       const resultPromise = ts.element.constants
@@ -266,7 +336,7 @@ describe('c-ltng_mockupFileHelper', () => {
 
       const mockFileReader = {
         readAsDataURL: jest.fn(),
-        result: 'iVBORw0KGgoAAAANSUhEUgAAABgA…'
+        result: BASE64
       };
 
       const fileToLoad = '/path/to/my/file';
@@ -281,6 +351,189 @@ describe('c-ltng_mockupFileHelper', () => {
       mockFileReader.onerror(error);
       
       return resultPromise;
+    });
+  });
+});
+
+const originalFileReader = FileReader;
+
+describe('c-ltng_mockupFileHelper', () => {
+  //-- boilerplate DOM reset
+
+  beforeEach(() => {
+    // window.FileReader = mockFileReader;
+  });
+
+  afterEach(() => {
+    while (document.body.firstChild){
+      document.body.removeChild(document.body.firstChild);
+    }
+    mockFileReader.readAsDataURL.mockReset();
+
+    // window.FileReader = originalFileReader;
+  });
+  
+  it('can be created', () => {
+    const ts = new TestSettings()
+      .applyDefaultProperties()
+      .firePageReference()
+      .fireFindFilesRecent()
+      .attachElement();
+    
+    expect(ts.element).not.toBe(null);
+
+    expect(ts.element.showDropDownSpacer).toBe(defaultProperties.showDropDownSpacer);
+    
+    // const div = ts.element.shadowRoot.querySelector('div');
+    // expect(div.textContent).toBe('Hello, World!');
+  });
+
+  describe('File select options', () => {
+    it('the options include a NEW option if the text is currently set', () => {
+      const newFileName = 'some new file';
+
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .setQueryTerm(newFileName)
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      const combobox = ts.getCombobox();
+      combobox.text = newFileName;
+
+      const expected = [
+        {
+          "icon": "standard:file", "key": "new", "label": "New Resource: some new file",
+          "subLabel": "", "value": {"Title": "some new file"}
+        },
+        {"icon": "standard:file", "key": "069R0000000qydRIAQ", "label": "ltng_smallLightTest",
+          "subLabel": "3/19/2020, 11:31:32 AM",
+          "value": {
+            "Id": "069R0000000qydRIAQ", "LastModifiedDate": "2020-03-19T16:31:32.000Z",
+            "LatestPublishedVersionId": "068R0000000rAHiIAM", "Title": "ltng_smallLightTest"
+          }
+        },
+        {"icon": "standard:file", "key": "069R0000000qs3SIAQ", "label": "ltng_Button Strip",
+          "subLabel": "3/19/2020, 11:25:40 AM",
+          "value": {
+            "Id": "069R0000000qs3SIAQ", "LastModifiedDate": "2020-03-19T16:25:40.000Z",
+            "LatestPublishedVersionId": "068R0000000rAH4IAM", "Title": "ltng_Button Strip"
+          }
+        },
+        {"icon": "standard:file", "key": "069R0000000qrzzIAA", "label": "ltng_Button Bar",
+          "subLabel": "3/17/2020, 9:01:57 AM",
+          "value": {
+            "Id": "069R0000000qrzzIAA", "LastModifiedDate": "2020-03-17T14:01:57.000Z",
+            "LatestPublishedVersionId": "068R0000000r3bjIAA", "Title": "ltng_Button Bar"
+          }
+        }
+      ];
+
+      expect(combobox.options).toStrictEqual(expected);
+    });
+
+    it('the options do not include a NEW option if the text is blank', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .setQueryTerm(null)
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      const combobox = ts.getCombobox();
+      combobox.text = '';
+
+      data.exec_findFilesSearch();
+
+      const expected = [
+        {"icon": "standard:file", "key": "069R0000000qydRIAQ", "label": "ltng_smallLightTest",
+          "subLabel": "3/19/2020, 11:31:32 AM",
+          "value": {
+            "Id": "069R0000000qydRIAQ", "LastModifiedDate": "2020-03-19T16:31:32.000Z",
+            "LatestPublishedVersionId": "068R0000000rAHiIAM", "Title": "ltng_smallLightTest"
+          }
+        },
+        {"icon": "standard:file", "key": "069R0000000qs3SIAQ", "label": "ltng_Button Strip",
+          "subLabel": "3/19/2020, 11:25:40 AM",
+          "value": {
+            "Id": "069R0000000qs3SIAQ", "LastModifiedDate": "2020-03-19T16:25:40.000Z",
+            "LatestPublishedVersionId": "068R0000000rAH4IAM", "Title": "ltng_Button Strip"
+          }
+        },
+        {"icon": "standard:file", "key": "069R0000000qrzzIAA", "label": "ltng_Button Bar",
+          "subLabel": "3/17/2020, 9:01:57 AM",
+          "value": {
+            "Id": "069R0000000qrzzIAA", "LastModifiedDate": "2020-03-17T14:01:57.000Z",
+            "LatestPublishedVersionId": "068R0000000r3bjIAA", "Title": "ltng_Button Bar"
+          }
+        }
+      ];
+
+      expect(combobox.options).toStrictEqual(expected);
+    });
+  });
+
+  describe('submit button', () => {
+    it('is disabled if the user only has combobox selection and no file', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      const optionSelected = ts.selectComboboxOption(1);
+      expect(optionSelected).toBeTruthy();
+
+      //-- file is not selected
+
+      return Promise.resolve().then(() => {
+        const submitBtn = ts.getSubmitBtn();
+        expect(submitBtn.disabled).toBe(true);
+      });
+    });
+
+    it('is disabled if the user only has a file but no combobox selection', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      ts.element.constants.FILE_READER = mockFileReader;
+      
+      ts.uploadFile();
+
+      //-- file is not selected
+
+      return Promise.resolve().then(() => {
+        const submitBtn = ts.getSubmitBtn();
+        expect(submitBtn.disabled).toBe(true);
+      });
+    });
+
+    it('is enabled if the user both selects a value and file', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      ts.element.constants.FILE_READER = mockFileReader;
+      
+      //-- select option
+      const optionSelected = ts.selectComboboxOption(1);
+      expect(optionSelected).toBeTruthy();
+
+      debugger;
+
+      //-- select file
+      ts.uploadFile();
+
+      return Promise.resolve().then(() => {
+        const submitBtn = ts.getSubmitBtn();
+        expect(submitBtn.disabled).toBe(false);
+      });
     });
   });
 });
