@@ -44,6 +44,11 @@
                 </div>
             </lightning-layout-item>
             <lightning-layout-item size="12">
+                <c-ltng_mockup-alert
+                    theme="error" icon-name="error" class='error'
+                    message={error}
+                ></c-ltng_mockup-alert>
+                <!--
                 <div class='alert' if:true={error}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
                         <span class="slds-assistive-text">Error</span>
@@ -55,6 +60,12 @@
                         </h2>
                     </div>
                 </div>
+                -->
+                <c-ltng_mockup-alert
+                    theme="info" icon-name="info" class='success'
+                    message={success}
+                ></c-ltng_mockup-alert>
+                <!--
                 <div class='alert' if:true={success}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
                         <span class="slds-assistive-text">Info</span>
@@ -66,6 +77,7 @@
                         </h2>
                     </div>
                 </div>
+            -->
             </lightning-layout-item>
             <lightning-layout-item size="12" if:true={showDropdownSpacer}>
                 <div class='spacer'>&nbsp;</div>

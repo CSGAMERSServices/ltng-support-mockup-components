@@ -303,5 +303,22 @@ describe('c-ltng_mockupAlert', () => {
       const fn = () => ts.element.show('some message', -1);
       expect(fn).not.toThrow();
     });
+
+    it('closes when the close button is pressed', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .attachElement();
+      
+      let closeBtn = ts.element.shadowRoot.querySelector('lightning-button-icon');
+      expect(closeBtn).toBeTruthy();
+
+      const clickEvt = new CustomEvent('click');
+      closeBtn.dispatchEvent(clickEvt);
+
+      return Promise.resolve().then(() => {
+        closeBtn = ts.element.shadowRoot.querySelector('lightning-button-icon');
+        expect(closeBtn).toBeFalsy();  
+      });
+    });
   });
 });

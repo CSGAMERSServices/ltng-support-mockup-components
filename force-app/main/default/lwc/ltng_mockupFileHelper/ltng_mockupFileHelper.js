@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 
 import { LightningElement, api, track, wire } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
@@ -8,6 +9,9 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
 import { fireEvent } from 'c/ltng_mockupEventBus';
 
 const IMAGE_CHANGED_EVENT_TYPE = 'imageuploaded';
+
+const TIMEOUT_ERROR = 10000;
+const TIMEOUT_NOTIFICATION = 5000;
 
 const isEmptyString = (str) => {
   return str === null ? true : str === undefined ? true : (`${str}`).trim() === "" ? true : false;
@@ -82,23 +86,17 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Error string to show
    * @type {String}
    */
-  @track error = 'Successful';
-
-  /**
-   * Success message to show
-   * @type {String}
-   */
-  @track success;
-  successTimer = null;
+  lastNotification;
 
   @wire (apexFindFiles, { searchStr: '$queryTerm' })
   handleResults({data, error}) {
     // console.log('results came in');
     if (error) {
-      console.error('error occurred', error);
+      const msg = error.body.message;
+      this.showNotification(true, `An error occurred:${msg}`, error);
     }
     if (data) {
-      console.log('data came back', data);
+      //console.log('data came back', data);
       let results = [];
       results = data.map((contentDocument) => {
         return contentDocument ? {
@@ -255,12 +253,12 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
     /*
     console.log('mocking the upload');
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       clearTimeout(this.timeoutPointer);
       this.timeoutPointer = setTimeout(() => { // eslint-disable-line
         this.showSpinner = false;
-        resolve({})
-      }, 10000 );
+        reject({ body: { message: 'Fake Error'} });
+      }, 1000 );
     })
     */
     apexCreateContentVersion({
@@ -271,11 +269,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     })
     
       .then(data => {
-        //-- @TODO: handle data
-        // debugger;
         console.log('creation was successful', data);
 
-        this.showSuccessMessage('Success', 1000);
+        this.showNotification(false, 'Success', data);
 
         this.clearFileInput();
         this.clearSelection();
@@ -285,10 +281,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, data);
       })
       .catch(error => {
-        //-- @TODO: handle error
-        debugger; // eslint-disable-line no-debugger
-        console.error('error occurred', JSON.stringify(error));
-        this.error = error.body.message;
+        const msg = error.body.message;
+        this.showNotification(true, `An error occurred:${msg}`, error);
       })
       .finally(() => {
         this.showSpinner = false;
@@ -296,16 +290,35 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   /**
-   * Show a success message for a specific period of time
-   * @param {String} msg - Message to show
-   * @param {Number} timeout - Number of milliseconds to show the message.
+   * Show an error message for a specific period of time
+   * @param {Boolean} isError - whether the notification is an error (true) or not (false)
+   * @param {String} msg - the message to show
+   * @param {any} notificationInfo - any additional info to preserve
    */
-  showSuccessMessage(msg, timeout) {
-    window.clearTimeout(this.successTimer);
-    this.success = msg;
-    this.successTimer = setTimeout(() => { // eslint-disable-line
-      this.success = null;
-    }, timeout);
+  showNotification(isError, msg, notificationInfo){
+    let notificationEl;
+    let timeoutLength;
+    if (isError) {
+      notificationEl = this.template.querySelector('c-ltng_mockup-alert.error');
+      timeoutLength = TIMEOUT_ERROR;
+    } else {
+      notificationEl = this.template.querySelector('c-ltng_mockup-alert.success');
+      timeoutLength = TIMEOUT_NOTIFICATION;
+    }
+
+    if (isError && msg) {
+      // debugger;
+      console.error('Error occurred', notificationInfo);
+    }
+
+    if (!msg) {
+      notificationEl.isShown = false;
+      notificationEl.message = '';
+    } else {
+      notificationEl.show(msg, timeoutLength);
+    }
+
+    this.lastNotification = notificationInfo;
   }
 
   handleImageUpdate() {
@@ -319,8 +332,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   clearNotifications() {
-    this.error = null;
-    this.success = null;
+    this.showNotification(true, null);
+    this.showNotification(false, null);
   }
 
   clearFileInput() {

@@ -1,5 +1,8 @@
 import { LightningElement, api } from 'lwc';
 
+/** default timeout period */
+const DEFAULT_TIMEOUT = 1000;
+
 /**
  * Simple component to show a lightning design system style alert
  */
@@ -69,7 +72,25 @@ export default class Ltng_mockupAlert extends LightningElement {
     return results;
   }
 
+  //-- handlers
+
+  /**
+   * Handles when the close button is clicked
+   **/
+  handleCloseBtn() {
+    this.close();
+  }
+
   //-- methods
+
+  /**
+   * Closes the alert
+   **/
+  close() {
+    this.message = null;
+    this.isShown = false;
+    window.clearTimeout(this.messageTimeout);
+  }
 
   messageTimeout = null;
 
@@ -79,14 +100,15 @@ export default class Ltng_mockupAlert extends LightningElement {
    * @param {Number} timeout - the length of time to show the message.
    */
   @api show(msg, timeout) {
-    if (timeout > 0) {
-      window.clearTimeout(this.messageTimeout);
-      this.message = msg;
-      this.isShown = true;
-      this.messageTimeout = setTimeout(() => { // eslint-disable-line
-        this.isShown = false;
-        window.clearTimeout(this.messageTimeout);
-      }, timeout);
+    if (timeout === null || timeout === undefined || timeout < 0) {
+      timeout = DEFAULT_TIMEOUT;
     }
+
+    window.clearTimeout(this.messageTimeout);
+    this.message = msg;
+    this.isShown = true;
+    this.messageTimeout = setTimeout(() => { // eslint-disable-line
+      this.close();
+    }, timeout);
   }
 }
