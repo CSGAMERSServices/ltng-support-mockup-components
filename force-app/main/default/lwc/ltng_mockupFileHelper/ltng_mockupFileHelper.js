@@ -275,6 +275,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   disconnectedCallback() {
+    this.clearNotifications();
   }
 
   /**
@@ -430,6 +431,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   clearNotifications() {
     this.showNotification(true, null);
     this.showNotification(false, null);
+    this.clearKeyListener();
   }
 
   clearFileInput() {
