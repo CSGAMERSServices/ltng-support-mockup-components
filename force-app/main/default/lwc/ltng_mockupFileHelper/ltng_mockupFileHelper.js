@@ -392,7 +392,11 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         this.showSpinner = false;
       });
     
+    //-- allow tests to pause until completed
     evt.detail.submitPromise = submitPromise;
+    // evt.detail = Object.assign({
+    //   submitPromise:submitPromise
+    // }, evt.detail);
   }
 
   /**

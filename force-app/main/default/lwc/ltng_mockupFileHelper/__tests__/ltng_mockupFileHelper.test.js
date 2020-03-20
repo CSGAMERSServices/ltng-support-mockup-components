@@ -407,6 +407,9 @@ describe('c-ltng_mockupFileHelper', () => {
     }
     mockFileReader.readAsDataURL.mockClear();
 
+    jest.clearAllMocks();
+    jest.clearAllTimers();
+
     // window.FileReader = originalFileReader;
   });
   
@@ -770,14 +773,8 @@ describe('c-ltng_mockupFileHelper', () => {
 
           expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
 
-          // return data.mockCreateContentVersionPromise
-          // return new Promise(resolve => setImmediate(resolve))
-          // return data.createContentVersionMock()
-          // return Promise.resolve()
           submitEvt.detail.submitPromise
             .then(() => {
-              debugger;
-
               expect(imageChangedHandler).toHaveBeenCalled();
 
               const errorAlert = ts.getErrorAlert();

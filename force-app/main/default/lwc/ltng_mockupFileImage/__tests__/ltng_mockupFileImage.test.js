@@ -114,6 +114,9 @@ describe('c-ltng_mockupFileImage', () => {
     }
     mockEventBus.registerListener.mockReset();
     mockEventBus.unregisterListener.mockReset();
+
+    jest.clearAllMocks();
+    jest.clearAllTimers();
   });
 
   it('can be created', () => {

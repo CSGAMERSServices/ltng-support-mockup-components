@@ -46,18 +46,5 @@ jest.mock(
 );
 export const createContentVersionData = createContentVersion;
 export const createContentVersionMock = createContentVersionApex;
-
-export const exec_createContentVersion = () => {
-  // debugger;
-  // const fn = createContentVersionApex;
-  createContentVersionMock.mockResolvedValue(createContentVersionData);
-}
-
-// export const exec_createContentVersion = () => {
-//   const results = createContentVersionApex.mockResolvedValue(createContentVersion);
-//   // console.log(results);
-//   // return results();
-//   return results;
-// };
-
+export const exec_createContentVersion = () => createContentVersionMock.mockResolvedValue(createContentVersionData);
 export const error_createContentVersion = () => createContentVersionMock.mockRejectedValue(ERROR);
