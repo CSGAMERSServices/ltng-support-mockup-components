@@ -17,7 +17,7 @@
     "test:apex:synchronous": "sfdx force:apex:test:run -w 10 -y",
     "test:apex:coverage": "sfdx force:apex:test:run -w 10 -d junit -c -r human --codecoverage",
     "test:lwc": "sfdx-lwc-jest",
-    "test:lwc:watch": "sfdx-lwc-jest --watch",
+    "test:lwc:watch": "sfdx-lwc-jest --watch -- --runInBand",
     "test:lwc:debug": "sfdx-lwc-jest --debug",
     "test:lwc:coverage": "sfdx-lwc-jest --coverage",
     "log": "sfdx force:apex:log:tail | less -O ./.tmp/apexLog.log +F",
