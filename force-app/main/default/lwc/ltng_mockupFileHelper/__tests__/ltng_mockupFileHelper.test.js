@@ -487,6 +487,31 @@ describe('c-ltng_mockupFileHelper', () => {
 
       expect(combobox.options).toStrictEqual(expected);
     });
+
+    it('shows a notification if the wire call errors', () => {
+      const newFileName = 'some new file';
+
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .setQueryTerm(newFileName)
+        .firePageReference()
+        .attachElement();
+      
+      const errorEl = ts.element.shadowRoot.querySelector('c-ltng_mockup-alert.error');
+      const notificationEl = ts.element.shadowRoot.querySelector('c-ltng_mockup-alert.success');
+
+      expect(errorEl).toBeTruthy();
+      expect(notificationEl).toBeTruthy();
+
+      debugger;
+
+      return Promise.resolve().then(() => {
+        data.error_fileFilesSearch();
+
+        const errorAlert = ts.getErrorAlert();
+        expect(errorAlert.isShown).toBe(true);
+      });
+    });
   });
 
   describe('submit button', () => {
@@ -540,7 +565,7 @@ describe('c-ltng_mockupFileHelper', () => {
       //-- select option
       const optionSelected = ts.selectComboboxOption(1);
       expect(optionSelected).toBeTruthy();
-      
+
       //-- select file
       const fileReaderPromise = ts.uploadFile();
 

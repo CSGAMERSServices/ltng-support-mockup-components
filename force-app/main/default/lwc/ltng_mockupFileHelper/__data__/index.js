@@ -13,6 +13,8 @@ function convertJsonArray(obj) {
   return obj.default;
 }
 
+export const ERROR = { message: 'error' };
+
 import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
 export const findFilesMock = registerLdsTestWireAdapter(apexFindFiles);
 import * as findFilesRecent from './findFilesRecent.json';
@@ -23,6 +25,7 @@ export const exec_findFilesEmpty = () => findFilesMock.emit(convertJsonArray(fin
 
 import * as findFilesSearch from './findFilesSearch.json';
 export const exec_findFilesSearch = () => findFilesMock.emit(convertJsonArray(findFilesSearch));
+export const error_fileFilesSearch = () => findFilesMock.error(ERROR);
 
 import createContentVersionApex from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
 export const createContentVersionMock = registerLdsTestWireAdapter(createContentVersionApex);

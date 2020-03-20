@@ -419,7 +419,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       notificationEl.isShown = false;
       notificationEl.message = '';
     } else {
-      notificationEl.show(msg, timeoutLength);
+      if (notificationEl) notificationEl.show(msg, timeoutLength);
     }
 
     this.lastNotification = notificationInfo;
