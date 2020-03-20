@@ -89,7 +89,6 @@ function extractFileReaderBase64(str) {
  */
 function loadFileAsBase64(fileToLoad, fileReaderInstance) {
   return new Promise((resolve, reject) => {
-    fileReaderInstance.readAsDataURL(fileToLoad);
     fileReaderInstance.onload = () => {
       console.log('loaded');
       let fileResult = fileReaderInstance.result;
@@ -98,6 +97,7 @@ function loadFileAsBase64(fileToLoad, fileReaderInstance) {
     fileReaderInstance.onerror = (error) => {
       reject(error);
     }
+    fileReaderInstance.readAsDataURL(fileToLoad);
   });
 }
 
@@ -117,8 +117,6 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     TIMEOUT_NOTIFICATION,
     STATIC_RESOURCE_ICON,
     IMAGE_CHANGED_EVENT_TYPE,
-
-    FILE_READER:null,
 
     isEmptyString,
     utcDateToLocal,
@@ -318,7 +316,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Handles when the file input has changed
    * @param {CustomEvent} evt 
    */
-  async handleFileChanged(evt) {
+  handleFileChanged(evt) {
     console.log('file changed');
     
     const fileSelector = this.template  // eslint-disable-line
@@ -343,11 +341,11 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
       //-- allow for tests to override
       let fileReader = new FileReader();
-      if (this.constants.FILE_READER) {
-        fileReader = this.constants.FILE_READER;
+      if (evt.detail.fileReader) {
+        fileReader = evt.detail.fileReader;
       }
 
-      loadFileAsBase64(this.fileToUpload, fileReader)
+      evt.detail.fileReaderPromise = loadFileAsBase64(this.fileToUpload, fileReader)
         .then(fileBase64 => {
           this.fileToUploadBase64 = fileBase64;
         });

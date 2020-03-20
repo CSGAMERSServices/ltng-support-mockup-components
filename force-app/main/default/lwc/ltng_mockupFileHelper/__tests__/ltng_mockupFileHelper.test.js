@@ -41,7 +41,7 @@ const defaultProperties = {
 };
 
 const mockFileReader = {
-  readAsDataURL: jest.fn(),
+  readAsDataURL: jest.fn(() => mockFileReader.onload()),
   result: BASE64_WITH_META
 }
 
@@ -143,17 +143,20 @@ class TestSettings {
     // this.element.constants
     //  .loadFileAsBase64(EXAMPLE_FILE_PATH, mockFileReader);
 
-    const fileChangeEvt = new CustomEvent('change');
+    const fileChangeEvt = new CustomEvent('change', {
+      detail: {
+        fileReader: mockFileReader
+      }
+    });
     const fileInput = this.getFileInput();
     fileInput.files = [exampleFile];
     fileInput.dispatchEvent(fileChangeEvt);
 
-    //-- there is a race condition based on the load of the file
-    //-- and the component rerender for the test
-    //-- for now we must set the base64 data...
-    this.element.fileToUploadBase64 = BASE64_WITH_META;
+    expect(fileChangeEvt.detail.fileReaderPromise).toBeTruthy();
 
-    mockFileReader.onload();
+    // fileChangeEvt.detail.fileReaderPromise.resolve(BASE64_WITH_META);
+
+    return(fileChangeEvt.detail.fileReaderPromise);
   }
 
   attachElement() {
@@ -329,7 +332,7 @@ describe('c-ltng_mockupFileHelper utility/critical methods', () => {
           expect(result).toEqual(expected);
         });
 
-      mockFileReader.onload();
+      // mockFileReader.onload();
 
       return resultPromise;
     });
@@ -339,28 +342,27 @@ describe('c-ltng_mockupFileHelper utility/critical methods', () => {
 
       const ts = new TestSettings();
 
-      const mockFileReader = {
-        readAsDataURL: jest.fn(),
-        result: BASE64
-      };
-
       const fileToLoad = '/path/to/my/file';
       const error = 'some error';
 
+      const mockFileReaderThatFails = {
+        readAsDataURL: jest.fn(() => mockFileReaderThatFails.onerror(error)),
+        result: BASE64
+      };
+
       const resultPromise = ts.element.constants
-        .loadFileAsBase64(fileToLoad, mockFileReader)
+        .loadFileAsBase64(fileToLoad, mockFileReaderThatFails)
         .catch(err => {
           expect(err).toEqual(error);
         });
 
-      mockFileReader.onerror(error);
+      mockFileReaderThatFails.onerror(error);
       
       return resultPromise;
     });
   });
 });
 
-const originalFileReader = FileReader;
 
 describe('c-ltng_mockupFileHelper', () => {
   //-- boilerplate DOM reset
@@ -373,7 +375,7 @@ describe('c-ltng_mockupFileHelper', () => {
     while (document.body.firstChild){
       document.body.removeChild(document.body.firstChild);
     }
-    mockFileReader.readAsDataURL.mockReset();
+    mockFileReader.readAsDataURL.mockClear();
 
     // window.FileReader = originalFileReader;
   });
@@ -507,14 +509,15 @@ describe('c-ltng_mockupFileHelper', () => {
 
       ts.element.constants.FILE_READER = mockFileReader;
       
-      ts.uploadFile();
+      const fileReaderPromise = ts.uploadFile();
 
       //-- file is not selected
 
-      return Promise.resolve().then(() => {
-        const submitBtn = ts.getSubmitBtn();
-        expect(submitBtn.disabled).toBe(true);
-      });
+      return Promise.all([fileReaderPromise])
+        .then(() => {
+          const submitBtn = ts.getSubmitBtn();
+          expect(submitBtn.disabled).toBe(true);
+        });
     });
 
     it('is enabled if the user both selects a value and file', () => {
@@ -533,12 +536,15 @@ describe('c-ltng_mockupFileHelper', () => {
       debugger;
 
       //-- select file
-      ts.uploadFile();
+      const fileReaderPromise = ts.uploadFile();
 
-      return Promise.resolve().then(() => {
-        const submitBtn = ts.getSubmitBtn();
-        expect(submitBtn.disabled).toBe(false);
-      });
+      return Promise.all([fileReaderPromise])
+        .then(() => {
+          expect(ts.element.fileToUploadBase64).toBeTruthy();
+
+          const submitBtn = ts.getSubmitBtn();
+          expect(submitBtn.disabled).toBe(false);
+        });
     });
   });
 });
