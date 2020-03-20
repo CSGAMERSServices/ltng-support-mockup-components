@@ -409,6 +409,7 @@ describe('c-ltng_mockupFileHelper', () => {
 
     jest.clearAllMocks();
     jest.clearAllTimers();
+    jest.resetModules();
 
     // window.FileReader = originalFileReader;
   });

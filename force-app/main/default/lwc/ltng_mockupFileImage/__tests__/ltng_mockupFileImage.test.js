@@ -115,6 +115,7 @@ describe('c-ltng_mockupFileImage', () => {
     mockEventBus.registerListener.mockReset();
     mockEventBus.unregisterListener.mockReset();
 
+    jest.resetModules();
     jest.clearAllMocks();
     jest.clearAllTimers();
   });
