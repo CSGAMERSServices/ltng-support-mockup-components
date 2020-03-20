@@ -353,7 +353,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   /**
    * Attempts to submit to create the contentResource
    */
-  handleSubmit() {
+  handleSubmit(evt) {
     this.clearNotifications();
     this.showSpinner = true;
 
@@ -367,7 +367,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       }, 1000 );
     })
     */
-    apexCreateContentVersion({
+    const submitPromise = apexCreateContentVersion({
       documentId: this.recordToUpdate.Id,
       title: this.newFileName,
       fileName: this.fileToUpload.name,
@@ -391,6 +391,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       .finally(() => {
         this.showSpinner = false;
       });
+    
+    evt.detail.submitPromise = submitPromise;
   }
 
   /**

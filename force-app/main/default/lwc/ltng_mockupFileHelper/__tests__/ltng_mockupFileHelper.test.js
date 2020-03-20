@@ -723,6 +723,70 @@ describe('c-ltng_mockupFileHelper', () => {
   });
 
   describe('updating content', () => {
+    it('on submit', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      //-- select option
+      const optionSelected = ts.selectComboboxOption(1);
+      expect(optionSelected).toBeTruthy();
 
+      //-- select file
+      const fileReaderPromise = ts.uploadFile();
+
+      return Promise.all([fileReaderPromise])
+        .then(() => {
+          expect(ts.element.fileToUploadBase64).toBeTruthy();
+
+          debugger;
+
+          data.exec_createContentVersion();
+
+          //const callPromise = data.exec_createContentVersion(); // ts.fireCreateContentVersion();
+
+          // const apexResults = data.createContentVersionMock.mockResolvedValue(
+          //   data.createContentVersionData
+          // );
+          // data.createContentVersionMock.mockResolvedValue(
+          //   data.createContentVersionData
+          // );
+          
+          const submitBtn = ts.getSubmitBtn();
+          expect(submitBtn.disabled).toBe(false);
+
+          const submitEvt = new CustomEvent('click', {
+            detail: {}
+          });
+          submitBtn.dispatchEvent(submitEvt);
+
+          const imageChangedHandler = jest.fn();
+          ts.element.addEventListener(
+            ts.element.constants.IMAGE_CHANGED_EVENT_TYPE,
+            imageChangedHandler
+          );
+
+          expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
+
+          // return data.mockCreateContentVersionPromise
+          // return new Promise(resolve => setImmediate(resolve))
+          // return data.createContentVersionMock()
+          // return Promise.resolve()
+          submitEvt.detail.submitPromise
+            .then(() => {
+              debugger;
+
+              expect(imageChangedHandler).toHaveBeenCalled();
+
+              const errorAlert = ts.getErrorAlert();
+              const notificationAlert = ts.getNotificationAlert();
+
+              expect(errorAlert).toBeTruthy();
+              expect(notificationAlert).toBeTruthy();
+            });
+        });
+    });
   });
 });

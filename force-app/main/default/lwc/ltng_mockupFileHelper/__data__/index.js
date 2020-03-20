@@ -27,7 +27,37 @@ import * as findFilesSearch from './findFilesSearch.json';
 export const exec_findFilesSearch = () => findFilesMock.emit(convertJsonArray(findFilesSearch));
 export const error_fileFilesSearch = () => findFilesMock.error(ERROR);
 
+/*
 import createContentVersionApex from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
 export const createContentVersionMock = registerLdsTestWireAdapter(createContentVersionApex);
 import * as createContentVersion from './createContentVersion.json';
 export const exec_createContentVersion = () => createContentVersionMock.emit(createContentVersion);
+*/
+import * as createContentVersion from './createContentVersion.json';
+import createContentVersionApex from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
+jest.mock(
+  '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion',
+  () => {
+    return {
+      default: jest.fn()
+    };
+  },
+  { virtual: true }
+);
+export const createContentVersionData = createContentVersion;
+export const createContentVersionMock = createContentVersionApex;
+
+export const exec_createContentVersion = () => {
+  // debugger;
+  // const fn = createContentVersionApex;
+  createContentVersionMock.mockResolvedValue(createContentVersionData);
+}
+
+// export const exec_createContentVersion = () => {
+//   const results = createContentVersionApex.mockResolvedValue(createContentVersion);
+//   // console.log(results);
+//   // return results();
+//   return results;
+// };
+
+export const error_createContentVersion = () => createContentVersionMock.mockRejectedValue(ERROR);
