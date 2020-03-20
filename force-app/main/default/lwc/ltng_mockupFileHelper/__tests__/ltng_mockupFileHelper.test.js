@@ -20,7 +20,7 @@ const BASE64='iVBORw0KGgoAAAANSUhEUgAAABgA…';
 
 /**
  * Example file evt
- * @type {Object}
+ * @type {File}
  */
 const exampleFile = {
   name:'smallLightTest.png',
@@ -36,10 +36,19 @@ const exampleFile = {
  */
 const EXAMPLE_FILE_PATH = '/path/to/my/file';
 
+/**
+ * Default properties to assign to the MockupFileReader instances
+ */
 const defaultProperties = {
   showDropDownSpacer: false
 };
 
+/**
+ * Mock of a file reader.
+ * (Note, this assumes that when the readDataURL is called,
+ * then it should tell itself to call the onload)
+ * @type {FileReader}
+ */
 const mockFileReader = {
   readAsDataURL: jest.fn(() => mockFileReader.onload()),
   result: BASE64_WITH_META
@@ -363,7 +372,6 @@ describe('c-ltng_mockupFileHelper utility/critical methods', () => {
   });
 });
 
-
 describe('c-ltng_mockupFileHelper', () => {
   //-- boilerplate DOM reset
 
@@ -532,9 +540,7 @@ describe('c-ltng_mockupFileHelper', () => {
       //-- select option
       const optionSelected = ts.selectComboboxOption(1);
       expect(optionSelected).toBeTruthy();
-
-      debugger;
-
+      
       //-- select file
       const fileReaderPromise = ts.uploadFile();
 

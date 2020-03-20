@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 
 import { LightningElement, api, track, wire } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
@@ -8,7 +7,13 @@ import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.creat
 
 import { fireEvent } from 'c/ltng_mockupEventBus';
 
-
+/**
+ * @typedef {Object} ContentDocument
+ * @property {String} Id - 
+ * @property {String} Title - 
+ * @property {String} LatestPublishedVersionId -
+ * @property {String} LastModifiedDate -
+ */
 
 /**
  * EventBus notification type dispatched when the image has changed
@@ -90,7 +95,7 @@ function extractFileReaderBase64(str) {
 function loadFileAsBase64(fileToLoad, fileReaderInstance) {
   return new Promise((resolve, reject) => {
     fileReaderInstance.onload = () => {
-      console.log('loaded');
+      // console.log('loaded');
       let fileResult = fileReaderInstance.result;
       resolve(fileResult);
     }
@@ -100,14 +105,6 @@ function loadFileAsBase64(fileToLoad, fileReaderInstance) {
     fileReaderInstance.readAsDataURL(fileToLoad);
   });
 }
-
-/**
- * @typedef {Object} ContentDocument
- * @property {String} Id - 
- * @property {String} Title - 
- * @property {String} LatestPublishedVersionId -
- * @property {String} LastModifiedDate -
- */
 
 export default class Ltng_mockupFileHelper extends LightningElement {
 
@@ -240,9 +237,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * Whether there is a record to update
    * @type {Boolean}
    */
-  get hasRecordToUpdate() {
-    return this.recordToUpdate !== null;
-  }
+  // get hasRecordToUpdate() {
+  //   return this.recordToUpdate !== null;
+  // }
 
   /**
    * Label to show on the button
@@ -288,7 +285,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
-      console.log(`searching for:${searchStr}`);
+      // console.log(`searching for:${searchStr}`);
       this.queryTerm = searchStr;
     }, TIMEOUT_SEARCH_DELAY);
   }
@@ -299,7 +296,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    */
   handleRecordChanged(evt) {
     const value = evt.detail.value;
-    console.log('record changed');
+    // console.log('record changed');
+
     if (typeof value === "string") {
       this.recordToUpdate = {
         Title: value
@@ -317,7 +315,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * @param {CustomEvent} evt 
    */
   handleFileChanged(evt) {
-    console.log('file changed');
+    // console.log('file changed');
     
     const fileSelector = this.template  // eslint-disable-line
       .querySelector('lightning-input.file-selector');
