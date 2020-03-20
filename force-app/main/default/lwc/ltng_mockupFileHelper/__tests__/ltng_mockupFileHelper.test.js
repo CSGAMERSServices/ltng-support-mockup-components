@@ -131,6 +131,8 @@ class TestSettings {
     const optionSelected = combobox.options[index];
     expect(optionSelected).toBeTruthy();
 
+    combobox.selection = optionSelected;
+
     const recordUpdateEvent = new CustomEvent('change', {
       detail : {
         value: optionSelected.value
@@ -139,6 +141,26 @@ class TestSettings {
     combobox.dispatchEvent(recordUpdateEvent);
 
     return optionSelected;
+  }
+
+  /**
+   * Mock typing an option and then pressing return in the combobox
+   * @param {String} str - the text entered in the combobox
+   * @returns {Object} the value provided
+   */
+  enterComboboxOption(str) {
+    const combobox = this.getCombobox();
+    
+    combobox.text = str;
+
+    const recordUpdateEvent = new CustomEvent('change', {
+      detail: {
+        value: str
+      }
+    });
+    combobox.dispatchEvent(recordUpdateEvent);
+
+    return str;
   }
 
   /**
@@ -503,8 +525,6 @@ describe('c-ltng_mockupFileHelper', () => {
       expect(errorEl).toBeTruthy();
       expect(notificationEl).toBeTruthy();
 
-      debugger;
-
       return Promise.resolve().then(() => {
         data.error_fileFilesSearch();
 
@@ -539,8 +559,6 @@ describe('c-ltng_mockupFileHelper', () => {
         .firePageReference()
         .fireFindFilesRecent()
         .attachElement();
-
-      ts.element.constants.FILE_READER = mockFileReader;
       
       const fileReaderPromise = ts.uploadFile();
 
@@ -559,8 +577,6 @@ describe('c-ltng_mockupFileHelper', () => {
         .firePageReference()
         .fireFindFilesRecent()
         .attachElement();
-
-      ts.element.constants.FILE_READER = mockFileReader;
       
       //-- select option
       const optionSelected = ts.selectComboboxOption(1);
@@ -577,5 +593,136 @@ describe('c-ltng_mockupFileHelper', () => {
           expect(submitBtn.disabled).toBe(false);
         });
     });
+
+    it('creates a new document if a user types and presses return', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      //-- select option
+      const optionSelected = ts.selectComboboxOption(1);
+      expect(optionSelected).toBeTruthy();
+
+      //-- select file
+      const fileReaderPromise = ts.uploadFile();
+
+      return Promise.all([fileReaderPromise])
+        .then(() => {
+          expect(ts.element.fileToUploadBase64).toBeTruthy();
+
+          const submitBtn = ts.getSubmitBtn();
+          expect(submitBtn.disabled).toBe(false);
+        });
+    });
+  });
+
+  describe('query term', () => {
+    it('does not update the combobox text if there is no file selected', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      const combobox = ts.getCombobox();
+
+      const earlierQueryTerm = combobox.text;
+
+      //-- select file
+      const fileChangeEvt = new CustomEvent('change', {
+        detail: {
+          fileReader: mockFileReader
+        }
+      });
+      const fileInput = ts.getFileInput();
+      fileInput.files = [];
+      fileInput.dispatchEvent(fileChangeEvt);
+
+      const currentQueryTerm = combobox.text;
+
+      expect(currentQueryTerm).toBe(earlierQueryTerm);
+    });
+
+    it('updates the combobox text if there is a file selected, but no combobox selection', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+
+      const combobox = ts.getCombobox();
+
+      //-- select file
+      ts.uploadFile();
+
+      const expectedQueryTerm = 'smallLightTest';
+      const currentQueryTerm = combobox.text;
+
+      expect(currentQueryTerm).toBe(expectedQueryTerm);
+    });
+
+    it('does not update the combobox text if the user already made a selection and selects a file', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      const optionSelected = 'Some New File';
+      ts.enterComboboxOption(optionSelected);
+
+      const uploadPromise = ts.uploadFile();
+
+      return Promise.all([uploadPromise])
+        .then(() => {
+          const submitBtn = ts.getSubmitBtn();
+          const expectedLabel = 'Create File: Some New File';
+          const currentLabel = submitBtn.label;
+          expect(currentLabel).toBe(expectedLabel);
+        });
+    });
+  });
+
+  describe('key press', () => {
+    it('performs a search after the user types', () => {
+      jest.useFakeTimers();
+
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      const combobox = ts.getCombobox();
+
+      const someValue = 'Some Text';
+      combobox.text = someValue;
+      expect(combobox.value).toBe(someValue);
+
+      const keyUpEvent = new CustomEvent('keyup', {
+        keyCode: 20,
+        detail: {
+          keyCode: 20
+        }
+      });
+      combobox.dispatchEvent(keyUpEvent);
+
+      let expectedValue = '';
+      let queryTermFound = ts.element.queryTerm;
+      expect(queryTermFound).toBe(expectedValue);
+
+      //-- now let the timer play out
+      jest.runAllTimers();
+
+      expectedValue = someValue;
+      queryTermFound = ts.element.queryTerm;
+      expect(queryTermFound).toBe(expectedValue);
+    });
+  });
+
+  describe('updating content', () => {
+
   });
 });

@@ -281,7 +281,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    */
   handleKeyUp(evt) {
     let searchStr = evt.target.value;
-    if (searchStr === undefined) searchStr = 'q';
+    if (searchStr === undefined) searchStr = '';
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
@@ -412,13 +412,14 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
     if (isError && msg) {
       // debugger;
-      console.error('Error occurred', notificationInfo);
+      // console.error('Error occurred', notificationInfo);
     }
 
     if (!msg) {
       notificationEl.isShown = false;
       notificationEl.message = '';
     } else {
+      // is null 
       if (notificationEl) notificationEl.show(msg, timeoutLength);
     }
 
@@ -457,9 +458,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     editableCombobox.clear();
   }
 
-  openCombobox(isOpen) {
-    const editableCombobox = this.template // eslint-disable-line
-      .querySelector('c-ltng_editable-combobox');
-    editableCombobox.isOpen = isOpen;
-  }
+  // openCombobox(isOpen) {
+  //   const editableCombobox = this.template // eslint-disable-line
+  //     .querySelector('c-ltng_editable-combobox');
+  //   editableCombobox.isOpen = isOpen;
+  // }
 }
