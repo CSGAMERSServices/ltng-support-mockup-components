@@ -140,13 +140,18 @@ class TestSettings {
   uploadFile() {
     expect(mockFileReader.readAsDataURL).not.toHaveBeenCalled();
 
-    this.element.constants
-      .loadFileAsBase64(EXAMPLE_FILE_PATH, mockFileReader);
+    // this.element.constants
+    //  .loadFileAsBase64(EXAMPLE_FILE_PATH, mockFileReader);
 
     const fileChangeEvt = new CustomEvent('change');
     const fileInput = this.getFileInput();
     fileInput.files = [exampleFile];
     fileInput.dispatchEvent(fileChangeEvt);
+
+    //-- there is a race condition based on the load of the file
+    //-- and the component rerender for the test
+    //-- for now we must set the base64 data...
+    this.element.fileToUploadBase64 = BASE64_WITH_META;
 
     mockFileReader.onload();
   }

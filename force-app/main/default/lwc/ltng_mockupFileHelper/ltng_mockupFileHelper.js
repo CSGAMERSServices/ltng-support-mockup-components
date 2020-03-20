@@ -168,7 +168,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
    * contents of the file to be uploaded to salesforce
    * @type {String}
    */
-  @track fileToUploadBase64;
+  @api fileToUploadBase64;
 
   /**
    * Collection of static resources captured
