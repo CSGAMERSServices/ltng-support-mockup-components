@@ -754,35 +754,14 @@ describe('c-ltng_mockupFileHelper', () => {
       //-- select file
       const fileReaderPromise = ts.uploadFile();
 
-      debugger;
-
-      let imageChangedHandler = jest.fn();
-      
-      //-- kludge - why is the pageRef missing?
-      // if (!ts.element.pageRef) ts.element.pageRef = { data:data.pageRefExample };
-      
       expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
-      // registerListener(
-      //   ts.element.constants.IMAGE_CHANGED_EVENT_TYPE,
-      //   imageChangedHandler,
-      //   ts.element
-      // );
-
+      
       return Promise.all([fileReaderPromise])
         .then(() => {
           expect(ts.element.fileToUploadBase64).toBeTruthy();
 
           data.exec_createContentVersion();
 
-          //const callPromise = data.exec_createContentVersion(); // ts.fireCreateContentVersion();
-
-          // const apexResults = data.createContentVersionMock.mockResolvedValue(
-          //   data.createContentVersionData
-          // );
-          // data.createContentVersionMock.mockResolvedValue(
-          //   data.createContentVersionData
-          // );
-          
           const submitBtn = ts.getSubmitBtn();
           expect(submitBtn.disabled).toBe(false);
 
@@ -795,8 +774,7 @@ describe('c-ltng_mockupFileHelper', () => {
         })
         .then(() => {
           expect(fireEvent).toHaveBeenCalled();
-          // expect(imageChangedHandler).toHaveBeenCalled();
-
+          
           const errorAlert = ts.getErrorAlert();
           const notificationAlert = ts.getNotificationAlert();
 

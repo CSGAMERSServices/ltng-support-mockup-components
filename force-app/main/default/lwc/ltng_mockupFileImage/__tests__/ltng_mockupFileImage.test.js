@@ -1,20 +1,5 @@
 /* eslint-disable @lwc/lwc/no-inner-html */
 
-/** JEST Test for ltng_mockupFileImage/__tests__/ltng_mockupFileImage **/
-import { createElement } from 'lwc';
-import ltng_mockupFileImage from 'c/ltng_mockupFileImage';
-// import { isArray } from 'util';
-
-// import { fireEvent } from 'c/ltng_mockupEventBus';
-
-const defaultProperties = {
-  contentId: '/assets/431edcbfb2/ltng_ExamplePlaceholderImage',
-  description: 'test description',
-  imgWidth: '400px',
-  imgHeight: '300px',
-  targetAddress: 'https://www.salesforce.com'
-};
-
 import * as data from '../__data__';
 
 const mockCustomEvent = CustomEvent;
@@ -54,15 +39,28 @@ jest.mock(
 jest.mock(
   'c/ltng_mockupEventBus',
   () => {
-    const result = {};
-    result.registerListener = jest.fn();
-    result.unregisterListener = jest.fn();
-    return result;
+    return {
+      fireEvent: jest.fn(),
+      registerListener: jest.fn(),
+      unregisterListener: jest.fn()
+    };
   },
   { virtual: true }
 );
+import { fireEvent, registerListener, unregisterListener } from 'c/ltng_mockupEventBus';
 
-import * as mockEventBus from 'c/ltng_mockupEventBus';
+/** JEST Test for ltng_mockupFileImage/__tests__/ltng_mockupFileImage **/
+import { createElement } from 'lwc';
+import ltng_mockupFileImage from 'c/ltng_mockupFileImage';
+// import { isArray } from 'util';
+
+const defaultProperties = {
+  contentId: '/assets/431edcbfb2/ltng_ExamplePlaceholderImage',
+  description: 'test description',
+  imgWidth: '400px',
+  imgHeight: '300px',
+  targetAddress: 'https://www.salesforce.com'
+};
 
 class TestSettings {
   constructor() {
@@ -112,8 +110,8 @@ describe('c-ltng_mockupFileImage', () => {
     while (document.body.firstChild){
       document.body.removeChild(document.body.firstChild);
     }
-    mockEventBus.registerListener.mockReset();
-    mockEventBus.unregisterListener.mockReset();
+    registerListener.mockReset();
+    unregisterListener.mockReset();
 
     jest.resetModules();
     jest.clearAllMocks();
@@ -368,16 +366,16 @@ describe('c-ltng_mockupFileImage', () => {
 
   describe('event bus', () => {
     it('listens when the component is added', () => {
-      expect(mockEventBus.registerListener).toBeTruthy();
-      expect(mockEventBus.registerListener).not.toHaveBeenCalled();
+      expect(registerListener).toBeTruthy();
+      expect(registerListener).not.toHaveBeenCalled();
 
       new TestSettings()
         .applyDefaultProperties()
         .applyWireMocks()
         .attachElement();
       
-      expect(mockEventBus.registerListener).toHaveBeenCalled();
-      const args = mockEventBus.registerListener.mock.calls[0];
+      expect(registerListener).toHaveBeenCalled();
+      const args = registerListener.mock.calls[0];
       expect(args).toBeTruthy();
 
       const [eventType, listenerFn, el] = args;
