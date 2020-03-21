@@ -375,6 +375,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     })
     
       .then(data => {
+        if (!data) throw new Error('data is empty');
         this.showNotification(false, `Successfully updated: ${data.Title}`, data);
 
         this.clearFileInput();
@@ -385,6 +386,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, data);
       })
       .catch(error => {
+        console.error(error);
         const msg = error.body.message;
         this.showNotification(true, `An error occurred:${msg}`, error);
       })

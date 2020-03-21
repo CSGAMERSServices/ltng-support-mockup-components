@@ -1,11 +1,24 @@
 /* eslint-disable @lwc/lwc/no-inner-html */
 
 /** JEST Test for ltng_mockupFileHelper/__tests__/ltng_mockupFileHelper **/
+import * as data from '../__data__';
+
+jest.mock(
+  'c/ltng_mockupEventBus',
+  () => {
+    return {
+      fireEvent: jest.fn()
+    };
+  },
+  { virtual: true }
+);
+import { fireEvent } from 'c/ltng_mockupEventBus';
+
 import { createElement } from 'lwc';
 import ltng_mockupFileHelper from 'c/ltng_mockupFileHelper';
+// import { unregisterAllListeners, registerListener } from 'c/ltng_mockupEventBus';
 // import { isArray } from 'util';
 
-import * as data from '../__data__';
 
 /**
  * Base64WithMeta
@@ -741,11 +754,23 @@ describe('c-ltng_mockupFileHelper', () => {
       //-- select file
       const fileReaderPromise = ts.uploadFile();
 
+      debugger;
+
+      let imageChangedHandler = jest.fn();
+      
+      //-- kludge - why is the pageRef missing?
+      // if (!ts.element.pageRef) ts.element.pageRef = { data:data.pageRefExample };
+      
+      expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
+      // registerListener(
+      //   ts.element.constants.IMAGE_CHANGED_EVENT_TYPE,
+      //   imageChangedHandler,
+      //   ts.element
+      // );
+
       return Promise.all([fileReaderPromise])
         .then(() => {
           expect(ts.element.fileToUploadBase64).toBeTruthy();
-
-          debugger;
 
           data.exec_createContentVersion();
 
@@ -766,24 +791,17 @@ describe('c-ltng_mockupFileHelper', () => {
           });
           submitBtn.dispatchEvent(submitEvt);
 
-          const imageChangedHandler = jest.fn();
-          ts.element.addEventListener(
-            ts.element.constants.IMAGE_CHANGED_EVENT_TYPE,
-            imageChangedHandler
-          );
+          return submitEvt.detail.submitPromise
+        })
+        .then(() => {
+          expect(fireEvent).toHaveBeenCalled();
+          // expect(imageChangedHandler).toHaveBeenCalled();
 
-          expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
+          const errorAlert = ts.getErrorAlert();
+          const notificationAlert = ts.getNotificationAlert();
 
-          submitEvt.detail.submitPromise
-            .then(() => {
-              expect(imageChangedHandler).toHaveBeenCalled();
-
-              const errorAlert = ts.getErrorAlert();
-              const notificationAlert = ts.getNotificationAlert();
-
-              expect(errorAlert).toBeTruthy();
-              expect(notificationAlert).toBeTruthy();
-            });
+          expect(errorAlert.isShown).toBe(false);
+          expect(notificationAlert.isShown).toBe(true);
         });
     });
   });

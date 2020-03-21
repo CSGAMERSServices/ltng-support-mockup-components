@@ -13,11 +13,12 @@ const events = {};
 const sameObjectRef = (ref1, ref2) => {
   const obj1 = ref1.attributes;
   const obj2 = ref2.attributes;
-  return Object.keys(obj1)
-    .concat(Object.keys(obj2))
-    .every(key => {
-      return obj1[key] === obj2[key];
-    });
+  return obj1 && obj2 &&
+    Object.keys(obj1)
+      .concat(Object.keys(obj2))
+      .every(key => {
+        return obj1[key] === obj2[key];
+      });
 };
 
 /**
