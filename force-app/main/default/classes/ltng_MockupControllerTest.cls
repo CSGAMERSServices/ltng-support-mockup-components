@@ -103,4 +103,30 @@ private class ltng_MockupControllerTest {
         System.assert(manualSelectionLabel.equals(row.getLabel()), 'manual selection should be the default option label');
         System.assert(manualSelectionValue.equals(row.getValue()), 'manual selection should be the default option label');
     }
+
+    @isTest static void filteredStaticResourcesAreReturned() {
+        insert new ltng_mockupSettings__c(
+            Enable_Mock_Image_Caching__c = true,
+            Mock_Image_File_Filter__c = 'Comp'
+        );
+        //-- assumes we have ltng_example, ltng_ExampleComponent, ltng_ExamplePlaceholderImage
+
+        ltng_MockupController ctrl = new ltng_MockupController();
+
+        VisualEditor.DynamicPickListRows rows = ctrl.getValues();
+
+        // System.debug(rows);
+
+        System.assert(rows.size() == 2, 'there should be one resource returned:' + rows.size());
+
+        VisualEditor.DataRow row = rows.get(0);
+
+        System.assert(row != null);
+        System.assert((ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN).equals(row.getLabel()));
+
+        row = rows.get(1);
+
+        System.assert(row != null);
+        System.assert(('ltng_ExampleComponent').equals(row.getLabel()));
+    }
 }
