@@ -450,37 +450,19 @@ describe('c-ltng_mockupFileHelper', () => {
         .applyDefaultProperties()
         .setQueryTerm(newFileName)
         .firePageReference()
-        .fireFindFilesRecent()
+        .fireFindFilesMockWithEmptyResults()
         .attachElement();
 
       const combobox = ts.getCombobox();
       combobox.text = newFileName;
 
+      ts.element.queryTerm = newFileName;
+      data.exec_findFilesEmpty();
+
       const expected = [
         {
           "icon": "standard:file", "key": "new", "label": "New Resource: some new file",
           "subLabel": "", "value": {"Title": "some new file"}
-        },
-        {"icon": "standard:file", "key": "069R0000000qydRIAQ", "label": "ltng_smallLightTest",
-          "subLabel": "3/19/2020, 11:31:32 AM",
-          "value": {
-            "Id": "069R0000000qydRIAQ", "LastModifiedDate": "2020-03-19T16:31:32.000Z",
-            "LatestPublishedVersionId": "068R0000000rAHiIAM", "Title": "ltng_smallLightTest"
-          }
-        },
-        {"icon": "standard:file", "key": "069R0000000qs3SIAQ", "label": "ltng_Button Strip",
-          "subLabel": "3/19/2020, 11:25:40 AM",
-          "value": {
-            "Id": "069R0000000qs3SIAQ", "LastModifiedDate": "2020-03-19T16:25:40.000Z",
-            "LatestPublishedVersionId": "068R0000000rAH4IAM", "Title": "ltng_Button Strip"
-          }
-        },
-        {"icon": "standard:file", "key": "069R0000000qrzzIAA", "label": "ltng_Button Bar",
-          "subLabel": "3/17/2020, 9:01:57 AM",
-          "value": {
-            "Id": "069R0000000qrzzIAA", "LastModifiedDate": "2020-03-17T14:01:57.000Z",
-            "LatestPublishedVersionId": "068R0000000r3bjIAA", "Title": "ltng_Button Bar"
-          }
         }
       ];
 
@@ -780,6 +762,47 @@ describe('c-ltng_mockupFileHelper', () => {
 
           expect(errorAlert.isShown).toBe(false);
           expect(notificationAlert.isShown).toBe(true);
+        });
+    });
+
+    it('show an error message if the file update fails', () => {
+      const ts = new TestSettings()
+        .applyDefaultProperties()
+        .firePageReference()
+        .fireFindFilesRecent()
+        .attachElement();
+      
+      //-- select option
+      const optionSelected = ts.selectComboboxOption(1);
+      expect(optionSelected).toBeTruthy();
+
+      //-- select file
+      const fileReaderPromise = ts.uploadFile();
+
+      expect(ts.element.constants.IMAGE_CHANGED_EVENT_TYPE).toBeTruthy();
+      
+      return Promise.all([fileReaderPromise])
+        .then(() => {
+          expect(ts.element.fileToUploadBase64).toBeTruthy();
+
+          data.error_createContentVersion();
+
+          const submitBtn = ts.getSubmitBtn();
+          expect(submitBtn.disabled).toBe(false);
+
+          const submitEvt = new CustomEvent('click', {
+            detail: {}
+          });
+          submitBtn.dispatchEvent(submitEvt);
+
+          return submitEvt.detail.submitPromise
+        })
+        .then(() => {
+          const errorAlert = ts.getErrorAlert();
+          const notificationAlert = ts.getNotificationAlert();
+
+          expect(errorAlert.isShown).toBe(true);
+          expect(notificationAlert.isShown).toBe(false);
         });
     });
   });

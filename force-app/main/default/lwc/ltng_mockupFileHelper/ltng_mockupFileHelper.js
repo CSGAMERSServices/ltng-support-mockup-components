@@ -200,8 +200,8 @@ export default class Ltng_mockupFileHelper extends LightningElement {
           subLabel: utcDateToLocal(contentDocument.LastModifiedDate),
           icon: STATIC_RESOURCE_ICON,
           value: contentDocument
-        } : {};
-      });
+        } : null;
+      }).filter(el => (el ? true : false));
       if (!isEmptyString(this.queryTerm)) {
         results.unshift({
           key: 'new',
@@ -375,7 +375,6 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     })
     
       .then(data => {
-        if (!data) throw new Error('data is empty');
         this.showNotification(false, `Successfully updated: ${data.Title}`, data);
 
         this.clearFileInput();
@@ -386,7 +385,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
         fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, data);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
         const msg = error.body.message;
         this.showNotification(true, `An error occurred:${msg}`, error);
       })
@@ -432,10 +431,6 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     }
 
     this.lastNotification = notificationInfo;
-  }
-
-  handleImageUpdate() {
-    fireEvent(this.pageRef, IMAGE_CHANGED_EVENT_TYPE, 'something');
   }
 
   //-- internal methods
