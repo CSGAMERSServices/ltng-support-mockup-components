@@ -47,7 +47,7 @@ jest.mock(
   },
   { virtual: true }
 );
-import { fireEvent, registerListener, unregisterListener } from 'c/ltng_mockupEventBus';
+import { registerListener, unregisterListener } from 'c/ltng_mockupEventBus';
 
 /** JEST Test for ltng_mockupFileImage/__tests__/ltng_mockupFileImage **/
 import { createElement } from 'lwc';
