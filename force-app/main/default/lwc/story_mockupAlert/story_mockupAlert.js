@@ -58,7 +58,6 @@ export default class story_mockupAlert extends LightningElement {
    * Handles when the showAlert button is pressed
    */
   handleShowAlert() {
-    console.log('show alert');
     const hiddenAlert = this.template.querySelector('.hidden-alert');
     hiddenAlert.show(
       `CURRENT TIME IS:${new Date().toLocaleString()}`,

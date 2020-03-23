@@ -190,10 +190,14 @@
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
-                <name>tablecsv</name>
-                <value>First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n&quot;John &quot;&quot;Da Man&quot;&quot;&quot;,Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,&quot;7452 Terrace &quot;&quot;At the Plaza&quot;&quot; road&quot;,SomeTown,SD, 91234\n ,Blankman,,SomeTown, SD, 00298\n &quot;Joan &#39;the bone&#39; Anne&quot;,Jet,&quot;9th, at Terrace plc&quot;,Desert City,CO,00123</value>
+                <name>isResponsive</name>
+                <value>false</value>
             </componentInstanceProperties>
-            <componentName>ltng_mockupResponsiveTable</componentName>
+            <componentInstanceProperties>
+                <name>tablecsv</name>
+                <value>First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n&quot;John &quot;&quot;Da Man&quot;&quot;&quot;,Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,&quot;7452 Terrace &quot;&quot;At the Plaza&quot;&quot; road&quot;,SomeTown,SD, 91234\n,Blankman,,SomeTown, SD, 00298\n &quot;Joan &#39;the bone&#39; Anne&quot;,Jet,&quot;9th, at Terrace plc&quot;,Desert City,CO,00123</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupTable</componentName>
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>

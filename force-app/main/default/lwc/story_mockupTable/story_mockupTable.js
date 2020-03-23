@@ -5,13 +5,19 @@ import { LightningElement, api } from 'lwc';
 import {Scene} from 'c/story_book';
 // import { isObject } from 'util';
 
-export default class Story_exampleComplex extends LightningElement {
+export default class Story_mockupTable extends LightningElement {
 
   /**
    * Current scene we are working with
    * @type {Scene}
    */
-  @api currentScene = null;
+  @api currentScene = new Scene('Large Width Scene', {
+    width: 'large',
+    tablecsv: `"FirstName", LastName, "Age" , Color
+Eve, Jackson, 94, Red
+Rob, Mite, 24, Blue
+Bob, Parr, 42, Red`
+  });
 
   /**
    * List of all scenes we have
@@ -36,6 +42,11 @@ Bob, Parr, 42, Red`
       description: 'Default Table',
       width: 'narrow',
       tablecsv: `"FirstName", LastName, "Age" , Color`
+    }),
+    new Scene('empty table', {
+      description: 'Table with no text in it at all',
+      width: 'narrow',
+      tablecsv: ''
     })
   ];
 

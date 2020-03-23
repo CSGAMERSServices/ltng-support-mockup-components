@@ -1,0 +1,57 @@
+<template>
+    <!--
+        From the storybook side, we just bind to the current scene.
+        
+        note the large width is based on the Lightning Design System width
+        @see https://www.lightningdesignsystem.com/utilities/sizing/
+    -->
+
+   <c-story_book width='narrow' title='Non-Responsive Table'>
+        <c-ltng_mockup-table
+            tablecsv={currentScene.value.tablecsv}
+        ></c-ltng_mockup-table>
+
+        <div slot="description">
+            {currentScene.value.description}
+        </div>
+    </c-story_book>
+    <c-story_book width='narrow' title='Responsive Table'>
+        <c-ltng_mockup-table
+            tablecsv={currentScene.value.tablecsv}
+            is-responsive
+        ></c-ltng_mockup-table>
+       
+        <div slot="description">
+            {currentScene.value.description}
+        </div>
+   </c-story_book>
+
+    <h1 class='slds-text-heading_large'>Responsive Tables</h1>
+    <template for:each={allScenes} for:item="scene">
+       <c-story_book key={scene.label} width='{scene.value.width}' title={scene.label}>
+
+            <c-ltng_mockup-table
+                tablecsv={scene.value.tablecsv}
+                is-responsive
+            ></c-ltng_mockup-table>
+           
+            <div slot="description">
+                {scene.value.description}
+            </div>
+       </c-story_book>
+    </template>
+
+    <h1 class='slds-text-heading_large'>Non-Responsive Tables</h1>
+    <template for:each={allScenes} for:item="scene">
+        <c-story_book key={scene.label} width='{scene.value.width}' title={scene.label}>
+ 
+             <c-ltng_mockup-table
+                 tablecsv={scene.value.tablecsv}
+             ></c-ltng_mockup-table>
+            
+             <div slot="description">
+                 {scene.value.description}
+             </div>
+        </c-story_book>
+     </template>
+</template>

@@ -41,18 +41,18 @@ export default class Story_exampleComplex extends LightningElement {
   ];
 
   handleChange(evt) {
-    console.log('value changed on the combobox', JSON.parse(JSON.stringify(evt.target.value)));
+    // console.log('value changed on the combobox', JSON.parse(JSON.stringify(evt.target.value)));
     this.clearKeyListener();
   }
 
   handleKeyUp(evt) {
-    console.log('user was typing in the editable combobox');
+    // console.log('user was typing in the editable combobox');
     
     const searchStr = evt.target.value;
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
-      console.log(`searching for:${searchStr}`);
+      // console.log(`searching for:${searchStr}`);
     }, 3000);
   }
 

@@ -76,7 +76,6 @@ export default class Story_book extends LightningElement {
    */
   handleSizeSelected(evt) {
     this.width = evt.detail.value;    
-    console.log(`size selected:${this.width}`)
   }
 }
 

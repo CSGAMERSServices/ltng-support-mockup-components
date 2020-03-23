@@ -1,0 +1,23 @@
+.mockup-table {
+    position: relative;
+    overflow: hidden;
+    min-height: 40px;
+}
+
+.actions {
+    position:  absolute;
+    left: -100px;
+    top: 4px;
+    width:  100px;
+    transition:  1s;
+}
+
+.mockup-table:hover .actions {
+    transition: 1s;
+    left:  0;
+    top: 4px;
+}
+
+.edit-form .input-csv {
+    height: 200px;
+}

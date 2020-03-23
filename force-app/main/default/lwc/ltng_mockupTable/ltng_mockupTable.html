@@ -1,0 +1,60 @@
+<template>
+    <div class='mockup-table'>
+        <div class='edit-form' if:true={editMode}>
+            <lightning-layout multiple-rows="true" horizontal-align="center">
+                <lightning-layout-item size="12">
+                    <!-- recreate textarea to support sizing
+                        @see https://salesforce.stackexchange.com/questions/272608/lightning-web-component-styling-textarea
+                    -->
+                    <textarea class="input-csv slds-textarea">{tablecsv}</textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <lightning-layout horizontal-align="spread">
+                        <lightning-layout-item>
+                            <lightning-button label="Apply" variant="brand"
+                                class="btn-apply slds-m-right_small"
+                                onclick={handleSubmit}
+                            ></lightning-button>
+                            <lightning-button label="Clipboard for App Builder"
+                                class="btn-export"
+                                onclick={handleCopyToClipboard}
+                            ></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button label="Close"
+                                class="btn-close"
+                                onclick={handleEditToggle}
+                            ></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <table class={tableCssClasses} if:false={editMode} ondblclick={handleEditToggle}>
+            <thead>
+            <tr class="slds-text-heading--label">
+                <th scope="col" class="nobordertop" title={header}
+                    for:each={tableData.headers} for:item="header" key={header} 
+                >
+                    <div>{header}</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr
+                    for:each={tableData.data} for:item="dataRow" key={dataRow.uniqueKey} 
+                >
+                    <td 
+                        data-label={dataCell.label} title={dataCell.label}
+                        for:each={dataRow} for:item="dataCell" key={dataCell.uniqueKey} 
+                    ><div>
+                        {dataCell.value}
+                    </div></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class='actions' if:false={editMode}>
+            <lightning-button class='edit-btn' label='edit' onclick={handleEditToggle} ></lightning-button>
+        </div>
+    </div>
+</template>
