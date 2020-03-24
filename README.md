@@ -71,7 +71,7 @@ However, it is purely a demonstration and not required for use.
 
 The goal is to be as iterative as possible while keeping the conversation going.
 
-Generally, the recommended flow is similar to the following:
+Let’s explore adding Buttons to the page. The next examples are different levels of fidelity as we move towards it:
 
 ## Make Placeholders
 
