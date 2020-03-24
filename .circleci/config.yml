@@ -126,14 +126,15 @@ jobs:
 ###            note: -l RunLocalTests?
 #      - store_test_results:
 #          path: ~/junit
-      - run:
-          name: Test LWC
-          command: |
-            npm run test:lwc:coverage --coverage
-          env:
-            CI: true
-      - store_artifacts:
-          path: ./coverage
+## Getting Error: ENOMEM: not enough memory, read
+#      - run:
+#          name: Test LWC
+#          command: |
+#            npm run test:lwc:coverage --coverage
+#          env:
+#            CI: true
+#      - store_artifacts:
+#          path: ./coverage
 #      - run:
 #          name: Test Backup
 #          command: sfdx force:source:retrieve -m LightningComponentBundle
