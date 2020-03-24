@@ -18,8 +18,8 @@
     "test:apex:coverage": "sfdx force:apex:test:run -w 10 -d junit -c -r human --codecoverage",
     "test:lwc": "sfdx-lwc-jest",
     "test:lwc:watch": "sfdx-lwc-jest --watch -- --runInBand",
-    "test:lwc:debug": "sfdx-lwc-jest --debug",
-    "test:lwc:coverage": "sfdx-lwc-jest --coverage",
+    "test:lwc:debug": "sfdx-lwc-jest --debug -- --runInBand",
+    "test:lwc:coverage": "sfdx-lwc-jest --coverage -- --runInBand",
     "log": "sfdx force:apex:log:tail | less -O ./.tmp/apexLog.log +F",
     "verify": "npm run lint && npm run test",
     "verify:msg": "echo -e '\\n\\n\\n--- Running Verification Steps ---\\n\\n\\n'"

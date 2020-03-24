@@ -484,21 +484,18 @@ describe('c-ltng_mockupFileHelper', () => {
 
       const expected = [
         {"icon": "standard:file", "key": "069R0000000qydRIAQ", "label": "ltng_smallLightTest",
-          "subLabel": "3/19/2020, 11:31:32 AM",
           "value": {
             "Id": "069R0000000qydRIAQ", "LastModifiedDate": "2020-03-19T16:31:32.000Z",
             "LatestPublishedVersionId": "068R0000000rAHiIAM", "Title": "ltng_smallLightTest"
           }
         },
         {"icon": "standard:file", "key": "069R0000000qs3SIAQ", "label": "ltng_Button Strip",
-          "subLabel": "3/19/2020, 11:25:40 AM",
           "value": {
             "Id": "069R0000000qs3SIAQ", "LastModifiedDate": "2020-03-19T16:25:40.000Z",
             "LatestPublishedVersionId": "068R0000000rAH4IAM", "Title": "ltng_Button Strip"
           }
         },
         {"icon": "standard:file", "key": "069R0000000qrzzIAA", "label": "ltng_Button Bar",
-          "subLabel": "3/17/2020, 9:01:57 AM",
           "value": {
             "Id": "069R0000000qrzzIAA", "LastModifiedDate": "2020-03-17T14:01:57.000Z",
             "LatestPublishedVersionId": "068R0000000r3bjIAA", "Title": "ltng_Button Bar"
@@ -506,7 +503,16 @@ describe('c-ltng_mockupFileHelper', () => {
         }
       ];
 
-      expect(combobox.options).toStrictEqual(expected);
+      expect(combobox.options).toBeTruthy();
+      expect(combobox.options.length).toBe(expected.length);
+
+      const filteredOptions = combobox.options.map(option => {
+        // eslint-disable-next-line
+        const {subLabel, ...rest} = option; //-- the very point is not to use subLabel as it impacts timezones
+        return {...rest};
+      });
+
+      expect(filteredOptions).toStrictEqual(expected);
     });
 
     it('shows a notification if the wire call errors', () => {
