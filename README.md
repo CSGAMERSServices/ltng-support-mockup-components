@@ -55,8 +55,17 @@ Then one by one, replace your Mockups to make it real.
 NOTE: This project is for demonstration purposes.
 For more information, please see the [Licensing](#licensing) section below
 
-# How to Use
+# Accessing the Demo
 
+Please note that a sample page with the components shown are provided in the package.
+
+Assigning the `ltng_MockupDemoParticipant` permission set will grant you access to the `Mockup Example App Page` used in many of these demonstrations.
+
+![Screenshot of the Tab](docs/images/AccessTab.png)
+
+However, it is purely a demonstration and not required for use.
+
+# How to Use
 
 [Create pages within the App Builder](https://trailhead.salesforce.com/en/content/learn/modules/lightning_app_builder/lightning_app_builder_intro) and use the standard components and the provided Mockup Components below...
 
