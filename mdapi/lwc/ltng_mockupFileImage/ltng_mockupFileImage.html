@@ -1,9 +1,9 @@
 <template>
-    <template if:true={resourceAddress}>
+    <template if:true={contentAddress}>
         <div data-id='mockup-image-container' style='text-align: center;'>
             <a onclick={handleClick}>
-                <img class='mockup-image' src={resourceAddress} alt={description} title={tooltip}
-                    style={calculatedStyle}
+                <img class='mockup-image' src={contentAddress} alt={description}
+                    style={calculatedStyle} title={tooltip}
                 />
             </a>
         </div>

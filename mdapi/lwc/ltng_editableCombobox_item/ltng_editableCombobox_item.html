@@ -1,0 +1,29 @@
+<template>
+    <li role="presentation" class="slds-listbox__item">
+        <div id="option1" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+            <span class="slds-media__figure slds-listbox__option-icon">
+                <lightning-icon if:true={_icon} icon-name={_icon} alternative-text="Icon" ></lightning-icon>
+            </span>
+            <span class="slds-media__body slds-m-left_small">
+                <template if:false={subLabel}>
+                    <span class="slds-truncate" title={label}>{label}</span>
+                </template>
+                <template if:true={subLabel}>
+                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{label}</span>
+                    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                        {subLabel}
+                        <!--
+                        <lightning-formatted-date-time
+                            value={staticResource.LastModifiedDate}
+                            day="2-digit"
+                            month="long"
+                            hour="2-digit"
+                            minute="2-digit"
+                        ></lightning-formatted-date-time>
+                        -->
+                    </span>
+                </template>
+            </span>
+        </div>
+    </li>
+</template>

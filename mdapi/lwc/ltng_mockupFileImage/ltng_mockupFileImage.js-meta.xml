@@ -3,7 +3,7 @@
     <apiVersion>48.0</apiVersion>
     <isExposed>true</isExposed>
     <description>Image that can be a placeholder for a whiteboarding session</description>
-    <masterLabel>Mockup Image</masterLabel>
+    <masterLabel>Mockup File Image</masterLabel>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
@@ -11,11 +11,8 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
-            <property name="resourceNameFromPicklist" type="String" label="Resource Name"
-                description="(Developer/API) Name of Static Resource" datasource="apex://ltng_MockupController"
-            />
-            <property name="resourceNameManualEntry" type="String" label="Resource Name (Manual)"
-                description="(Developer/API) Name of Static Resource (if not available in the Resource Name picklist)" default="ltng_ExamplePlaceholderImage"
+            <property name="contentId" type="String" label="Document"
+                description="Which Document should we show?" datasource="apex://ltng_mockupFileCtrl"
             />
             <property name="description" type="String" label="Description"
                 description="Alt text shown for the image"

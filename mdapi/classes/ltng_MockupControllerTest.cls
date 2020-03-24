@@ -63,4 +63,70 @@ private class ltng_MockupControllerTest {
             //-- we don't want to get more in depth because the URL format may change
         }
     }
+
+    @isTest static void mockupSettingsAreReceived() {
+        insert new ltng_mockupSettings__c(
+            Enable_Mock_Image_Caching__c = true
+        );
+
+        ltng_mockupSettings__c results = ltng_MockupController.getSettings();
+        System.assert(results != null, 'settings should be found');
+        System.assertEquals(results.Enable_Mock_Image_Caching__c, true, 'caching should be identical to that provided');
+    }
+
+    @isTest static void defaultResourceOptionIsManualSelection() {
+        String manualSelectionLabel = ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN;
+        String manualSelectionValue = ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN;
+
+        ltng_MockupController ctrl = new ltng_MockupController();
+
+        VisualEditor.DataRow row = ctrl.getDefaultValue();
+        
+        System.assert(row != null, 'we should get a default row');
+        System.assert(manualSelectionLabel.equals(row.getLabel()), 'manual selection should be the default option label');
+        System.assert(manualSelectionValue.equals(row.getValue()), 'manual selection should be the default option label');
+    }
+
+    @isTest static void staticResourceNamesAreReturned() {
+        String manualSelectionLabel = ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN;
+        String manualSelectionValue = ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN;
+
+        ltng_MockupController ctrl = new ltng_MockupController();
+
+        VisualEditor.DynamicPickListRows rows = ctrl.getValues();
+
+        System.assert(rows.size() > 0, 'there should be at least the default row');
+
+        VisualEditor.DataRow row = rows.get(0);
+
+        System.assert(row != null, 'we should get a default row');
+        System.assert(manualSelectionLabel.equals(row.getLabel()), 'manual selection should be the default option label');
+        System.assert(manualSelectionValue.equals(row.getValue()), 'manual selection should be the default option label');
+    }
+
+    @isTest static void filteredStaticResourcesAreReturned() {
+        insert new ltng_mockupSettings__c(
+            Enable_Mock_Image_Caching__c = true,
+            Mock_Image_File_Filter__c = 'Comp'
+        );
+        //-- assumes we have ltng_example, ltng_ExampleComponent, ltng_ExamplePlaceholderImage
+
+        ltng_MockupController ctrl = new ltng_MockupController();
+
+        VisualEditor.DynamicPickListRows rows = ctrl.getValues();
+
+        // System.debug(rows);
+
+        System.assert(rows.size() == 2, 'there should be one resource returned:' + rows.size());
+
+        VisualEditor.DataRow row = rows.get(0);
+
+        System.assert(row != null);
+        System.assert((ltng_MockupController.RESOURCE_NAME_NOT_CHOSEN).equals(row.getLabel()));
+
+        row = rows.get(1);
+
+        System.assert(row != null);
+        System.assert(('ltng_ExampleComponent').equals(row.getLabel()));
+    }
 }

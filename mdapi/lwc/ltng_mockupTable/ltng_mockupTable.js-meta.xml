@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Mockup Table</masterLabel>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
+            <property name="tablecsv" type="String"
+                default="Row, Header A, Header B\n1, 1:A, 1:B\n2, 2:A, 2:B"
+                description="CSV (commas between values, doublequotes around values with commas, and \n to separate lines if needed)"
+            />
+            <property name="isResponsive" type="Boolean"
+                default="false"
+                description="Should the table behave differently on narrow/mobile screens? (true) or not (false)"
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

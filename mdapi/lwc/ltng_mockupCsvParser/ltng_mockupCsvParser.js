@@ -11,6 +11,12 @@
 const MAX_ITERATIONS = 1000;
 
 /**
+ * Global unique index for the table row
+ * @type {Number}
+ */
+let GLOBAL_UNIQUE_ID = 0;
+
+/**
  * Represents a label value pair
  */
 class LabelValue {
@@ -147,16 +153,15 @@ function parseCsvLine(str) {
 
   if (remaining) {
     for (let i = 0; remaining && i < MAX_ITERATIONS; i++){
-      if (remaining) {
-        let nextToken = nextCsvStringCell(remaining);
-        if (!nextToken) nextToken = nextCsvCell(remaining);
+      let nextToken = nextCsvStringCell(remaining);
+      if (!nextToken) nextToken = nextCsvCell(remaining);
 
-        if (!nextToken) {
-          remaining = null;
-        } else {
-          [currentCell, remaining] = nextToken;
-          results.push(currentCell);
-        }
+      if(nextToken) {
+        [currentCell, remaining] = nextToken;
+        results.push(currentCell);
+      } else {
+        //-- leave in - just in case nextCsvCell doesn't catch everything
+        remaining = null;
       }
     }
   }
@@ -193,7 +198,6 @@ function parseCsvToLabelValue(str) {
   var rowColumnCount;
   var resultRow;
   var resultLV;
-  var arrayUniqueKey = 0;
 
 
   if (!parsedCSV ||
@@ -219,9 +223,10 @@ function parseCsvToLabelValue(str) {
         headers[i],
         dataRow[i]
       );
+      resultLV.uniqueKey = ++GLOBAL_UNIQUE_ID;
       resultRow.push(resultLV);
     }
-    resultRow.uniqueKey = ++arrayUniqueKey;
+    resultRow.uniqueKey = ++GLOBAL_UNIQUE_ID;
     result.data.push(resultRow);
   });
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for working with Lightning Mockups.
+(Such as invalidating caches to simplify workshops)</description>
+    <enableFeeds>false</enableFeeds>
+    <label>Lightning Mockup Settings</label>
+    <visibility>Public</visibility>
+    <fields>
+        <fullName>Enable_Mock_Image_Caching__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, then mockup images will be cached, allowing them to load much faster for presentations.</inlineHelpText>
+        <label>Enable Mock Image Caching</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Max_Search_Results__c</fullName>
+        <defaultValue>100</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of results to return when searching for files or static resources.</inlineHelpText>
+        <label>Max Search Results</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mock_Image_File_Filter__c</fullName>
+        <defaultValue>&quot;Mock&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If provided, only file with titles that include this text will be shown in the Mockup File Image App Builder selection.</inlineHelpText>
+        <label>Mock Image File Filter</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>

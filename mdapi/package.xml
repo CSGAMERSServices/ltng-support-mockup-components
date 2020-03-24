@@ -4,40 +4,53 @@
     <name>ApexClass</name>
     <members>ltng_MockupController</members>
     <members>ltng_MockupControllerTest</members>
+    <members>ltng_StaticResourceHelperCtrlTest</members>
+    <members>ltng_mockupFileCtrl</members>
+    <members>ltng_mockupFileCtrlTest</members>
+    <members>ltng_staticResourceHelperCtrl</members>
   </types>
   <types>
     <name>FlexiPage</name>
+    <members>File_Helper</members>
     <members>ltng_MockupExampleApp</members>
-    <members>ltng_MockupExampleRecordPage</members>
   </types>
   <types>
     <name>LightningComponentBundle</name>
+    <members>ltng_editableCombobox</members>
+    <members>ltng_editableCombobox_item</members>
+    <members>ltng_mockupAlert</members>
     <members>ltng_mockupCsvParser</members>
+    <members>ltng_mockupEventBus</members>
+    <members>ltng_mockupFileHelper</members>
+    <members>ltng_mockupFileImage</members>
     <members>ltng_mockupHeader</members>
     <members>ltng_mockupImage</members>
     <members>ltng_mockupPlaceholder</members>
-    <members>ltng_mockupResponsiveTable</members>
-    <members>story_book</members>
-    <members>story_exampleComplex</members>
-    <members>story_exampleList</members>
-    <members>story_exampleSimple</members>
-    <members>story_mockupHeader</members>
-    <members>story_mockupImage</members>
-    <members>story_mockupPlaceholder</members>
-    <members>story_mockupResponsiveTable</members>
-    <members>story_sampleComponent</members>
-    <members>story_sceneSelector</members>
+    <members>ltng_mockupTable</members>
+  </types>
+  <types>
+    <name>CustomField</name>
+    <members>ltng_mockupSettings__c.Enable_Mock_Image_Caching__c</members>
+    <members>ltng_mockupSettings__c.Max_Search_Results__c</members>
+    <members>ltng_mockupSettings__c.Mock_Image_File_Filter__c</members>
+  </types>
+  <types>
+    <name>CustomObject</name>
+    <members>ltng_mockupSettings__c</members>
   </types>
   <types>
     <name>PermissionSet</name>
-    <members>test</members>
+    <members>ltng_MockupDemoParticipant</members>
   </types>
   <types>
     <name>StaticResource</name>
+    <members>ltng_ExampleComponent</members>
     <members>ltng_ExamplePlaceholderImage</members>
+    <members>ltng_example</members>
   </types>
   <types>
     <name>CustomTab</name>
+    <members>ltng_FileHelper</members>
     <members>ltng_MockupExampleAppPage</members>
   </types>
   <version>47.0</version>

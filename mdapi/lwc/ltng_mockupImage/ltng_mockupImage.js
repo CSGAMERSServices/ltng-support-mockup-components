@@ -1,6 +1,8 @@
 import { LightningElement, api, track, wire } from 'lwc'; // eslint-disable-line no-unused-vars
 import { NavigationMixin } from 'lightning/navigation';
 
+import apexGetSettings from '@salesforce/apex/ltng_MockupController.getSettings';
+
 // import apexGetResource from '@salesforce/apex/ltng_MockupController.getResource';
 
 /**
@@ -8,6 +10,22 @@ import { NavigationMixin } from 'lightning/navigation';
  * @type {String}
  */
 const RESOURCE_NAME_NOT_CHOSEN = '-- Use Manual Entry --';
+
+/**
+ * @typedef {Object} ltng_mockupSettings__c
+ * @param {Boolean} Enable_Mock_Image_Caching__c - whether the image cache should be ignored.
+ */
+
+/**
+ * Updates the cache buster
+ * (the unique string that invalidates the cache)
+ */
+export function generateCacheBuster(ignoreCache) {
+  if (ignoreCache) {
+    return `?t=${new Date().getTime()}`;
+  }
+  return '';
+}
 
 /**
  * Simple component to let us put up a placeholder image.
@@ -48,6 +66,23 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
    * @type {String}
    */
   @api targetAddress;
+
+  /**
+   * Unique cache buster to break the cache when asking for resources
+   * @type {String}
+   */
+  @track cacheBuster = '';
+
+  /**
+   * 
+   * @param {ltng_} param0 
+   */
+  @wire (apexGetSettings)
+  handleApexSettings({ data }) {
+    this.cacheBuster = generateCacheBuster(
+      (data && data.Enable_Mock_Image_Caching__c === false)
+    );
+  }
 
   /*
   NOTE: the shortcut /resource/resourceName is expected to remain for the foreseeable future.
@@ -100,7 +135,7 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
       return this.resourceName;
     }
 
-    return `/resource/${this.resourceName}`;
+    return `/resource/${this.resourceName}${this.cacheBuster}`;
   }
 
   //-- getters / setters
@@ -111,6 +146,14 @@ export default class Ltng_mockupImage extends NavigationMixin(LightningElement) 
   @api
   get calculatedStyle() {
     return `width:${this.imgWidth}; height:${this.imgHeight}`;
+  }
+
+  /**
+   * The tooltip to show on the image
+   * @returns {String}
+   */
+  @api get tooltip() {
+    return `resource:${this.resourceName} - ${this.description ? this.description : ''}`;
   }
 
   //-- handlers
