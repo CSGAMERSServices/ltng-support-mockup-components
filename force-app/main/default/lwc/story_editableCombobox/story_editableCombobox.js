@@ -8,7 +8,7 @@ import {Scene} from 'c/story_book';
 
 import * as data from '../ltng_editableCombobox/__data__';
 
-export default class Story_exampleComplex extends LightningElement {
+export default class Story_editableCombobox extends LightningElement {
 
   /**
    * Current scene we are working with

@@ -5,7 +5,7 @@ import { LightningElement, api } from 'lwc';
 import {Scene} from 'c/story_book';
 // import { isObject } from 'util';
 
-export default class Story_exampleComplex extends LightningElement {
+export default class Story_mockupPlaceholder extends LightningElement {
 
   /**
    * Current scene we are working with

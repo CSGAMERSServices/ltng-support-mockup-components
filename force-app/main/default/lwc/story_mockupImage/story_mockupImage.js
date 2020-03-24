@@ -7,7 +7,7 @@ import {Scene} from 'c/story_book';
 
 import ltng_ExamplePlaceholderImage from '@salesforce/resourceUrl/ltng_ExamplePlaceholderImage';
 
-export default class Story_exampleComplex extends LightningElement {
+export default class Story_mockupImage extends LightningElement {
 
   /**
    * Current scene we are working with

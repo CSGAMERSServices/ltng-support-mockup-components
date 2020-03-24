@@ -7,7 +7,7 @@ import {Scene} from 'c/story_book';
 
 const LONG_TEXT = 'Long long long long long long long long long long long long long long long long long long long long long';
 
-export default class Story_exampleComplex extends LightningElement {
+export default class Story_editableCombobox_item extends LightningElement {
 
   /**
    * Current scene we are working with
