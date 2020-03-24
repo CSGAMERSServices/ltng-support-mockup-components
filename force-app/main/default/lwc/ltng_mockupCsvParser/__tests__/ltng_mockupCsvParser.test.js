@@ -5,6 +5,8 @@
 import ltng_mockupCsvParser, {splitRows, nextCsvCell, nextCsvStringCell, parseCsvLine, parseCsvToLabelValue, LabelValue, ResponsiveTableData, parseCSV} from 'c/ltng_mockupCsvParser';
 import { isArray } from 'util'; // eslint-disable-line no-unused-vars
 
+// First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n"John ""Da Man""",Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,"7452 Terrace ""At the Plaza"" road",SomeTown,SD, 91234\n,Blankman,,SomeTown, SD, 00298\n "Joan 'the bone' Anne",Jet,"9th, at Terrace plc",Desert City,CO,00123
+
 const tableTestInfo = {
   csv: `"FirstName", LastName, "Age" , Color
 Eve,"Jackson", 94, Red
