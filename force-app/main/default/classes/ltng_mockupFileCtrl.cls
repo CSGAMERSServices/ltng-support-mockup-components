@@ -157,7 +157,7 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
         return result;
     }
 
-    class FileAddressInfo {
+    public class FileAddressInfo {
         @AuraEnabled public Id ContentDocumentId;
         @AuraEnabled public Id ContentVersionId;
         @AuraEnabled public String Address;

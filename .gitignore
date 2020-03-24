@@ -4,6 +4,9 @@
 
 *.code-workspace
 
+# temporary files
+.tmp
+
 # Salesforce cache
 .sfdx/
 .localdevserver/
