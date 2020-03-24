@@ -18,7 +18,9 @@ workflows:
       - build:
           filters:
             branches:
-              only: master
+              only: 
+                - master
+                - ci_fix
 
 #  nightly:
 #    triggers:
@@ -127,14 +129,14 @@ jobs:
 #      - store_test_results:
 #          path: ~/junit
 ## Getting Error: ENOMEM: not enough memory, read
-#      - run:
-#          name: Test LWC
-#          command: |
-#            npm run test:lwc:coverage --coverage
-#          env:
-#            CI: true
-#      - store_artifacts:
-#          path: ./coverage
+      - run:
+          name: Test LWC
+          command: |
+            npm run test:lwc:coverage
+          env:
+            CI: true
+      - store_artifacts:
+          path: ./coverage
 #      - run:
 #          name: Test Backup
 #          command: sfdx force:source:retrieve -m LightningComponentBundle
