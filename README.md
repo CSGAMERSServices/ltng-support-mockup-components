@@ -55,7 +55,9 @@ Then one by one, replace your Mockups to make it real.
 NOTE: This project is for demonstration purposes.
 For more information, please see the [Licensing](#licensing) section below
 
-# Accessing the Demo
+# How to Use
+
+## Accessing the Demo
 
 Please note that a sample page with the components shown are provided in the package.
 
@@ -65,7 +67,6 @@ Assigning the `ltng_MockupDemoParticipant` permission set will grant you access 
 
 However, it is purely a demonstration and not required for use.
 
-# How to Use
 
 [Create pages within the App Builder](https://trailhead.salesforce.com/en/content/learn/modules/lightning_app_builder/lightning_app_builder_intro) and use the standard components and the provided Mockup Components below...
 
@@ -273,10 +274,27 @@ This assumes you have already installed the [Salesforce CLI]() and [Connected th
 
 However, the Salesforce CLI can be used with any org and does not require Salesforce DX to be enabled. (Although enabling the DX / Dev Hub would give some great benefits, and would only require care of [certain object permissions: Scratch Org Info, ActiveScratchOrg, NamespaceRegistry](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_add_users.htm) - as they are not available in all orgs)
 
-**1.** Run the following command:
+#### Installing via Source
 
-	sfdx force:mdapi:deploy -d mdapi -u [[orgAlias]] -w
-	
+	sfdx force:source:deploy -u [[orgAlias]]
+
+#### Installing via package
+
+    sfdx force:package:install -w 10 --package 04t3s000003OoeQAAS -u [[orgAlias]]
+    
+### Assigning Permission Set
+
+Please note that a sample page with the components shown are provided in the package.
+
+Assigning the `ltng_MockupDemoParticipant` permission set will grant you access to the `Mockup Example App Page` used in many of these demonstrations.
+
+![Screenshot of the Tab](docs/images/AccessTab.png)
+
+However, it is purely a demonstration and not required for use.
+
+To assign, run the following command:
+
+    sfdx force:user:permset:assign -n ltng_MockupDemoParticipant -u [[orgAlias]]
 
 ##### Run the Demos
 
