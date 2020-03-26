@@ -1,33 +1,46 @@
 <template>
-    <!--
-        From the storybook side, we just bind to the current scene.
+    
+    <!-- expanded -->
+    <c-story_book width={expandedScene.value.width} title={expandedScene.label}
+        sandbox-styles={expandedScene.value.sceneStyle}
+    >
+        <c-ltng_mockup-file-helper
+            show-dropdown-spacer
+            is-collapsible
+            is-expanded
+        ></c-ltng_mockup-file-helper>
         
-        note the large width is based on the Lightning Design System width
-        @see https://www.lightningdesignsystem.com/utilities/sizing/
-    -->
-    <template for:each={allScenes} for:item="scene">
-        <c-story_book key={scene.label} width={scene.value.width} title={scene.label}
-            sandbox-styles={scene.value.sceneStyle}
-        >
+        <div if:true={expandedScene.value.description} slot="description">
+            {expandedScene.value.description}
+        </div>
+    </c-story_book>
 
-            <!--
-                Finally we show our component.
-                This will be placed inside the 'sandbox' of the story
-            -->
+    <!-- collapsed -->
 
-            <c-ltng_mockup-file-helper
-                show-dropdown-spacer
-            ></c-ltng_mockup-file-helper>
+    <c-story_book width={collapsedScene.value.width} title={collapsedScene.label}
+        sandbox-styles={collapsedScene.value.sceneStyle}
+    >
+        <c-ltng_mockup-file-helper
+            show-dropdown-spacer
+            is-collapsible
+        ></c-ltng_mockup-file-helper>
+        
+        <div if:true={collapsedScene.value.description} slot="description">
+            {collapsedScene.value.description}
+        </div>
+    </c-story_book>
 
+    <!-- not collapsible -->
 
-            <!--
-                We can optionally include a description slot
-                and it will be shown within the story.
-            -->
-            
-            <div if:true={scene.value.description} slot="description">
-                {scene.value.description}
-            </div>
-        </c-story_book>
-    </template>
+    <c-story_book width={notCollapsibleScene.value.width} title={notCollapsibleScene.label}
+        sandbox-styles={notCollapsibleScene.value.sceneStyle}
+    >
+        <c-ltng_mockup-file-helper
+            show-dropdown-spacer
+        ></c-ltng_mockup-file-helper>
+        
+        <div if:true={notCollapsibleScene.value.description} slot="description">
+            {notCollapsibleScene.value.description}
+        </div>
+    </c-story_book>
 </template>
