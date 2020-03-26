@@ -129,6 +129,18 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   pageRef;
 
   /**
+   * Whether the section is expanded
+   * @type {Boolean}
+   */
+  @api isExpanded = false;
+
+  /**
+   * Whether the component is collapsible (true) or will always remain open (false)
+   * @type {Boolean}
+   */
+  @api isCollapsible = false;
+
+  /**
    * The term to search for
    * @type {String}
    */
@@ -226,11 +238,30 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   //-- getters / setters
 
   /**
+   * Styles for the section
+   * @returns {String}
+   */
+  get sectionStyles() {
+    const expandedClass = this.isExpanded ? 'slds-is-open' : '';
+    return 'static-resource-helper slds-box slds-section ' +
+      'slds-card slds-theme_default ' +
+      expandedClass + ' ';
+  }
+
+  /**
    * Whether the ContentDocument is new
    * @type {Boolean}
    */
   get isNew() {
     return !this.recordToUpdate || !this.recordToUpdate.Id;
+  }
+
+  /**
+   * Inverse of whether it is expanded to support aria
+   * @type {Boolean}
+   */
+  get isNotExpanded() {
+    return !this.isExpanded;
   }
 
   /**
@@ -263,12 +294,14 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     return !(
       this.recordToUpdate !== null
       && (this.fileToUploadBase64 ? true : false)
-      && (this.newFileName ? true : false)
     );
   }
 
   //-- handlers
   connectedCallback() {
+    if (!this.isCollapsible) {
+      this.isExpanded = true;
+    }
   }
 
   disconnectedCallback() {
@@ -276,12 +309,20 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   /**
+   * Expandable button is clicked
+   */
+  handleExpandToggle() {
+    if (this.isCollapsible) {
+      this.isExpanded = !this.isExpanded;
+    }
+  }
+
+  /**
    * Handles when the user presses the return key
    * @param {CustomEvent} evt
    */
   handleKeyUp(evt) {
-    let searchStr = evt.target.value;
-    if (searchStr === undefined) searchStr = '';
+    let searchStr = evt.target.value || '';
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line

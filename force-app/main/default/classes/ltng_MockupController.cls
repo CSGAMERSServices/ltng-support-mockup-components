@@ -85,7 +85,7 @@ global class ltng_MockupController extends VisualEditor.DynamicPicklist {
      * Determines the settings for the Mock components.
      * @return ltng_mockupSettings__c
      */
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static ltng_mockupSettings__c getSettings(){
         ltng_mockupSettings__c results = ltng_mockupSettings__c.getOrgDefaults();
         return results;

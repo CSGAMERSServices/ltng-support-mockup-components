@@ -11,15 +11,15 @@ export default class story_mockupFileHelper extends LightningElement {
    * Current scene we are working with
    * @type {Scene}
    */
-  @api currentScene = new Scene();
+  @api expandedScene = new Scene('Expanded', {
+    width: 'large'
+  });
 
-  /**
-   * List of all scenes we have
-   * @type {Scene[]}
-   */
-  @api allScenes = [
-    new Scene('Large Width Scene', {
-      width: 'large'
-    })
-  ];
+  @api collapsedScene = new Scene('Collapsed', {
+    width: 'large'
+  });
+
+  @api notCollapsibleScene = new Scene('Not Collapsible', {
+    width: 'large'
+  });
 }

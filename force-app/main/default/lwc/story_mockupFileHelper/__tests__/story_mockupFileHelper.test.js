@@ -3,7 +3,7 @@
 /** JEST Test for story_mockupFileHelper/__tests__/story_mockupFileHelper **/
 import { createElement } from 'lwc';
 import story_mockupFileHelper from 'c/story_mockupFileHelper';
-import { isArray } from 'util';
+// import { isArray } from 'util';
 
 class TestSettings {
   constructor() {
@@ -47,8 +47,8 @@ describe('c-story_mockupImage', () => {
     const ts = new TestSettings()
       .attachElement();
     
-    expect(ts.element.allScenes).toBeTruthy();
-    expect(isArray(ts.element.allScenes)).toBeTruthy();
-    expect(ts.element.allScenes.length).toBeGreaterThan(0);
+    expect(ts.element.expandedScene).toBeTruthy();
+    expect(ts.element.collapsedScene).toBeTruthy();
+    expect(ts.element.notCollapsibleScene).toBeTruthy();
   });
 });
