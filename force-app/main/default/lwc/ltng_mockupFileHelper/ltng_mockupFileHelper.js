@@ -5,6 +5,8 @@ import { CurrentPageReference } from 'lightning/navigation';
 import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
 import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
 
+import formFactorPropertyName from '@salesforce/client/formFactor';
+
 import { fireEvent } from 'c/ltng_mockupEventBus';
 
 /**
@@ -237,6 +239,10 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
   //-- getters / setters
 
+  @api get isDesktop() {
+    return formFactorPropertyName === 'Large';
+  }
+
   /**
    * Styles for the section
    * @returns {String}
@@ -368,7 +374,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
     if (filesToUpload.length > 0) {
       this.fileToUpload = filesToUpload[0];
-      if (!editableCombobox.value) {
+      if (this.isDesktop && !editableCombobox.value) {
         const fileName = fileNameToFileTitle(this.fileToUpload.name);
         this.newFileName = fileName;
 
@@ -435,10 +441,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       });
     
     //-- allow tests to pause until completed
-    evt.detail.submitPromise = submitPromise;
-    // evt.detail = Object.assign({
-    //   submitPromise:submitPromise
-    // }, evt.detail);
+    if (typeof jest !== 'undefined') {
+      evt.detail.submitPromise = submitPromise;
+    }
   }
 
   /**
