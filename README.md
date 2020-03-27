@@ -34,17 +34,22 @@ Sometimes, there can be difficulty in transitioning from Paper to their Salesfor
 
 We might discover a new component to show the current sales numbers during our wireframe session...
 
-![Screenshot of Ideation for new Component](docs/images/Ideation1.png)
+![Screenshot of mockup component in layout](docs/images/ScreenWithMockups.jpg)
 
 We can then mock that up in our favorite app: (like [Avonni Creator](https://www.avonni.app/products/avonni-creator), [Figma](https://www.figma.com/) using their [LDS Kit](https://www.figma.com/file/5dgFdCHB6FGjfOPAZEDNVK/Lightning-Design-System-Components-for-Web?node-id=0%3A1), [Framer](https://www.framer.com/) using their [LDS Kit](https://github.com/salesforce-ux/design-system-ui-kit-framerx), or [Balsamiq](https://balsamiq.com/wireframes/))
 
 And then include within our layout (using the [Mockup Image component](https://github.com/SalesforceCloudServices/ltng-support-mockup-components#mockup-image) below),<br />
 so we can get feedback right away.
 
-![Screenshot of mockup component in layout](docs/images/Ideation2.png)
+![Screenshot of Ideation for new Component](docs/images/ScreenAsActual.png)
 
-Using App Builder filters based on permissions, then only authorized people will see it within our A/B tests.
-It also gives power to the Administrators, so they can ‘play’ without needing to request new wires.
+Using traditional Salesforce Navigation, participants can navigate to the mockup as they would any normal page.
+
+Intermixing our custom development with the standard functionality we know is available.
+
+Using App Builder publishing based on permissions, then only authorized people will see it within our A/B tests.
+
+As it only mocks the new functionality, Administrators can re-arrange and try different positions without needing to request new wires.
 
 Then one by one, replace your Mockups to make it real.
 
@@ -250,7 +255,7 @@ Please create (or update) your [Mockup Preferences](#mockup-preferences) and set
 
 A custom setting is available to specify preferences how to work with Mockups.  This can be especially helpful for those orgs that have a large number of static resources / files - and searching can become tiresome.
 
-To specify, create a new Custom Setting record for the
+To specify, create a new Custom Setting record. (Generally company wide, but can also be set at the User / Role levels)
 
 ![Screenshot of Manage button for custom settings](docs/images/manageCustomSettings.png)
 
