@@ -239,6 +239,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
   //-- getters / setters
 
+  /**
+   * Whether we are on desktop (true) or not (false)
+   */
   @api get isDesktop() {
     return formFactorPropertyName === 'Large';
   }

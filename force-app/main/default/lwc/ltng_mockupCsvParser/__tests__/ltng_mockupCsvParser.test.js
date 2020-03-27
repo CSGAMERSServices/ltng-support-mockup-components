@@ -2,7 +2,7 @@
 
 /** JEST Test for ltng_mockupCsvParser/__tests__/ltng_mockupCsvParser **/
 
-import ltng_mockupCsvParser, {splitRows, nextCsvCell, nextCsvStringCell, parseCsvLine, parseCsvToLabelValue, LabelValue, ResponsiveTableData, parseCSV} from 'c/ltng_mockupCsvParser';
+import ltng_mockupCsvParser, {splitRows, nextCsvCell, nextCsvStringCell, negativeLookbehindQuoteSearch, parseCsvLine, parseCsvToLabelValue, LabelValue, ResponsiveTableData, parseCSV} from 'c/ltng_mockupCsvParser';
 import { isArray } from 'util'; // eslint-disable-line no-unused-vars
 
 // First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n"John ""Da Man""",Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,"7452 Terrace ""At the Plaza"" road",SomeTown,SD, 91234\n,Blankman,,SomeTown, SD, 00298\n "Joan 'the bone' Anne",Jet,"9th, at Terrace plc",Desert City,CO,00123
@@ -256,6 +256,81 @@ describe('c-ltng_mockupCsvParser', () => {
     });
   });
 
+  describe('lookbehind shim', () => {
+    it('detects when there isnt a terminating quote', () => {
+      //-- empty string without ending quote
+      let str = ``;
+      let result = negativeLookbehindQuoteSearch(str);
+      let expected = -1;
+      expect(result).toBe(expected);
+      
+      //-- whitespace string'
+      str = ` `;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = -1;
+      expect(result).toBe(expected);
+      
+      //-- handles whitespace string with tabs
+      str = `   \t `;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = -1;
+      expect(result).toBe(expected);
+    });
+
+    it('detects ending quotes without escapes', () => {
+
+      //-- handles only ending quote
+      let str = `"`;
+      let result = negativeLookbehindQuoteSearch(str);
+      let expected = 0;
+      expect(result).toBe(expected);
+      
+      //-- handles whitespace before ending quote
+      str = `   "`;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 3;
+      expect(result).toBe(expected);
+
+      //-- handles whitespace after ending quote
+      str = `"   `;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 0;
+      expect(result).toBe(expected);
+      
+      //-- handles whitespace before and after ending quote
+      str = `   "   `;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 3;
+      expect(result).toBe(expected);
+
+      //-- handles string with values and no whitespace
+      str = `asdfasdf"`;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 8;
+      expect(result).toBe(expected);
+    });
+
+    it('handles escapes', () => {
+      //-- handles single quoted string
+      let str = `joan O\\'Leary`;
+      let result = negativeLookbehindQuoteSearch(str);
+      let expected = -1;
+      expect(result).toBe(expected);
+
+      //-- handles backslashed string
+      str = `joan \\"the bone\\" jet"`;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 21;
+      expect(result).toBe(expected);
+
+      //-- handles double quoted string
+      str = `joan ""the bone"" jet"`;
+      result = negativeLookbehindQuoteSearch(str);
+      expected = 21;
+      expect(result).toBe(expected);
+    });
+  });
+
   describe('parses a csv line into all values', () => {
     it('and the value isnt clear', () => {
       var csvLine = null;
@@ -289,7 +364,10 @@ describe('c-ltng_mockupCsvParser', () => {
       expected = ['', 'two','three'];
   
       expect(csvParse).toStrictEqual(expected);
-      
+
+      csvLine = `"John \\"Da Man\\"", "Repici", "120 Jefferson St.", Riverside, NJ, 08075`;
+      csvParse = parseCsvLine(csvLine);
+      expected = [`John "Da Man"`, 'Repici', '120 Jefferson St.', 'Riverside', 'NJ', '08075']
     });
 
     it('when there are no quotes', () => {
