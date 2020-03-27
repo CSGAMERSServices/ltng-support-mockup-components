@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 /**
  * More complex demo allowing multiple scenes to be tested.
  **/

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { LightningElement, api } from 'lwc';
 import {Scene} from 'c/story_book';
 

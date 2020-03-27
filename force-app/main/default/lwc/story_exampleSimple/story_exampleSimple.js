@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 /**
  * Component that tests a single component in a very simple way
  **/
