@@ -155,6 +155,7 @@ export default class Ltng_mockupTable extends LightningElement {
       //-- unfortunately, clipboard methods are still not well accepted.
       //-- using the fallback of document.execCommand
       //-- @see https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
+      //-- @see https://caniuse.com/#feat=document-execcommand
 
       textarea.value = cleanedCSV;
 
