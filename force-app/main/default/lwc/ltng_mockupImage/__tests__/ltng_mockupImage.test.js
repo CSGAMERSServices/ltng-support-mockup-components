@@ -193,13 +193,18 @@ describe('c-ltng_mockupImage', () => {
     const clickEvent = new CustomEvent('click');
     target.dispatchEvent(clickEvent);
 
-    expect(navigateHandler).toHaveBeenCalled();
-    expect(navigateHandler).toHaveBeenCalledTimes(1);
-
-    const navigateDetail = navigateHandler.mock.calls[0][0].detail;
-    expect(navigateDetail.attributes.url).toBe(elementDefaults.targetAddress);
-
-    done();
+    //-- somehow there is a race condition, so the navigateHandler doesn't detect the call
+    //-- it only happens on occasion and isn't clear how to cause it to fail.
+    
+    return Promise.resolve().then(() => {
+      expect(navigateHandler).toHaveBeenCalled();
+      expect(navigateHandler).toHaveBeenCalledTimes(1);
+  
+      const navigateDetail = navigateHandler.mock.calls[0][0].detail;
+      expect(navigateDetail.attributes.url).toBe(elementDefaults.targetAddress);
+  
+      done();
+    });
   });
 
   it('uses the picklist resource name if provided', (done) => {
