@@ -24,8 +24,6 @@ Whiteboarding is a common technique of structruing what we want to see and where
 
 Sometimes, there can be difficulty in transitioning from Paper to their Salesforce Org.  The aim of this project is to help with that transition.
 
-![App Page](docs/images/ExampleAppPage.png)
-
 *  Explore what Standard Components you have available to you
 *  Add in Mockups / Placeholders to brainstorm what you want
 *  Create a compelling story to share with others
@@ -67,6 +65,7 @@ Assigning the `ltng_MockupDemoParticipant` permission set will grant you access 
 
 However, it is purely a demonstration and not required for use.
 
+## Basic Flow
 
 [Create pages within the App Builder](https://trailhead.salesforce.com/en/content/learn/modules/lightning_app_builder/lightning_app_builder_intro) and use the standard components and the provided Mockup Components below...
 
@@ -239,6 +238,39 @@ Then simply copy and paste the CSV into the table.
 
 ---
 
+# Troubleshooting
+
+## Many Files and Static Resources 
+
+Some orgs can have a large number of files and static resources.  This can make searching a bit tiresome.
+
+Please create (or update) your [Mockup Preferences](#mockup-preferences) and set the `Mock Image Filter` so only files made with that filter name will be included in search results.  Also review the `Max Search Results` if the number of records returned can be reduced (default 100)
+
+# Mockup Preferences
+
+A custom setting is available to specify preferences how to work with Mockups.  This can be especially helpful for those orgs that have a large number of static resources / files - and searching can become tiresome.
+
+To specify, create a new Custom Setting record for the
+
+![Screenshot of Manage button for custom settings](docs/images/manageCustomSettings.png)
+
+<table>
+<tr>
+	<th>Name</td><td>Description</td><td>Example</td>
+</tr>
+<tr>
+	<td>Enable Mock Caching</td><td>Allows caching of images (Mock Images - using Static Resources and Mock File Images - using Files) This allows the images to load even faster than normal, at the expense that the latest image may not be provided</td><td>(checked or unchecked)</td>
+</tr>
+<tr>
+	<td>Max Search Results</td><td>This is the maximum number of results returned when searching.  Making this number larger can reduce performances of searches.</td><td>100</td>
+</tr>
+<tr>
+	<td>Mock Image File Filter</td><td>Only Files / Static resources that (also) include this text will be included in results.  Files that are created automatically will include this (prefixed)</td><td>`mock` or `ltng_`</td>
+</tr>
+</table>
+
+--
+
 # Install
 
 There are three methods available for you to install this demo, so you can play around with it:
@@ -255,9 +287,9 @@ This works very similar to an App Exchange install.
 
 Please login to an available sandbox and click the link below.
 
-[https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3s000003OoeQAAS](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3s000003OoeQAAS)
+[https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3s000003OoiiAAC](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3s000003OoiiAAC)
 
-(or simply navigate to `https://YOUR_SALESFORCE_INSTANCE/packaging/installPackage.apexp?p0=04t3s000003OoeQAAS` <br />
+(or simply navigate to `https://YOUR_SALESFORCE_INSTANCE/packaging/installPackage.apexp?p0=04t3s000003OoiiAAC` <br />
 if you are already logged in)
 
 ![Install for Admins](docs/images/installPackage.png)
@@ -280,7 +312,7 @@ However, the Salesforce CLI can be used with any org and does not require Salesf
 
 #### Installing via package
 
-    sfdx force:package:install -w 10 --package 04t3s000003OoeQAAS -u [[orgAlias]]
+    sfdx force:package:install -w 10 --package 04t3s000003OoiiAAC -u [[orgAlias]]
     
 ### Assigning Permission Set
 
