@@ -2,10 +2,7 @@
 
 /** JEST Test for ltng_mockupEventBus/__tests__/ltng_mockupEventBus **/
 import {
-  registerListener,
-  unregisterListener,
-  unregisterAllListeners,
-  fireEvent
+  EventEmitter
 } from 'c/ltng_mockupEventBus';
 
 import * as data from '../__data__';
@@ -18,9 +15,6 @@ const generateMockComponent = (pageRef) => {
   };
   return result;
 }
-
-const EVENT_CHANGE = 'change';
-const EVENT_ELSE = 'else';
 
 /** @typedef {Object} PageRef */
 /**
@@ -52,9 +46,9 @@ class TestSettings {
 
     /**
      * Component that will be emitting events
-     * @type {Emitter}
+     * @type {EventEmitter}
      */
-    this.emitter = generateMockComponent(this.pageRef);
+    this.emitter = new EventEmitter();
     
     /**
      * Component that will be receiving events
@@ -108,10 +102,8 @@ class TestSettings {
    * Registers for the change event
    */
   registerForEvents() {
-    registerListener(EVENT_CHANGE, this.receiver.handleChange, this.receiver, this.receiver.pageRef);
-    registerListener(EVENT_CHANGE, this.otherReceiver.handleChange, this.otherReceiver);
-    registerListener(EVENT_ELSE, this.receiver.handleElse, this.receiver);
-    registerListener(EVENT_ELSE, this.otherReceiver.handleElse, this.otherReceiver);
+    this.emitter.registerListener(this.receiver.handleChange, this.receiver);
+    this.emitter.registerListener(this.otherReceiver.handleChange, this.otherReceiver);
     return this;
   }
 
@@ -121,8 +113,6 @@ class TestSettings {
   resetListeners() {
     this.receiver.handleChange.mockReset();
     this.otherReceiver.handleChange.mockReset();
-    this.receiver.handleElse.mockReset();
-    this.otherReceiver.handleElse.mockReset();
   }
 
   finalize() {
@@ -130,7 +120,7 @@ class TestSettings {
   }
 }
 
-describe('c-ltng_mockupEventBus', () => {
+describe('c-mockupEventBus.EventEmitter', () => {
   //-- boilerplate DOM reset
   afterEach(() => {
     // while (document.body.firstChild){
@@ -146,15 +136,96 @@ describe('c-ltng_mockupEventBus', () => {
     expect(ts.receiver).toBeTruthy();
     expect(ts.otherReceiver).toBeTruthy();
 
-    expect(ts.emitter.pageRef).toBe(ts.pageRef);
     expect(ts.receiver.pageRef).toBe(ts.pageRef);
     expect(ts.otherReceiver.pageRef).toBe(ts.otherPageRef);
     expect(ts.pageRef).not.toBe(ts.otherPageRef);
 
     expect(ts.receiver.handleChange).toBeTruthy();
-    expect(ts.receiver.handleElse).toBeTruthy();
     expect(ts.otherReceiver.handleChange).toBeTruthy();
-    expect(ts.otherReceiver.handleElse).toBeTruthy();
+  });
+
+  it('listens if a pageRef is sent specifically', () => {
+    const ts = new TestSettings()
+      .customSetup(customTS => {
+        customTS.emitter.registerListener(customTS.receiver.handleChange, customTS.receiver, customTS.pageRef);
+      })
+      .finalize()
+    
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+    expect(ts.receiver.handleChange).toHaveBeenCalled();
+    const details = ts.receiver.handleChange.mock.calls[0][0];
+    expect(details).toBe(ts.expectedPayload);
+  });
+
+  describe('hears the last dispatch value on listen', () => {
+    it('when the event is fired before the listener', () => {
+      const ts = new TestSettings()
+        .finalize();
+      
+      ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+      ts.emitter.registerListener(
+        ts.receiver.handleChange, ts.receiver, ts.pageRef, true
+      );
+
+      expect(ts.receiver.handleChange).toHaveBeenCalledTimes(1);
+      const details = ts.receiver.handleChange.mock.calls[0][0];
+      expect(details).toBe(ts.expectedPayload);
+    });
+
+    it('still fires even if the page reference is on the receiver', () => {
+      const ts = new TestSettings()
+        .finalize();
+      
+      ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+      ts.emitter.registerListener(
+        ts.receiver.handleChange, ts.receiver, ts.pageRef, true
+      );
+
+      expect(ts.receiver.handleChange).toHaveBeenCalledTimes(1);
+      const details = ts.receiver.handleChange.mock.calls[0][0];
+      expect(details).toBe(ts.expectedPayload);
+    });
+  })
+
+  describe('it does not hear an event', () => {
+    it('if the handler matches, but the object does not', () => {
+      const ts = new TestSettings()
+        .customSetup(customTS => {
+          customTS.emitter.registerListener(customTS.otherReceiver.handleChange, customTS.receiver, customTS.pageRef);
+        })
+        .finalize()
+      
+      ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+      expect(ts.receiver.handleChange).not.toHaveBeenCalled();
+    });
+
+    it('if the handler does not match, but the object does', () => {
+      const ts = new TestSettings()
+        .customSetup(customTS => {
+          customTS.emitter.registerListener(() => {}, customTS.otherReceiver, customTS.pageRef);
+        })
+        .finalize()
+      
+      ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+      expect(ts.receiver.handleChange).not.toHaveBeenCalled();
+    });
+
+    it('if the pageRef does not match', () => {
+      const ts = new TestSettings()
+        .customSetup(customTS => {
+          customTS.emitter.registerListener(customTS.receiver.handleChange, customTS.receiver, customTS.otherPageRef);
+        })
+        .finalize()
+      
+      ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
+
+      expect(ts.receiver.handleChange).not.toHaveBeenCalled();
+    });
   });
 
   it('event dispatched on same page is heard', () => {
@@ -163,7 +234,7 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     let callResult;
     expect(ts.receiver.handleChange).toHaveBeenCalled();
@@ -177,9 +248,6 @@ describe('c-ltng_mockupEventBus', () => {
     callResult = ts.otherReceiver.handleChange.mock.calls[0][0];
     expect(callResult).toBeTruthy();
     expect(callResult).toBe(ts.expectedPayload);
-
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
   });
 
   it('event dispatched on different pages are not heard', () => {
@@ -188,7 +256,7 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     let callResult;
     expect(ts.receiver.handleChange).toHaveBeenCalled();
@@ -198,9 +266,6 @@ describe('c-ltng_mockupEventBus', () => {
     expect(callResult).toBe(ts.expectedPayload);
 
     expect(ts.otherReceiver.handleChange).not.toHaveBeenCalled();
-
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
   });
 
   it('only fires the event once if the event is registered multiple times', () => {
@@ -209,7 +274,7 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
     
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     let callResult;
     expect(ts.receiver.handleChange).toHaveBeenCalled();
@@ -221,28 +286,21 @@ describe('c-ltng_mockupEventBus', () => {
     expect(ts.otherReceiver.handleChange).not.toHaveBeenCalled();
   });
 
-  it('firing for an event not found doesnt fail', () => {
-    const ts = new TestSettings()
-      .registerForEvents()
-      .finalize();
-    
-    const fn = () => fireEvent(ts.pageRef, 'someunknown', ts.expectedPayload);
-
-    expect(fn).not.toThrow();
-  });
-
   it('firing for some page with nothing registered doesnt fail', () => {
     const ts = new TestSettings()
       .finalize();
     
-    const fn = () => fireEvent(ts.pageRef, 'someunknown', ts.expectedPayload);
+    const fn = () => ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(fn).not.toThrow();
   });
 
   it('throws an error if the component does not have a pageRef', () => {
+    const ts = new TestSettings()
+      .finalize();
+    
     const handler = jest.fn();
-    const fn = () => registerListener(EVENT_CHANGE, handler, {});
+    const fn = () => ts.emitter.registerListener(handler, {});
     expect(fn).toThrow();
     expect(handler).not.toHaveBeenCalled();
   });
@@ -253,7 +311,7 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(ts.receiver.handleChange).toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
@@ -270,24 +328,17 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
     
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(ts.receiver.handleChange).toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
 
-    fireEvent(ts.pageRef, EVENT_ELSE, ts.expectedPayload);
-
-    expect(ts.receiver.handleElse).toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).toHaveBeenCalled();
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     ts.resetListeners();
 
     expect(ts.receiver.handleChange).not.toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).not.toHaveBeenCalled();
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
   });
 
   it('unregistering unregisters for only that single listener', () => {
@@ -298,38 +349,15 @@ describe('c-ltng_mockupEventBus', () => {
     
     expect(ts.receiver.handleChange).not.toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).not.toHaveBeenCalled();
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
 
-    unregisterListener(EVENT_CHANGE, ts.receiver.handleChange, ts.receiver);
+    ts.emitter.unregisterListener(ts.receiver.handleChange, ts.receiver);
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(ts.receiver.handleChange).not.toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
 
-    fireEvent(ts.pageRef, EVENT_ELSE, ts.expectedPayload);
-
-    expect(ts.receiver.handleElse).toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).toHaveBeenCalled();
-  });
-
-  it('unregistering for an event not found doesnt fail', () => {
-    const ts = new TestSettings()
-      .setupSamePage()
-      .registerForEvents()
-      .finalize();
-    
-    const fn = () => unregisterListener('notfound', ts.receiver.handleChange, ts.receiver);
-    
-    expect(fn).not.toThrow();
-
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
-  
-    expect(ts.receiver.handleChange).toHaveBeenCalled();
-    expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
   });
 
   it('unregistering an event for a component not found doesnt fail', () => {
@@ -340,13 +368,13 @@ describe('c-ltng_mockupEventBus', () => {
     
     const someUnknownComponent = generateMockComponent(ts.pageRef);
 
-    const fn = () => unregisterListener('notfound', ts.receiver.handleChange, someUnknownComponent);
+    const fn = () => ts.emitter.unregisterListener(ts.receiver.handleChange, someUnknownComponent);
     
     expect(fn).not.toThrow();
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
-    expect(ts.receiver.handleChange).toHaveBeenCalled();
+    // expect(ts.receiver.handleChange).toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
   });
 
@@ -356,19 +384,14 @@ describe('c-ltng_mockupEventBus', () => {
       .registerForEvents()
       .finalize();
     
-    unregisterAllListeners(ts.receiver);
+    ts.emitter.unregisterAllListeners(ts.receiver);
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(ts.receiver.handleChange).not.toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).not.toHaveBeenCalled();
 
-    fireEvent(ts.pageRef, EVENT_ELSE, ts.expectedPayload);
-
-    expect(ts.receiver.handleElse).not.toHaveBeenCalled();
-    expect(ts.otherReceiver.handleElse).toHaveBeenCalled();
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
   });
 
   it('unregistering for all events for a component not found doesnt fail', () => {
@@ -379,11 +402,11 @@ describe('c-ltng_mockupEventBus', () => {
 
     const someUnknownComponent = generateMockComponent(ts.pageRef);
     
-    const fn = () => unregisterAllListeners(someUnknownComponent);
+    const fn = () => ts.emitter.unregisterAllListeners(someUnknownComponent);
     
     expect(fn).not.toThrow();
 
-    fireEvent(ts.pageRef, EVENT_CHANGE, ts.expectedPayload);
+    ts.emitter.fireEvent(ts.pageRef, ts.expectedPayload);
 
     expect(ts.receiver.handleChange).toHaveBeenCalled();
     expect(ts.otherReceiver.handleChange).toHaveBeenCalled();

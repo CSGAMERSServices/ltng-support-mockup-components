@@ -19,7 +19,8 @@ jest.mock(
     const NavigationMixin = (Base) => {
       return class extends Base {
         [Navigate](navigateArg){
-          this.dispatchEvent(new mockCustomEvent('navigate', {detail:navigateArg}));
+          const arg = {detail:navigateArg};
+          this.dispatchEvent(new mockCustomEvent('navigate', arg));
         }
         [GenerateUrl](){
           this.dispatchEvent(new mockCustomEvent('generate'));
@@ -113,9 +114,9 @@ describe('c-ltng_mockupFileImage', () => {
     registerListener.mockReset();
     unregisterListener.mockReset();
 
-    jest.resetModules();
-    jest.clearAllMocks();
-    jest.clearAllTimers();
+    // jest.resetModules();
+    // jest.clearAllMocks();
+    // jest.clearAllTimers();
   });
 
   it('can be created', () => {
@@ -312,7 +313,7 @@ describe('c-ltng_mockupFileImage', () => {
   });
 
   describe('when the user clicks the image', () => {
-    it('navigates if there is a target location', () => {
+    it('navigates if there is a target location', (done) => {
       const targetAddress = 'https://www.salesforce.com';
       const ts = new TestSettings()
         .applyDefaultProperties()
@@ -328,15 +329,23 @@ describe('c-ltng_mockupFileImage', () => {
 
       //-- listen that we want to navigate
       //-- note this is provided from the navigation mock above
-      const navigationHandler = jest.fn();
-      ts.element.addEventListener('navigate', navigationHandler);
+      //-- yet there is some kind of race condition going on.
+      //-- this occasionally fails - and only if a large number of tests run
+      let navigationHandler;
+      const navigationPromise = new Promise((resolve) => {
+        navigationHandler = jest.fn(() => resolve());
+        ts.element.addEventListener('navigate', navigationHandler);
+        imgEl.dispatchEvent(clickEvt);
+      }).then(() => {
+        expect(navigationHandler).toHaveBeenCalled();
+        const navigationArguments = navigationHandler.mock.calls[0][0];
+        expect(navigationArguments.detail).toBeTruthy();
+        expect(navigationArguments.detail.attributes.url).toBe(targetAddress);
 
-      imgEl.dispatchEvent(clickEvt);
+        done();
+      });
 
-      expect(navigationHandler).toHaveBeenCalled();
-      const navigationArguments = navigationHandler.mock.calls[0][0];
-      expect(navigationArguments.detail).toBeTruthy();
-      expect(navigationArguments.detail.attributes.url).toBe(targetAddress);
+      return navigationPromise;
     });
 
     it('does not navigate if there is no target location', () => {

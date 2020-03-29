@@ -37,7 +37,8 @@ jest.mock(
     const NavigationMixin = (Base) => {
       return class extends Base {
         [Navigate](navigateArg){
-          this.dispatchEvent(new mockCustomEvent('navigate', {detail:navigateArg}));
+          const arg = {detail:navigateArg};
+          this.dispatchEvent(new mockCustomEvent('navigate', arg));
         }
         [GenerateUrl](){
           this.dispatchEvent(new mockCustomEvent('generate'));
@@ -187,24 +188,24 @@ describe('c-ltng_mockupImage', () => {
     
     const target = ts.element.shadowRoot.querySelector('a');
 
-    const navigateHandler = jest.fn();
-    ts.element.addEventListener('navigate', navigateHandler);
-
-    const clickEvent = new CustomEvent('click');
-    target.dispatchEvent(clickEvent);
-
     //-- somehow there is a race condition, so the navigateHandler doesn't detect the call
     //-- it only happens on occasion and isn't clear how to cause it to fail.
-    
-    return Promise.resolve().then(() => {
-      expect(navigateHandler).toHaveBeenCalled();
+    let navigateHandler;
+    const navigationPromise = new Promise((resolve) => {
+      navigateHandler = jest.fn(() => resolve());
+      ts.element.addEventListener('navigate', navigateHandler);
+
+      const clickEvent = new CustomEvent('click');
+      target.dispatchEvent(clickEvent);
+    }).then(() => {
       expect(navigateHandler).toHaveBeenCalledTimes(1);
-  
       const navigateDetail = navigateHandler.mock.calls[0][0].detail;
       expect(navigateDetail.attributes.url).toBe(elementDefaults.targetAddress);
-  
+
       done();
     });
+
+    return navigationPromise;
   });
 
   it('uses the picklist resource name if provided', (done) => {
