@@ -146,7 +146,7 @@ Using Sticky-Notes or Whiteboards, brainstorm how it should look or behave.
 
 ![Brainstorm with Drawings](docs/images/flow2.png)
 
-Use [Mockup File Helper](#file-helper) and [Mockup File Image](#mockup-file-image) to upload images directly from your cell phone.
+Use [Mockup File Helper](#mockup-file-helper) and [Mockup File Image](#mockup-file-image) to upload images directly from your cell phone.
 
 ### Formalize with Wireframe Apps
 
@@ -306,7 +306,7 @@ Note that this is quite a bit easier size than it would be on a rich text.
 </tr>
 </table>
 
-## Responsive Table
+## Mockup Table
 
 Lightning Experience gives the ability to work with Salesforce from the Mobile Phone and from Desktop.
 
