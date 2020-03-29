@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPage>ltng_MockupExampleRecordPage</flexiPage>
+    <label>Mockup Example Record Page</label>
+    <motif>Custom62: Chalkboard</motif>
+</CustomTab>

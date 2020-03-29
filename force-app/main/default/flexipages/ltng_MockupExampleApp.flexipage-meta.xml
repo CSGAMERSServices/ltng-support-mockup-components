@@ -148,6 +148,10 @@
                 <name>resourceNameManualEntry</name>
                 <value>ltng_ExamplePlaceholderImage</value>
             </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>targetAddress</name>
+                <value>/lightning/n/ltng_MockupExampleRecordPage</value>
+            </componentInstanceProperties>
             <componentName>ltng_mockupImage</componentName>
         </componentInstances>
         <componentInstances>

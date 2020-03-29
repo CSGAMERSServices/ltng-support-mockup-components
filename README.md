@@ -32,26 +32,18 @@ Sometimes, there can be difficulty in transitioning from Paper to their Salesfor
 ---
 ## For Example
 
-We might discover a new component to show the current sales numbers during our wireframe session...
+During our Lightning Transition, we want to capture what a new Layout could look like - and what information it should show...
+
+Utilizing these custom components alongside Standard Lightning Components lets us immediately show what is available and not - while demonstrating concepts and capturing information.
 
 ![Screenshot of mockup component in layout](docs/images/ScreenWithMockups.jpg)
 
 We can then mock that up in our favorite app: (like [Avonni Creator](https://www.avonni.app/products/avonni-creator), [Figma](https://www.figma.com/) using their [LDS Kit](https://www.figma.com/file/5dgFdCHB6FGjfOPAZEDNVK/Lightning-Design-System-Components-for-Web?node-id=0%3A1), [Framer](https://www.framer.com/) using their [LDS Kit](https://github.com/salesforce-ux/design-system-ui-kit-framerx), or [Balsamiq](https://balsamiq.com/wireframes/))
 
-And then include within our layout (using the [Mockup Image component](https://github.com/SalesforceCloudServices/ltng-support-mockup-components#mockup-image) below),<br />
+And then include within our layout (using the [Mockup Image component](#mockup-image-components) below),<br />
 so we can get feedback right away.
 
 ![Screenshot of Ideation for new Component](docs/images/ScreenAsActual.png)
-
-Using traditional Salesforce Navigation, participants can navigate to the mockup as they would any normal page.
-
-Intermixing our custom development with the standard functionality we know is available.
-
-Using App Builder publishing based on permissions, then only authorized people will see it within our A/B tests.
-
-As it only mocks the new functionality, Administrators can re-arrange and try different positions without needing to request new wires.
-
-Then one by one, replace your Mockups to make it real.
 
 ---
 
@@ -59,6 +51,42 @@ NOTE: This project is for demonstration purposes.
 For more information, please see the [Licensing](#licensing) section below
 
 # How to Use
+
+## Using Components
+
+The following are components that are available within the App Builder once installed.
+
+While there are [Demo App Builder Pages using these components](#accessing-the-demo) - these are for demonstration purposes only and not needed to get up and running.
+
+<table>
+<tr>
+	<th>Component</th><th>Description</th><th>When to Use</th>
+</tr>
+<tr>
+	<td><a href='#mockup-alert'>Mockup Alert</a></td><td>A one-line Lightning Design System Alert</td><td>Useful for showing Errors / Notifications / Warnings.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-header'>Mockup Header</a></td><td>Lightning Design System Header</td><td>To clearly mark areas for discussion</td>
+</tr>
+<tr>
+	<td><a href='#rich-text-standard'>Rich Text (Standard)</a></td><td><a href='https://help.salesforce.com/articleView?id=lightning_page_components.htm&type=5#rich_text_comp_defn'>The standard Rich Text component</a></td><td>Capturing detailed notes about an area or component.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-placeholder'>Mockup Placeholder</a></td><td>Intentionally minimal placeholder</td><td>When less is more / sizing is important. Especially helpful for presentations.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-table'>Mockup Table</a></td><td>Inline editable table</td><td>When multiple rows of information / responsive tables are needed.</td>
+</tr>
+</tr>
+<tr>
+	<td><a href='#mockup-file-image'>Mockup File Image</a></td><td>Images using Files</td><td>Iterating on images - thanks to the File Helper. Generally not recommended for presentations, as Mockup Images can load much faster.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-file-helper'>Mockup File Helper</a></td><td>Utility to quickly upload and edit File Images without leaving the page.</td><td>Iterating on images. Filtered / hidden during presentations.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-image'>Mockup Image</a></td><td>Image placement using Static Resources</td><td>Used for Presentations, as they load much faster than Mockup File Images</td>
+</table>
 
 ## Accessing the Demo
 
@@ -70,21 +98,49 @@ Assigning the `ltng_MockupDemoParticipant` permission set will grant you access 
 
 However, it is purely a demonstration and not required for use.
 
-## Basic Flow
 
-[Create pages within the App Builder](https://trailhead.salesforce.com/en/content/learn/modules/lightning_app_builder/lightning_app_builder_intro) and use the standard components and the provided Mockup Components below...
 
-The goal is to be as iterative as possible while keeping the conversation going.
+## General
 
-Let’s explore adding Buttons to the page. The next examples are different levels of fidelity as we move towards it:
+The goal of this project is to [leverage the power of the App Builder](https://trailhead.salesforce.com/en/content/learn/modules/lightning_app_builder/lightning_app_builder_intro) by using both Standard Components and the provided Mockup Components to discuss layouts or ideate on a better experience.
 
-## Make Placeholders
+One can switch between Mockups within the App Builder, or even navigate between them using standard navigation / urls.
+
+![Screenshot of App Builder Page Selection](docs/images/selectAmongMockups.png)
+
+Note that because these mockups are directly WITHIN Salesforce, users can access the mockups using standard navigation. Standard App Builder features like [Component Visibility Filtering](https://help.salesforce.com/articleView?id=lightning_page_components_visibility.htm&type=5) and [Profile / App based Activation](https://help.salesforce.com/articleView?id=lightning_page_getting_into_salesforce1.htm&type=5) we can demonstrate real Salesforce functionality side by side with our Mockup work available only in specific situations. Even allowing for AB Walkthrough Testing.
+
+![Screenshot using Standard Navigation](docs/images/usingSalesforceNavigation.gif)
+
+## Specific Case - Exploring Layouts
+
+One of the simplest scenarios is simply to ideate on how a more optimal Salesforce Layout would look (and behave).
+
+Using Placeholders to identify content that is needed immediately (above the fold).
+
+Using Rich Text to capture notes on what that we know about each of those sections.
+
+Using simple Data Mocking services (like [Mockaroo](https://mockaroo.com)) and the [Mockup Table](#mockup-table) or Image Mocking apps (like [Balsamiq](https://balsamiq.com/wireframes/)) with [Mockup Image Components](#mockup-image-components) - we can quickly and easily sculpt outlines of a Layout.  
+
+All while capturing information for further discussion / development, and within Salesforce for confidence in our approach.
+
+![Screenshot of mockup component in layout](docs/images/ScreenWithMockups.jpg)
+
+## Specific Case - Iterating on a Component
+
+Alternatively, we can focus on iterating a specific Component / functionality to develop.
+
+Let’s explore adding a new component that we'll call: Button-Strip.
+
+The next examples are different levels of fidelity as we move towards it:
+
+### Make Placeholders
 
 Capture what you know about them to keep the conversation going.
 
 ![Capture Placeholders](docs/images/flow1.png)
 
-## Brainstorm with Drawings
+### Brainstorm with Drawings
 
 Using Sticky-Notes or Whiteboards, brainstorm how it should look or behave.
 
@@ -92,7 +148,7 @@ Using Sticky-Notes or Whiteboards, brainstorm how it should look or behave.
 
 Use [Mockup File Helper](#file-helper) and [Mockup File Image](#mockup-file-image) to upload images directly from your cell phone.
 
-## Formalize with Wireframe Apps
+### Formalize with Wireframe Apps
 
 Capture multiple versions or nail down the specifics.
 
@@ -100,7 +156,7 @@ Capture multiple versions or nail down the specifics.
 
 Only the component needs to be mocked up, instead of the entire application leaving power in your hands to iterate.
 
-## One by one, make the components real
+### One by one, make the components real
 
 Evaluate what you have out of the box.  Walk through options.
 
@@ -109,6 +165,96 @@ Then one by one, make them real.
 ![Make them real](docs/images/flow4.png)
 
 # Components
+
+The following are components that are available within the App Builder once installed.
+
+While there are [Demo App Builder Pages using these components](#accessing-the-demo) - these are for demonstration purposes only and not needed to get up and running.
+
+<table>
+<tr>
+	<th>Component</th><th>Description</th><th>When to Use</th>
+</tr>
+<tr>
+	<td><a href='#mockup-alert'>Mockup Alert</a></td><td>A one-line Lightning Design System Alert</td><td>Useful for showing Errors / Notifications / Warnings.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-header'>Mockup Header</a></td><td>Lightning Design System Header</td><td>To clearly mark areas for discussion</td>
+</tr>
+<tr>
+	<td><a href='#rich-text-standard'>Rich Text (Standard)</a></td><td><a href='https://help.salesforce.com/articleView?id=lightning_page_components.htm&type=5#rich_text_comp_defn'>The standard Rich Text component</a></td><td>Capturing detailed notes about an area or component.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-placeholder'>Mockup Placeholder</a></td><td>Intentionally minimal placeholder</td><td>When less is more / sizing is important. Especially helpful for presentations.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-table'>Mockup Table</a></td><td>Inline editable table</td><td>When multiple rows of information / responsive tables are needed.</td>
+</tr>
+</tr>
+<tr>
+	<td><a href='#mockup-file-image'>Mockup File Image</a></td><td>Images using Files</td><td>Iterating on images - thanks to the File Helper. Generally not recommended for presentations, as Mockup Images can load much faster.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-file-helper'>Mockup File Helper</a></td><td>Utility to quickly upload and edit File Images without leaving the page.</td><td>Iterating on images. Filtered / hidden during presentations.</td>
+</tr>
+<tr>
+	<td><a href='#mockup-image'>Mockup Image</a></td><td>Image placement using Static Resources</td><td>Used for Presentations, as they load much faster than Mockup File Images</td>
+</table>
+
+## Mockup Alert
+
+Placeholders are for times we want to be quick, or sizing is important.
+
+![Screenshot of Placeholders](docs/images/alertComponent.png)
+
+Note that this is quite a bit easier size than it would be on a rich text.
+
+#### App Builder Properties
+
+<table>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Is Shown?</td><td>Whether the Alert should be shown - or not</td><td></td>
+</tr>
+<tr>
+	<td>Theme</td><td>The <a href='https://lightningdesignsystem.com/components/alert/#Variations'>Alert Variation</a></td><td>info, warning, error, offline</td>
+</tr>
+<tr>
+	<td>Icon Name</td><td>from <a href='https://www.lightningdesignsystem.com/icons'>lightningdesignsystem.com/icons</a></td><td>account, contact, custom1</td>
+</tr>
+<tr>
+	<td>Message</td><td>Message to show within the Alert</td><td>This Account has Open Cases</td>
+</tr>
+</table>
+
+## Mockup Header
+
+Placeholders are for times we want to be quick, or sizing is important.
+
+![Screenshot of Placeholders](docs/images/headerComponent.png)
+
+Note that this is quite a bit easier size than it would be on a rich text.
+
+#### App Builder Properties
+
+<table>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Title</td><td>Large Title of the spacer</td><td>List of Accounts</td>
+</tr>
+<tr>
+	<td>Sub-Title</td><td>Smaller title (beneath the Title)</td><td>(Name, Organization, ...)</td>
+</tr>
+<tr>
+	<td>Icon Category</td><td>Category from <a href='https://www.lightningdesignsystem.com/icons'>lightningdesignsystem.com/icons</a></td><td>standard, custom, utility, ...</td>
+</tr>
+<tr>
+	<td>Icon Name</td><td>from <a href='https://www.lightningdesignsystem.com/icons'>lightningdesignsystem.com/icons</a></td><td>account, contact, custom1</td>
+</tr>
+</table>
 
 ## Rich Text (Standard)
 
@@ -119,7 +265,20 @@ One of the most important components with your Digital Paper Prototypes is the S
 Use this to capture Text information and notes.
 (Which fields / types of information to show, etc)
 
-## Placeholders
+#### How to use the Component
+
+Drag the Component to your App Builder page and update the information in the Rich Text Editor.
+
+Generally, this can be lists of what we know about this area / component.
+
+Such as:
+
+* Toggles / Buttons / Actions
+* What information should be shown
+  * Format of that information
+* etc.
+
+## Mockup Placeholder
 
 Placeholders are for times we want to be quick, or sizing is important.
 
@@ -127,62 +286,25 @@ Placeholders are for times we want to be quick, or sizing is important.
 
 Note that this is quite a bit easier size than it would be on a rich text.
 
-## Mockup Images
-
-There can often be little substitute for Images to tell a story.
-
-Sometimes we know what we want things to look like, but it isn't available in Lightning ... yet.
-
-![Screenshot of Image Placeholder](docs/images/imageComponent.png)
-
-
-There are two components to show images:
+#### App Builder Properties
 
 <table>
-	<tr>
-		<th>Name</th><th>Description</th><th>When to use</th>
-	</tr>
-	<tr>
-		<td>Mockup File Image</td><td>Use Files to show images</td><td>Allows for in-page editing without going through setup. However, slower to load</td>
-	</tr>
-	<tr>
-		<td>Mockup Image</td><td>Uses static resources to show images</td><td>Static Resources load much faster. Use when closer to presentations</td>
-	</tr>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Title</td><td>Large Title of the spacer</td><td>List of Accounts</td>
+</tr>
+<tr>
+	<td>Sub-Title</td><td>Smaller title (beneath the Title)</td><td>(Name, Organization, ...)</td>
+</tr>
+<tr>
+	<td>Height</td><td>CSS Height. By default it automatically is in proportion to the width</td><td>`auto` or `200px`</td>
+</tr>
+<tr>
+	<td>Width</td><td>CSS Width. By default - it automatically is full width</td><td>ex: `100%` or `200px`</td>
+</tr>
 </table>
-
-## Mockup File Image
-
-Use the Mockup File Image to help visualize a component in your org.
-
-![Screenshot of Mockup file image](docs/images/mockupFileImage.png)
-
-## Mockup File Helper
-
-This component can be added to your page, to let you create (or update files) without navigating away.
-
-![Screenshot of the File Helper](docs/images/FileHelper.png)
-
-* Simply select the image file you would like to use
-* Then either select which File to update
-  * or simply type the name of the file to create.
-
-![Screenshot of using File Helper](docs/images/FileHelper.gif)
-
-Updating the file will immediately refresh those Mockup Images using that image.
-
-
-## Mockup Image
-
-Once you are happy with your image, and are getting ready for the presentation, convert the files to Static Resources, and use the `Mockup Image` component.
-
-**Step 1.** Within Setup, navigate to Static resources.
-
-**Step 2.** Within the App Builder for the page, either select from the list of static resources available, or manually type the `Name` of the resource
-
-Once you update the static resource, the image will be updated without making changes.
-
-![Screenshot of Mockup Image](docs/images/mockupImage.png)
-
 
 ## Responsive Table
 
@@ -198,9 +320,27 @@ Instead of cramming as much information together, sometimes a different approach
 
 The information is simply a CSV (comma separated value - text)
 
-Simply separate cells (values) with commas,
-Optionally wrap cells within quotes - if there are commas,
-and separate each line by pressing return.
+While it is possible to write your own, it can be simplest to either [use a data generation / mocking service to generate your data](#using-mocking-services) or to [Inline Edit - by double clicking](#to-update-tables).
+
+When you are happy with the text, [Export to Clipboard and then paste in App Builder](#preserving-the-changes)
+
+### What is CSV
+
+This means that each cell simply has a comma between values, like:
+
+```
+Header A, Header B
+Value 1A, Value 1B
+Value 2A, Value 2B
+```
+
+Note that newlines are stripped in the App Builder (but not in inline editing), so include `\n` between lines:
+
+```
+Header A, Header B\n
+Value 1A, Value 1B\n
+Value 2A, Value 2B
+```
 
 **NOTE:** If the browser doesn't support separating by new lines
 (by pressing the return key or pasting where the lines are separated already)
@@ -215,6 +355,10 @@ Then edit the csv information inline.
 ![Screenshot from inline editing](docs/images/inlineEditingTables.gif)
 
 Once happy with the text, press the `apply` button to preview the changes.
+
+**NOTE: Applying the value will not keep the change on next visit.**
+
+When you are happy with the text, [Export to Clipboard and then paste in App Builder](#preserving-the-changes)
 
 ### Preserving the Changes
 
@@ -240,6 +384,138 @@ Using a Mocking Service (like [Mockaroo](https://mockaroo.com/) or [GenerateData
 Then simply copy and paste the CSV into the table.
 
 ![Screenshot of import](docs/images/ImportFromMockingService.gif)
+
+## Mockup Image Components
+
+There can often be little substitute for Images to tell a story.
+
+Sometimes we know what we want things to look like, but it isn't available in Lightning ... yet.
+
+![Screenshot of Image Placeholder](docs/images/imageComponent.png)
+
+
+There are two components to show images:
+
+<table>
+	<tr>
+		<th>Name</th><th>Description</th><th>When to use</th>
+	</tr>
+	<tr>
+		<td>Mockup File Image</td><td>Use Files to show images</td><td>Allows for in-page editing without going through setup. However, slower to load</td>
+	</tr>
+	<tr>
+		<td>Mockup Image</td><td>Uses static resources to show images</td><td>Static Resources load much faster. Use when closer to presentations</td>
+	</tr>
+</table>
+
+
+## Mockup File Image
+
+Use the Mockup File Image to help visualize a component in your org.
+
+![Screenshot of Mockup file image](docs/images/fileImageComponent.png)
+
+#### App Builder Properties
+
+<table>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Document</td><td>Picklist of the Documents we could show</td><td></td>
+</tr>
+<tr>
+	<td>Description</td><td>The Alt text shown for the image</td><td>Description for this image...</td>
+</tr>
+<tr>
+	<td>OnClick Address</td><td>URL to navigate to on click. Another way to navigate between mocks.</td><td>/lightning/n/ltng_MockupExampleRecordPage</td>
+</tr>
+<tr>
+	<td>Height CSS</td><td>CSS Height. By default it automatically is in proportion to the width</td><td>`auto` or `200px`</td>
+</tr>
+<tr>
+	<td>Width CSS</td><td>CSS Width. By default - it automatically is full width</td><td>ex: `100%` or `200px`</td>
+</tr>
+</table>
+
+
+**NOTE** - To reduce the number of static resources in the dropdown, please review the [Preferences option / Troubleshooting for Many Files and Static Resources](#many-files-and-static-resources)
+
+
+## Mockup File Helper
+
+This component can be added to your page, to let you create (or update files) without navigating away.
+
+![Screenshot of the File Helper](docs/images/FileHelper.png)
+
+* Simply select the image file you would like to use
+* Then either select which File to update
+  * or simply type the name of the file to create.
+
+![Screenshot of using File Helper](docs/images/FileHelper.gif)
+
+Updating the file will immediately refresh those Mockup Images using that image.
+
+**NOTE:** - if using [Preferences to limit the Static Resources](#many-files-and-static-resources), please note that the prefix will automatically be added to the file name.
+
+Since the filter limits which resources are returned, this will ensure that images you upload will always be available for selection.
+
+**Pro Tip:** - note you can also add on a [Component Visibility Filtering](https://help.salesforce.com/articleView?id=lightning_page_components_visibility.htm&type=5) so the File Helper will only be available to those that need to see it / and not for other participants.
+
+It can also be helpful to use a hierarchical custom setting or user field to indicate that this user should not (or should be able to) see the File Helper.
+
+#### App Builder Properties
+
+<table>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Show Spacer?</td><td>Whether or not a space is added below. (This can be helpful so the dropdown does not extend below the bottom of the screen)</td><td></td>
+</tr>
+<tr>
+	<td>Is Collapsible?</td><td>Whether the component is collapsible (to just the header) or not.</td><td></td>
+</tr>
+</table>
+
+
+## Mockup Image
+
+Once you are happy with your image, and are getting ready for the presentation, convert the files to Static Resources, and use the `Mockup Image` component.
+
+**Step 1.** Within Setup, navigate to Static resources.
+
+**Step 2.** Within the App Builder for the page, either select from the list of static resources available, or manually type the `Name` of the resource
+
+Once you update the static resource, the image will be updated without making changes.
+
+![Screenshot of Mockup Image](docs/images/mockupImage.png)
+
+#### App Builder Properties
+
+<table>
+<tr>
+	<th>Name</th><th>Description</th><th>Examples</th>
+</tr>
+<tr>
+	<td>Resource name</td><td>Picklist of resource names. If `Manual...` is selected, then the Manual Name (below) is used</td><td></td>
+</tr>
+<tr>
+	<td>Resource Name (Manual)</td><td>The name of the static resource to use (if known and Manual is selected above)</td><td>ltng_RecordHeader or ltng_ExamplePlaceholderImage</td>
+</tr>
+<tr>
+	<td>Description</td><td>The Alt text shown for the image</td><td>Description for this image...</td>
+</tr>
+<tr>
+	<td>OnClick Address</td><td>URL to navigate to on click. Another way to navigate between mocks.</td><td>/lightning/n/ltng_MockupExampleRecordPage</td>
+</tr>
+<tr>
+	<td>Height CSS</td><td>CSS Height. By default it automatically is in proportion to the width</td><td>`auto` or `200px`</td>
+</tr>
+<tr>
+	<td>Width CSS</td><td>CSS Width. By default - it automatically is full width</td><td>ex: `100%` or `200px`</td>
+</tr>
+</table>
 
 ---
 
