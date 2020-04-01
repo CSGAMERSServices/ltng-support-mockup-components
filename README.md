@@ -47,9 +47,6 @@ so we can get feedback right away.
 
 ---
 
-NOTE: This project is for demonstration purposes.
-For more information, please see the [Licensing](#licensing) section below
-
 # How to Use
 
 ## Using Components
@@ -206,8 +203,6 @@ Placeholders are for times we want to be quick, or sizing is important.
 
 ![Screenshot of Placeholders](docs/images/alertComponent.png)
 
-Note that this is quite a bit easier size than it would be on a rich text.
-
 #### App Builder Properties
 
 <table>
@@ -233,8 +228,6 @@ Note that this is quite a bit easier size than it would be on a rich text.
 Placeholders are for times we want to be quick, or sizing is important.
 
 ![Screenshot of Placeholders](docs/images/headerComponent.png)
-
-Note that this is quite a bit easier size than it would be on a rich text.
 
 #### App Builder Properties
 
@@ -284,7 +277,7 @@ Placeholders are for times we want to be quick, or sizing is important.
 
 ![Screenshot of Placeholders](docs/images/placeholderComponent.png)
 
-Note that this is quite a bit easier size than it would be on a rich text.
+Note that this is quite a bit easier to specify the size than with the standard rich text component.
 
 #### App Builder Properties
 
@@ -550,7 +543,7 @@ To specify, create a new Custom Setting record. (Generally company wide, but can
 </tr>
 </table>
 
---
+----
 
 # Install
 
