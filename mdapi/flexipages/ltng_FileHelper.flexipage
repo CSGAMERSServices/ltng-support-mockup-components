@@ -3,6 +3,10 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>isCollapsible</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
                 <name>showDropdownSpacer</name>
                 <value>true</value>
             </componentInstanceProperties>

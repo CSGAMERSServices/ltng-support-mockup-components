@@ -2,6 +2,8 @@ import { LightningElement, api, track } from 'lwc';
 
 import {parseCsvToLabelValue, ResponsiveTableData} from 'c/ltng_mockupCsvParser';
 
+import formFactorPropertyName from '@salesforce/client/formFactor';
+
 const DEFAULT_TABLE = 'Row, Header A, Header B\n1, 1:A, 1:B\n2, 2:A, 2:B'
 
 /**
@@ -76,6 +78,13 @@ export default class Ltng_mockupTable extends LightningElement {
   //-- getters / setters
 
   /**
+   * Whether we are on desktop (true) or not (false)
+   */
+  @api get isDesktop() {
+    return formFactorPropertyName === 'Large';
+  }
+
+  /**
    * Determines the css classes to use for the table
    * (makes the table responsive or not)
    * @returns {String[]}
@@ -146,6 +155,7 @@ export default class Ltng_mockupTable extends LightningElement {
       //-- unfortunately, clipboard methods are still not well accepted.
       //-- using the fallback of document.execCommand
       //-- @see https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
+      //-- @see https://caniuse.com/#feat=document-execcommand
 
       textarea.value = cleanedCSV;
 

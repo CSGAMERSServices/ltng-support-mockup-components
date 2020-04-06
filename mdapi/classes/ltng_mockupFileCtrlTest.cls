@@ -446,6 +446,20 @@ private class ltng_mockupFileCtrlTest {
         System.assertEquals(1, filesFound.size());
     }
 
+    @isTest static void findIsUnrestrictedIfNegativeMaxRowsRequested() {
+        TestSettings ts = new TestSettings()
+            .setupDefault()
+            .setupSettings('Dark','-1')
+            .setupFiles()
+            .refreshDocuments()
+            .finalize();
+
+        ContentDocument[] filesFound = ltng_mockupFileCtrl.findFiles(null);
+
+        System.assert(filesFound != null);
+        System.assertEquals(2, filesFound.size());
+    }
+
     @isTest static void createFile() {
         TestSettings ts = new TestSettings()
             .setupDefault()

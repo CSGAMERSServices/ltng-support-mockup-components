@@ -2,6 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>48.0</apiVersion>
     <isExposed>true</isExposed>
+    <masterLabel>Mockup Alert</masterLabel>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
@@ -9,14 +10,14 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage, lightning__RecordPage, lightning__HomePage">
-            <property name="isShown" type="Boolean" default="true"
+            <property name="isShown" label="Is Shown?" type="Boolean" default="true"
                 description='Whether the alert is shown (true) or not (false). Can also be set through filters.'
             />
-            <property name="theme" type="String" default="info" datasource="info, warning, error, offline" />
+            <property name="theme" label="Theme" type="String" default="info" datasource="info, warning, error, offline" />
             <property name="iconName" type="String" label="Icon Name" default="info"
                 description='Name of utility icon from https://www.lightningdesignsystem.com/icons'
             />
-            <property name="message" type="String"
+            <property name="message" label="Message" type="String"
                 description="Message to show in the alert"
                 default="Your alert here"
             />

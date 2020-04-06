@@ -4,8 +4,8 @@
             "path": "force-app",
             "default": true,
             "package": "ltng-support-mockup-components",
-            "versionName": "ver 1.2",
-            "versionNumber": "1.2.0.NEXT"
+            "versionName": "1.2.1",
+            "versionNumber": "1.2.1.NEXT"
         }
     ],
     "namespace": "",

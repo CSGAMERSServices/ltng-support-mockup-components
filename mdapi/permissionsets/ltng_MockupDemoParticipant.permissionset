@@ -11,4 +11,8 @@
         <tab>ltng_MockupExampleAppPage</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <tabSettings>
+        <tab>ltng_MockupExampleRecordPage</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

@@ -19,25 +19,6 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
-                <name>imgHeight</name>
-                <value>auto</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>imgWidth</name>
-                <value>100%</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>resourceNameFromPicklist</name>
-                <value>ltng_ExampleComponent</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>resourceNameManualEntry</name>
-                <value>ltng_ExamplePlaceholderImage</value>
-            </componentInstanceProperties>
-            <componentName>ltng_mockupImage</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentInstanceProperties>
                 <name>iconCategory</name>
                 <value>custom</value>
             </componentInstanceProperties>
@@ -167,7 +148,22 @@
                 <name>resourceNameManualEntry</name>
                 <value>ltng_ExamplePlaceholderImage</value>
             </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>targetAddress</name>
+                <value>/lightning/n/ltng_MockupExampleRecordPage</value>
+            </componentInstanceProperties>
             <componentName>ltng_mockupImage</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>isCollapsible</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>showDropdownSpacer</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentName>ltng_mockupFileHelper</componentName>
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
@@ -195,7 +191,7 @@
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>tablecsv</name>
-                <value>First, Last, Address, Town, State, Zip\nJohn,Doe,120 jefferson st.,Riverside, NJ, 08075\nJack,McGinnis,220 hobo Av.,Phila, PA,09119 \n&quot;John &quot;&quot;Da Man&quot;&quot;&quot;,Repici,120 Jefferson St.,Riverside, NJ,08075 \nStephen,Tyler,&quot;7452 Terrace &quot;&quot;At the Plaza&quot;&quot; road&quot;,SomeTown,SD, 91234\n,Blankman,,SomeTown, SD, 00298\n &quot;Joan &#39;the bone&#39; Anne&quot;,Jet,&quot;9th, at Terrace plc&quot;,Desert City,CO,00123</value>
+                <value>First, Last, Address, Town, State, Zip\n John,Doe,120 jefferson st.,Riverside, NJ, 08075\n Jack,McGinnis,220 hobo Av.,Phila, PA,09119 \n &quot;John &quot;&quot;Da Man&quot;&quot;&quot;,Repici,120 Jefferson St.,Riverside, NJ,08075 \n Stephen,Tyler,&quot;7452 Terrace &quot;&quot;At the Plaza&quot;&quot; road&quot;,SomeTown,SD, 91234\n ,Blankman,,SomeTown, SD, 00298\n  &quot;Joan &#39;the bone&#39; Anne&quot;,Jet,&quot;9th, at Terrace plc&quot;,Desert City,CO,00123</value>
             </componentInstanceProperties>
             <componentName>ltng_mockupTable</componentName>
         </componentInstances>
@@ -209,13 +205,6 @@
                 <value>&lt;p style=&quot;text-align: right;&quot;&gt;(NOTE: simply change the CSV to update what the table should show)&lt;/p&gt;</value>
             </componentInstanceProperties>
             <componentName>flexipage:richText</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentInstanceProperties>
-                <name>showDropdownSpacer</name>
-                <value>false</value>
-            </componentInstanceProperties>
-            <componentName>ltng_mockupFileHelper</componentName>
         </componentInstances>
         <name>region3</name>
         <type>Region</type>

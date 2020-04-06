@@ -90,10 +90,17 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
         String[] whereClauses = new String[]{};
         
         ltng_mockupSettings__c settings = ltng_mockupSettings__c.getOrgDefaults();
-        Integer maxSearchResults = Integer.valueOf(settings.Max_Search_Results__c);
-        if (maxSearchResults == null) {
-            maxSearchResults = MAX_RESULTS;
-        }
+        Integer maxSearchResults = MAX_RESULTS;
+        
+        // try {
+            Integer newMax = Integer.valueOf(settings.Max_Search_Results__c);
+            if (newMax > 0) {
+                maxSearchResults = newMax;
+            }
+        //-- not possible at the current time as max search results is required
+        // } catch (Exception err) {
+        //     maxSearchResults = MAX_RESULTS;
+        // }
         
         String cleanedSearchStr = null;
         if (!String.isEmpty(searchStr)) {
@@ -118,6 +125,7 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
         query += 'ORDER BY LastModifiedDate desc limit :maxSearchResults';
 
         System.debug('query' + query);
+        System.debug('maxSearchResults:' + maxSearchResults);
 
         results = Database.query(query);
 
@@ -136,7 +144,8 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
     public static FileAddressInfo determineFileContentURL(Id contentId, String cacheBuster) {
         FileAddressInfo result = new FileAddressInfo();
         
-        try {
+        // try {
+            
             ContentDocument content = [
                 SELECT Id, Title, LatestPublishedVersionId
                 FROM ContentDocument
@@ -152,7 +161,12 @@ global with sharing class ltng_mockupFileCtrl extends VisualEditor.DynamicPickli
                     content.LatestPublishedVersionId
                 }
             );
-        } catch(Exception err) {}
+
+        // } catch(Exception err) {}
+        //-- in discussion with groups that have completed the discussions
+        //-- it is much better to not show anything if a file isn't found
+        //-- than to show any form of error.
+        //-- Files change quite a bit during these sessions
 
         return result;
     }

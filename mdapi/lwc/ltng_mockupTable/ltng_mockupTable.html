@@ -15,7 +15,9 @@
                                 class="btn-apply slds-m-right_small"
                                 onclick={handleSubmit}
                             ></lightning-button>
-                            <lightning-button label="Clipboard for App Builder"
+                            <lightning-button
+                                if:true={isDesktop}
+                                label="Clipboard for App Builder"
                                 class="btn-export"
                                 onclick={handleCopyToClipboard}
                             ></lightning-button>

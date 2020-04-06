@@ -14,6 +14,10 @@
                 label="Show Spacer?"
                 description="Whether to include a space at the bottom - so the dropdown does not appear below screen."
             />
+            <property name="isCollapsible" type="Boolean" default="false"
+                label="Is Collapsible?"
+                description="Whether the component can be collapsed to only the title - or not"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -30,7 +30,7 @@
     </fields>
     <fields>
         <fullName>Mock_Image_File_Filter__c</fullName>
-        <defaultValue>&quot;Mock&quot;</defaultValue>
+        <defaultValue>&quot;ltng_&quot;</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>If provided, only file with titles that include this text will be shown in the Mockup File Image App Builder selection.</inlineHelpText>
         <label>Mock Image File Filter</label>

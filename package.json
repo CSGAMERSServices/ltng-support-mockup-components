@@ -1,6 +1,6 @@
 {
   "name": "ltng-support-mockup-components",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simple set of components to help mock up what an org could look like in Lightning Experience",
   "directories": {
     "doc": "docs"

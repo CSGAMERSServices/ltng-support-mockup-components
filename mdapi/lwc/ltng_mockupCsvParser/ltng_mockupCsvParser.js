@@ -98,6 +98,31 @@ function nextCsvCell(str) {
 }
 
 /**
+ * Finds the character index of the next quote tha is not escaped.
+ * (note that escapes in csv can either be double quotes or backslash)
+ * @param {String} str - String to find the next quote that is not escaped
+ */
+function negativeLookbehindQuoteSearch(str) {
+  //-- single line for the following...
+  // return str ? str.search(/(?<![\\"])["]/) : -1;
+  
+  for (let i = 0; i < str.length; i++) {
+    let currentChar = str.charAt(i);
+    let nextChar = str.charAt(i+1);
+    if (currentChar === '\\') {
+      i++;
+    } else if (currentChar === '"'){
+      if (nextChar === '"') {
+        i++;
+      } else {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+
+/**
  * Parses the next element in a csv line with the assumption it is a string
  * @param {String} str 
  * @returns {String[]} - [currentCell, remainingString]
@@ -111,14 +136,18 @@ function nextCsvStringCell(str) {
 
   if (!str) return null;
 
-  remaining = str.trim()
-    .replace(/(?<!\\)""/g, '\\"');
+  // remaining = str.trim()
+  //  .replace(/(?<!\\)""/g, '\\"');
+  remaining = str.trim();
 
   if (remaining.charAt(0) !== '"') return null;
 
-  remaining = remaining.substring(1);
+  remaining = remaining.substring(1)
+    .replace(/""/g, '\\"')
+    .replace(/\\\\"/g, '\\""');
 
-  quoteEnd = remaining.search(/(?<!\\)["]/);
+  //-- unfortunately, negative lookbehinds does not have a shim
+  quoteEnd = negativeLookbehindQuoteSearch(remaining);
 
   if (quoteEnd < 0) return null;
 
@@ -240,6 +269,7 @@ export {
   parseCsvLine,
   parseCSV,
   parseCsvToLabelValue,
+  negativeLookbehindQuoteSearch,
   LabelValue,
   ResponsiveTableData
 };

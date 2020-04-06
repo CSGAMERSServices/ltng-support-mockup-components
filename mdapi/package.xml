@@ -11,8 +11,9 @@
   </types>
   <types>
     <name>FlexiPage</name>
-    <members>File_Helper</members>
+    <members>ltng_FileHelper</members>
     <members>ltng_MockupExampleApp</members>
+    <members>ltng_MockupExampleRecordPage</members>
   </types>
   <types>
     <name>LightningComponentBundle</name>
@@ -44,14 +45,20 @@
   </types>
   <types>
     <name>StaticResource</name>
+    <members>ltng_ActivityTimeline</members>
+    <members>ltng_DashboardNarrow</members>
+    <members>ltng_DashboardWide</members>
     <members>ltng_ExampleComponent</members>
     <members>ltng_ExamplePlaceholderImage</members>
-    <members>ltng_example</members>
+    <members>ltng_ImagePlaceholder</members>
+    <members>ltng_RecordHeader</members>
+    <members>ltng_VisualFlow</members>
   </types>
   <types>
     <name>CustomTab</name>
     <members>ltng_FileHelper</members>
     <members>ltng_MockupExampleAppPage</members>
+    <members>ltng_MockupExampleRecordPage</members>
   </types>
   <version>47.0</version>
 </Package>

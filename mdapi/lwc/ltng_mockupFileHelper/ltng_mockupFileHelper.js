@@ -5,6 +5,8 @@ import { CurrentPageReference } from 'lightning/navigation';
 import apexFindFiles from '@salesforce/apex/ltng_mockupFileCtrl.findFiles';
 import apexCreateContentVersion from '@salesforce/apex/ltng_mockupFileCtrl.createContentVersion';
 
+import formFactorPropertyName from '@salesforce/client/formFactor';
+
 import { fireEvent } from 'c/ltng_mockupEventBus';
 
 /**
@@ -129,6 +131,18 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   pageRef;
 
   /**
+   * Whether the section is expanded
+   * @type {Boolean}
+   */
+  @api isExpanded = false;
+
+  /**
+   * Whether the component is collapsible (true) or will always remain open (false)
+   * @type {Boolean}
+   */
+  @api isCollapsible = false;
+
+  /**
    * The term to search for
    * @type {String}
    */
@@ -226,11 +240,37 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   //-- getters / setters
 
   /**
+   * Whether we are on desktop (true) or not (false)
+   */
+  @api get isDesktop() {
+    return formFactorPropertyName === 'Large';
+  }
+
+  /**
+   * Styles for the section
+   * @returns {String}
+   */
+  get sectionStyles() {
+    const expandedClass = this.isExpanded ? 'slds-is-open' : '';
+    return 'static-resource-helper slds-box slds-section ' +
+      'slds-card slds-theme_default ' +
+      expandedClass + ' ';
+  }
+
+  /**
    * Whether the ContentDocument is new
    * @type {Boolean}
    */
   get isNew() {
     return !this.recordToUpdate || !this.recordToUpdate.Id;
+  }
+
+  /**
+   * Inverse of whether it is expanded to support aria
+   * @type {Boolean}
+   */
+  get isNotExpanded() {
+    return !this.isExpanded;
   }
 
   /**
@@ -263,12 +303,14 @@ export default class Ltng_mockupFileHelper extends LightningElement {
     return !(
       this.recordToUpdate !== null
       && (this.fileToUploadBase64 ? true : false)
-      && (this.newFileName ? true : false)
     );
   }
 
   //-- handlers
   connectedCallback() {
+    if (!this.isCollapsible) {
+      this.isExpanded = true;
+    }
   }
 
   disconnectedCallback() {
@@ -276,12 +318,20 @@ export default class Ltng_mockupFileHelper extends LightningElement {
   }
 
   /**
+   * Expandable button is clicked
+   */
+  handleExpandToggle() {
+    if (this.isCollapsible) {
+      this.isExpanded = !this.isExpanded;
+    }
+  }
+
+  /**
    * Handles when the user presses the return key
    * @param {CustomEvent} evt
    */
   handleKeyUp(evt) {
-    let searchStr = evt.target.value;
-    if (searchStr === undefined) searchStr = '';
+    let searchStr = evt.target.value || '';
     this.clearKeyListener();
 
     this.delayTimeout = setTimeout(() => { // eslint-disable-line
@@ -327,7 +377,7 @@ export default class Ltng_mockupFileHelper extends LightningElement {
 
     if (filesToUpload.length > 0) {
       this.fileToUpload = filesToUpload[0];
-      if (!editableCombobox.value) {
+      if (this.isDesktop && !editableCombobox.value) {
         const fileName = fileNameToFileTitle(this.fileToUpload.name);
         this.newFileName = fileName;
 
@@ -394,10 +444,9 @@ export default class Ltng_mockupFileHelper extends LightningElement {
       });
     
     //-- allow tests to pause until completed
-    evt.detail.submitPromise = submitPromise;
-    // evt.detail = Object.assign({
-    //   submitPromise:submitPromise
-    // }, evt.detail);
+    if (typeof jest !== 'undefined') {
+      evt.detail.submitPromise = submitPromise;
+    }
   }
 
   /**

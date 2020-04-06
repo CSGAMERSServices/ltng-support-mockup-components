@@ -1,7 +1,7 @@
 /**
  * Controller for the Mockup components.
  **/
-global class ltng_MockupController extends VisualEditor.DynamicPicklist {
+global with sharing class ltng_MockupController extends VisualEditor.DynamicPicklist {
     
     /** default resource URL **/
 	public static final String DEFAULT_RESOURCE_URL = '/resource/ltng_ExamplePlaceholderImage';

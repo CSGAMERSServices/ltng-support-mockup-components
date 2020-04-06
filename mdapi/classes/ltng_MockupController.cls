@@ -1,7 +1,7 @@
 /**
  * Controller for the Mockup components.
  **/
-global class ltng_MockupController extends VisualEditor.DynamicPicklist {
+global with sharing class ltng_MockupController extends VisualEditor.DynamicPicklist {
     
     /** default resource URL **/
 	public static final String DEFAULT_RESOURCE_URL = '/resource/ltng_ExamplePlaceholderImage';
@@ -85,7 +85,7 @@ global class ltng_MockupController extends VisualEditor.DynamicPicklist {
      * Determines the settings for the Mock components.
      * @return ltng_mockupSettings__c
      */
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static ltng_mockupSettings__c getSettings(){
         ltng_mockupSettings__c results = ltng_mockupSettings__c.getOrgDefaults();
         return results;

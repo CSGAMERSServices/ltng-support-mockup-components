@@ -1,93 +1,82 @@
 <template>
-    <div class="static-resource-helper slds-box slds-card slds-theme_default">
-        <h1 class="slds-text-heading_small">Update / Create Files</h1>
+    <div class={sectionStyles}>
         <lightning-spinner if:true={showSpinner}
             alternative-text="Loading" size="large"
         ></lightning-spinner>
-        <lightning-layout multiple-rows="true" horizontal-align="center">
-            <lightning-layout-item size="12" small-device-size="6" padding="around-small">
-                <lightning-input
-                    type="file" label="Image"
-                    class="file-selector"
-                    required accept="image/png, image/jpg, image/jpeg, image/gif"
-                    message-when-value-missing="Please upload an image (png, gif, jpg)"
-                    onchange={handleFileChanged}
-                ></lightning-input>
-            </lightning-layout-item>
-            <lightning-layout-item size="12" small-device-size="6" padding="around-small">
-                <div class="preview" if:true={fileToUploadBase64}>
-                    <img 
-                        src={fileToUploadBase64}
-                        style="max-width: 100%; max-height: 100px;"
-                    />
-                    <p>(Preview)</p>
-                </div>
-            </lightning-layout-item>
-            <lightning-layout-item size="12" padding="around-small">
-                <c-ltng_editable-combobox
-                    label="Salesforce File"
-                    placeholder="Name of File (or new File to create)"
-                    text={queryTerm}
-                    options={options}
-                    onchange={handleRecordChanged}
-                    onkeyup={handleKeyUp}
-                ></c-ltng_editable-combobox>
-            </lightning-layout-item>
-            <lightning-layout-item size="12" padding="around-small" class="slds-align_absolute-center">
-                <div class='actions' if:true={newFileName}>
-                    <lightning-button
-                        variant="brand"
-                        disabled={isSubmissionDisabled}
-                        label={buttonLabel}
-                        onclick={handleSubmit}
-                    ></lightning-button>
-                </div>
-            </lightning-layout-item>
-            <lightning-layout-item size="12">
-                <c-ltng_mockup-alert
-                    theme="error" icon-name="error" class='error'
-                    message={error}
-                ></c-ltng_mockup-alert>
-                <!--
-                    @TODO: remove old code, logger stateents, 
-                    convert alerts into notifications like this:
-                    https://lightningdesignsystem.com/components/notifications/
-                
-                <div class='alert' if:true={error}>
-                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
-                        <span class="slds-assistive-text">Error</span>
-                        <lightning-icon icon-name="utility:error" class="slds-m-right_x-small"
-                            alternative-text="Error" title="Error"
-                        ></lightning-icon>
-                        <h2>
-                            {error}
-                        </h2>
+        <div class="slds-section__title slds-theme_shade slds-theme_alert-texture"
+            onclick={handleExpandToggle}
+        >
+            <lightning-icon
+                if:true={isCollapsible}
+                icon-name="utility:switch"
+                size="x-small"
+                aria-expanded={isExpanded}
+                class="switch slds-m-left_x-small"
+                variant="container"
+            ></lightning-icon>
+            <h3 class='slds-m-left_x-small'>File Upload Utility for Mockups</h3>
+            <lightning-helptext
+                class="slds-m-left_x-small"
+                content="Utility component to upload Files used for Mockup File Image components -
+                so you can directly upload and update the images without leaving the page."
+            ></lightning-helptext>
+        </div>
+        <div aria-hidden={isNotExpanded} class="slds-section__content">
+            <lightning-layout multiple-rows="true" horizontal-align="center">
+                <lightning-layout-item size="12" small-device-size="6" padding="around-small">
+                    <lightning-input
+                        type="file" label="Image"
+                        class="file-selector"
+                        required accept="image/png, image/jpg, image/jpeg, image/gif"
+                        message-when-value-missing="Please upload an image (png, gif, jpg)"
+                        onchange={handleFileChanged}
+                    ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" padding="around-small">
+                    <div class="preview" if:true={fileToUploadBase64}>
+                        <img 
+                            src={fileToUploadBase64}
+                            style="max-width: 100%; max-height: 100px;"
+                        />
+                        <p>(Preview)</p>
                     </div>
-                </div>
-                -->
-                <c-ltng_mockup-alert
-                    theme="info" icon-name="info" class='success'
-                    message={success}
-                ></c-ltng_mockup-alert>
-                <!--
-                <div class='alert' if:true={success}>
-                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
-                        <span class="slds-assistive-text">Info</span>
-                        <lightning-icon icon-name="utility:user" class="slds-m-right_x-small"
-                            alternative-text="Info" title="Info"
-                        ></lightning-icon>
-                        <h2>
-                            {success}
-                        </h2>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" padding="around-small">
+                    <c-ltng_editable-combobox
+                        label="Salesforce File"
+                        placeholder="Name of File (or new File to create)"
+                        text={queryTerm}
+                        options={options}
+                        onchange={handleRecordChanged}
+                        onkeyup={handleKeyUp}
+                    ></c-ltng_editable-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" padding="around-small" class="slds-align_absolute-center">
+                    <div class='actions' if:true={newFileName}>
+                        <lightning-button
+                            variant="brand"
+                            disabled={isSubmissionDisabled}
+                            label={buttonLabel}
+                            onclick={handleSubmit}
+                        ></lightning-button>
                     </div>
-                </div>
-            -->
-            </lightning-layout-item>
-            <lightning-layout-item size="12" if:true={showDropdownSpacer}>
-                <div class='spacer'>&nbsp;</div>
-            </lightning-layout-item>
-        </lightning-layout>
-        <div class='notifications'>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <c-ltng_mockup-alert
+                        theme="error" icon-name="error" class='error'
+                        message={error}
+                    ></c-ltng_mockup-alert>
+                    <c-ltng_mockup-alert
+                        theme="info" icon-name="info" class='success'
+                        message={success}
+                    ></c-ltng_mockup-alert>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" if:true={showDropdownSpacer}>
+                    <div class='spacer'>&nbsp;</div>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div class='notifications'>
+            </div>
         </div>
     </div>
 </template>
