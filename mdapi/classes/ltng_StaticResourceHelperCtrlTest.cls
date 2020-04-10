@@ -22,7 +22,7 @@
 @isTest
 private class ltng_StaticResourceHelperCtrlTest {
     
-    class TestSettings {
+    private class TestSettings {
         
         //-- instance values
         
