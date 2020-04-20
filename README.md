@@ -96,6 +96,11 @@ Assigning the `ltng_MockupDemoParticipant` permission set will grant you access 
 However, it is purely a demonstration and not required for use.
 
 
+## Uploading from Mobile
+
+An additional App Builder Page named 'File Helper' is also supplied.  If desired, this can be added to Mobile Navigation to give a one stop shop to upload images during a whiteboarding session.
+
+![Example of the File Helper on Mobile](docs/images/uploadFromPhone.gif)
 
 ## General
 
@@ -141,9 +146,15 @@ Capture what you know about them to keep the conversation going.
 
 Using Sticky-Notes or Whiteboards, brainstorm how it should look or behave.
 
-![Brainstorm with Drawings](docs/images/flow2.png)
+![Example of the File Helper on Mobile](docs/images/uploadFromPhone.gif)
 
 Use [Mockup File Helper](#mockup-file-helper) and [Mockup File Image](#mockup-file-image) to upload images directly from your cell phone.
+
+### Ideate with Developers using Playgrounds
+
+Iterate with Developers to keep expectations grounded. If necessary, perform quick iterations using Salesforce Playgrounds or Component Docs to negotiate options or verify assumptions.
+
+![Ideate with Playgrounds screenshot](docs/images/ideateWithPlaygrounds.gif)
 
 ### Formalize with Wireframe Apps
 
